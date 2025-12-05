@@ -6,9 +6,11 @@
 
 import { Page, Locator } from '@playwright/test';
 import { UserDetails } from '../utils/UserFactory';
+import { ModalHandler } from '../utils/ModalHandler';
 
 export class RegistrationPage {
   readonly page: Page;
+  private modalHandler: ModalHandler;
 
   // Navigation elements
   readonly signupLoginLink: Locator;
@@ -51,6 +53,7 @@ export class RegistrationPage {
 
   constructor(page: Page) {
     this.page = page;
+    this.modalHandler = new ModalHandler(page);
 
     // Navigation elements
     this.signupLoginLink = page.locator('a[href="/login"]').or(
@@ -217,28 +220,10 @@ export class RegistrationPage {
 
   /**
    * Close cookie consent modal if it appears
-   * The modal can reappear on multiple pages, so we use force: true
-   * to ensure clicks work even if the modal is blocking
+   * Uses centralized ModalHandler for consistency
    */
   private async closeConsentModalIfPresent(): Promise<void> {
-    try {
-      const modal = this.page.locator('.fc-consent-root');
-      const modalVisible = await modal.isVisible({ timeout: 1000 }).catch(() => false);
-
-      if (modalVisible) {
-        const closeBtn = this.page.locator('.fc-close-button');
-        const closeBtnVisible = await closeBtn.isVisible({ timeout: 500 }).catch(() => false);
-
-        if (closeBtnVisible) {
-          // Use force: true to bypass any overlay issues
-          await closeBtn.click({ force: true, timeout: 2000 });
-          // Wait for modal to disappear
-          await modal.waitFor({ state: 'hidden', timeout: 1000 }).catch(() => {});
-        }
-      }
-    } catch (e) {
-      // Modal handling failed, continue anyway
-    }
+    await this.modalHandler.handleModalIfPresent();
   }
 
   /**

@@ -3,8 +3,8 @@
  * Aggregates all test data utilities for easy imports
  *
  * Usage:
- *   import { BookingFactory, UserFactory, TestDataValidator } from '@utils/test-data';
- *   import { BookingDataProvider, UserDataProvider, TestScenarioProvider } from '@utils/test-data';
+ *   import { BookingFactory, UserFactory, TestDataValidator } from '@utils';
+ *   import { ModalHandler } from '@utils';
  */
 
 // Factories
@@ -16,6 +16,9 @@ export { BookingDataProvider, UserDataProvider, TestScenarioProvider } from './T
 
 // Validators
 export { TestDataValidator, ValidationResult, assertDataValid } from './TestDataValidator';
+
+// Modal handling
+export { ModalHandler, ModalConfig } from './ModalHandler';
 
 // Constants
 export { TEST_DATA_CONSTANTS, TEST_SCENARIOS } from './TestDataConstants';
