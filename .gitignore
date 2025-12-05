@@ -148,6 +148,7 @@ vite.config.ts.timestamp-*
 
 allure-results/
 **/mcp.json
+test-results.json
 
 # Documentation and notes
 *.md
