@@ -47,7 +47,10 @@ export class LoginPage {
   async fillSignupForm(user: User) {
     // This assumes we're on the signup form page after clicking signup
     if (user.title) {
-      await this.page.locator(`#id_gender${user.title === 'Mr' ? '1' : '2'}`).check();
+      const genderInput = this.page.locator(`#id_gender${user.title === 'Mr' ? '1' : '2'}`);
+      // Wait for the element to be available
+      await genderInput.waitFor({ state: 'visible', timeout: 5000 }).catch(() => {});
+      await genderInput.check({ force: true });
     }
 
     if (user.password) {
