@@ -117,8 +117,8 @@ test.describe('Login and Cart Management Tests', () => {
       if (initialCount > 0) {
         await cartPage.removeProduct(0);
 
-        // Wait for removal to complete
-        await page.waitForTimeout(2000);
+        // Wait for the item to be removed from the DOM
+        await cartPage.cartItems.nth(0).waitFor({ state: 'detached' });
 
         const finalCount = await cartPage.getCartItemsCount();
         expect(finalCount).toBeLessThan(initialCount);

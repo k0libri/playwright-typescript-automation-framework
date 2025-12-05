@@ -93,7 +93,8 @@ export class CartPage {
     const count = await this.removeButtons.count();
     for (let i = count - 1; i >= 0; i--) {
       await this.removeButtons.nth(i).click();
-      await this.page.waitForTimeout(1000); // Wait for removal animation
+      // Wait for the item to be removed from the DOM
+      await this.cartItems.nth(i).waitFor({ state: 'detached' });
     }
   }
 
