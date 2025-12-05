@@ -1,23 +1,23 @@
 /**
  * E2E Registration Test
  * Pure UI/E2E testing for user registration on Automation Exercise
- * Uses: RegistrationPage POM and UserFactory
- * Verification: Success message check
+ * Uses: RegistrationPage POM, UserFactory, and Modal Fixture
+ * Note: Modal fixture automatically handles cookie consent modals
  */
 
-import { test, expect } from '@playwright/test';
+import { test, expect } from '../fixtures/modalFixture';
 import { RegistrationPage } from '../../pages/RegistrationPage';
 import { UserFactory } from '../../utils/UserFactory';
 
 test.describe('User Registration E2E Tests', () => {
   let registrationPage: RegistrationPage;
 
-  test.beforeEach(async ({ page }) => {
-    registrationPage = new RegistrationPage(page);
+  test.beforeEach(async ({ pageWithModalHandling }) => {
+    registrationPage = new RegistrationPage(pageWithModalHandling);
     await registrationPage.goto();
   });
 
-  test('Complete user registration flow with generated data', async ({ page }) => {
+  test('Complete user registration flow with generated data', async ({ pageWithModalHandling }) => {
     // ============ STEP 1: GENERATE USER DATA ============
     const userDetails = UserFactory.createUser({
       newsletter: true,
