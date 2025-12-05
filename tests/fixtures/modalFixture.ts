@@ -1,7 +1,7 @@
 /**
- * Modal Fixture - Aggressive Cookie Consent Modal Handling
+ * Modal Fixture - Simple Cookie Consent Modal Handling
  * Provides automatic modal handling for all tests via Playwright fixtures
- * Automatically closes modals on page load, navigation, and periodically during test
+ * Closes modals on page load to prevent blocking interactions
  */
 
 import { test as base, Page } from '@playwright/test';
@@ -16,39 +16,51 @@ export type ModalFixtures = {
 };
 
 /**
- * Create test fixture with aggressive modal handling
+ * Create test fixture with simple modal handling
  */
 export const test = base.extend<ModalFixtures>({
   /**
-   * Page with automatic modal interception and handling
+   * Page with automatic modal handling on page load only
+   * This prevents the framenavigated listener from firing constantly
    */
   pageWithModalHandling: async ({ page }, use) => {
-    // Create modal handler instance
-    const modalHandler = new ModalHandler(page);
+    // Track if we're already handling a modal to prevent double-handling
+    let isHandlingModal = false;
 
-    // Handle modals on page load
+    // Handle modals on page load - simple, single check
     page.on('load', async () => {
       await new Promise((r) => setTimeout(r, 300)); // Wait for modal to appear
-      await modalHandler.handleModalIfPresent();
-      await new Promise((r) => setTimeout(r, 300)); // Verify it's closed
-      await modalHandler.handleModalIfPresent();
-    });
-
-    // Handle modals on every frame navigation
-    page.on('framenavigated', async () => {
-      await new Promise((r) => setTimeout(r, 200));
-      await modalHandler.handleModalIfPresent();
+      
+      if (!isHandlingModal) {
+        isHandlingModal = true;
+        try {
+          const modalHandler = new ModalHandler(page);
+          await modalHandler.handleModalIfPresent();
+        } catch (error) {
+          console.log('Modal handling on page load failed (expected if no modal):', error);
+        } finally {
+          isHandlingModal = false;
+        }
+      }
     });
 
     // Listen for new pages (popups, etc.)
     page.on('popup', async (popup) => {
-      const popupModalHandler = new ModalHandler(popup);
-      await new Promise((r) => setTimeout(r, 300));
-      await popupModalHandler.handleModalIfPresent();
+      try {
+        const popupModalHandler = new ModalHandler(popup);
+        await new Promise((r) => setTimeout(r, 300));
+        await popupModalHandler.handleModalIfPresent();
+      } catch (error) {
+        console.log('Popup modal handling failed:', error);
+      }
     });
 
     // Use the page with automatic modal handling
     await use(page);
+
+    // Cleanup listeners
+    page.removeAllListeners('load');
+    page.removeAllListeners('popup');
   },
 
   /**

@@ -161,7 +161,6 @@ export class RegistrationPage extends BasePage {
     while (attempts < maxAttempts) {
       try {
         await this.page.goto(path, { waitUntil: 'domcontentloaded', timeout: 10000 });
-        await this.handleModalIfPresent(); // Handle modal after navigation
         break; // Success
       } catch (error: any) {
         attempts++;
@@ -188,44 +187,17 @@ export class RegistrationPage extends BasePage {
    * @param email User's email address
    */
   async performInitialSignup(name: string, email: string): Promise<void> {
-    // Close any modals before starting
-    await this.handleModalIfPresent();
-    
-    // Wait for signup form to be visible
-    await this.signupNameInput.waitFor({ state: 'visible', timeout: 10000 });
-    
-    // Close modal again if it reappeared
-    await this.handleModalIfPresent();
-
-    // Fill signup form
     await this.signupNameInput.fill(name);
-    await this.handleModalIfPresent(); // Handle modal after typing name
-    
     await this.signupEmailInput.fill(email);
-    await this.handleModalIfPresent(); // Handle modal after typing email
 
     // Wait for Signup button to be clickable
     await this.signupButton.waitFor({ state: 'visible', timeout: 10000 });
 
-    // Close modal before clicking signup button - CRITICAL
-    await this.handleModalIfPresent();
-    await new Promise(r => setTimeout(r, 300)); // Small delay to ensure modal is gone
+    // Click signup button
+    await this.signupButton.click({ timeout: 10000 });
 
-    // Click with force to bypass any modal interception
-    await this.signupButton.click({ force: true, timeout: 10000 });
-
-    // Wait for page to load after form submission
-    await this.page.waitForLoadState('networkidle', { timeout: 15000 }).catch(() => {});
-    
-    // Wait a bit for page to settle and modal to potentially appear
-    await this.page.waitForTimeout(800);
-
-    // Handle modal on new page - IMPORTANT
-    await this.handleModalIfPresent();
-
-    // Log current URL for debugging
-    const currentUrl = this.page.url();
-    console.log('Page URL after signup click:', currentUrl);
+    // Wait for page navigation to happen (not networkidle, as page is never fully idle)
+    await this.page.waitForLoadState('domcontentloaded', { timeout: 15000 }).catch(() => {});
     
     // Wait for the registration form to load - look for password field
     try {
@@ -235,9 +207,6 @@ export class RegistrationPage extends BasePage {
       console.log('Password field with data-qa not found, trying fallback...');
       await this.page.waitForSelector('input[type="password"]', { state: 'visible', timeout: 10000 });
     }
-
-    // Final modal handling before returning
-    await this.handleModalIfPresent();
   }
 
   /**
