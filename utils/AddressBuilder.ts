@@ -1,5 +1,18 @@
+export interface Address {
+  firstname?: string;
+  lastname?: string;
+  company?: string;
+  address1?: string;
+  address2?: string;
+  city?: string;
+  state?: string;
+  zipcode?: string;
+  country?: string;
+  mobile_number?: string;
+}
+
 export class AddressBuilder {
-  private address: any = {};
+  private address: Address = {};
 
   withFirstName(firstName: string): AddressBuilder {
     this.address.firstname = firstName;
@@ -47,7 +60,7 @@ export class AddressBuilder {
     return this;
   }
 
-  build() {
+  build(): Address {
     return { ...this.address };
   }
 }
