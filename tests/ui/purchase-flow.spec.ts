@@ -172,7 +172,9 @@ test.describe('Purchase Flow Tests', () => {
         await checkoutPage.continueAfterOrder();
 
         // Should be redirected to home page or account page
-        await expect(page).toHaveURL(new RegExp(`${BASE_URL.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}/(home|account)`));
+        await expect(page).toHaveURL(
+          new RegExp(`${BASE_URL.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}/(home|account)`),
+        );
       }
     });
   });
