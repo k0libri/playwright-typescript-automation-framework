@@ -13,6 +13,7 @@ import { BasePage } from './BasePage';
 export class RegistrationPage extends BasePage {
   // Navigation elements
   readonly signupLoginLink: Locator;
+  readonly logoutLink: Locator;
 
   // Login/Signup form
   readonly signupNameInput: Locator;
@@ -56,6 +57,9 @@ export class RegistrationPage extends BasePage {
     // Navigation elements
     this.signupLoginLink = page.locator('a[href="/login"]').or(
       page.getByRole('link', { name: /Signup \/ Login/i })
+    );
+    this.logoutLink = page.locator('a[href="/logout"]').or(
+      page.getByRole('link', { name: /Logout/i })
     );
 
     // Login/Signup form selectors
@@ -222,8 +226,8 @@ export class RegistrationPage extends BasePage {
    * @param userDetails User details to fill in the form
    */
   async fillRegistrationForm(userDetails: UserDetails): Promise<void> {
-    // Wait for page to be fully ready
-    await this.page.waitForLoadState('networkidle', { timeout: 10000 }).catch(() => {});
+    // Wait for page DOM to be ready (not networkidle - ads never stop loading)
+    await this.page.waitForLoadState('domcontentloaded', { timeout: 10000 }).catch(() => {});
 
     // Close consent modal if present before filling form - CRITICAL
     await this.handleModalIfPresent();
@@ -235,11 +239,13 @@ export class RegistrationPage extends BasePage {
     // Close modal again before interactions
     await this.handleModalIfPresent();
 
-    // Select title using force: true to bypass modal overlays
+    // Select title - scroll into view to ensure it's clickable and not obscured by ads
     if (userDetails.title === 'Mr.') {
-      await this.titleMrRadio.click({ force: true, timeout: 5000 });
+      await this.titleMrRadio.scrollIntoViewIfNeeded();
+      await this.titleMrRadio.click({ timeout: 5000 });
     } else {
-      await this.titleMrsRadio.click({ force: true, timeout: 5000 });
+      await this.titleMrsRadio.scrollIntoViewIfNeeded();
+      await this.titleMrsRadio.click({ timeout: 5000 });
     }
 
     // Fill account information
@@ -252,18 +258,19 @@ export class RegistrationPage extends BasePage {
     await this.monthDropdown.selectOption(userDetails.monthOfBirth);
     await this.yearDropdown.selectOption(userDetails.yearOfBirth);
 
-    // Set checkboxes using click with force: true instead of check() 
-    // because check() validates state change which may fail with force clicks
+    // Set checkboxes - scroll into view to ensure they're clickable and not obscured by ads
     if (userDetails.newsletter) {
       const isChecked = await this.newsletterCheckbox.isChecked().catch(() => false);
       if (!isChecked) {
-        await this.newsletterCheckbox.click({ force: true, timeout: 5000 });
+        await this.newsletterCheckbox.scrollIntoViewIfNeeded();
+        await this.newsletterCheckbox.check({ timeout: 5000 });
       }
     }
     if (userDetails.specialOffers) {
       const isChecked = await this.specialOffersCheckbox.isChecked().catch(() => false);
       if (!isChecked) {
-        await this.specialOffersCheckbox.click({ force: true, timeout: 5000 });
+        await this.specialOffersCheckbox.scrollIntoViewIfNeeded();
+        await this.specialOffersCheckbox.check({ timeout: 5000 });
       }
     }
 
@@ -302,9 +309,11 @@ export class RegistrationPage extends BasePage {
     // Fill the registration form
     await this.fillRegistrationForm(userDetails);
 
-    // Submit the form
+    // Submit the form with proper scrolling and wait
+    await this.createAccountButton.scrollIntoViewIfNeeded();
+    await this.page.waitForTimeout(500); // Let ads settle
     await this.createAccountButton.click();
-    await this.page.waitForLoadState('networkidle');
+    await this.page.waitForLoadState('domcontentloaded');
   }
 
   /**
@@ -314,11 +323,17 @@ export class RegistrationPage extends BasePage {
     // Close any consent modal that might be blocking
     await this.closeConsentModalIfPresent();
 
-    // Click the Create Account button with force to bypass modal overlays
-    await this.createAccountButton.click({ force: true });
+    // Scroll to Create Account button to ensure it's visible and not obscured by ads
+    await this.createAccountButton.scrollIntoViewIfNeeded();
+    
+    // Wait briefly for any dynamic ads to finish loading/repositioning
+    await this.page.waitForTimeout(500);
+    
+    // Click the Create Account button - uses actionability checks to avoid clicking ads
+    await this.createAccountButton.click({ timeout: 10000 });
 
-    // Wait for page to load after submission
-    await this.page.waitForLoadState('networkidle', { timeout: 15000 }).catch(() => {});
+    // Wait for page to load after submission (but not networkidle as it never completes)
+    await this.page.waitForLoadState('domcontentloaded', { timeout: 15000 }).catch(() => {});
   }
 
   /**
@@ -346,7 +361,7 @@ export class RegistrationPage extends BasePage {
    */
   async clickContinueAfterSuccess(): Promise<void> {
     await this.successContinueButton.click();
-    await this.page.waitForLoadState('networkidle');
+    await this.page.waitForLoadState('domcontentloaded');
   }
 
   /**
@@ -362,5 +377,48 @@ export class RegistrationPage extends BasePage {
   async isOnSuccessPage(): Promise<boolean> {
     const url = await this.getCurrentUrl();
     return url.includes('/account_created') || url.includes('account-created');
+  }
+
+  /**
+   * Logout from the current session
+   * Required for batch registration to avoid being logged in as previous user
+   */
+  async logout(): Promise<void> {
+    try {
+      // Check if logout link is visible (user is logged in)
+      const isLogoutVisible = await this.logoutLink.isVisible({ timeout: 2000 }).catch(() => false);
+      
+      if (isLogoutVisible) {
+        await this.logoutLink.click();
+        await this.page.waitForLoadState('domcontentloaded');
+        console.log('✓ Logged out successfully');
+      } else {
+        console.log('ℹ Already logged out or not logged in');
+      }
+    } catch (error) {
+      console.log('⚠ Logout failed, continuing anyway:', error);
+    }
+  }
+
+  /**
+   * Delete account (if logged in)
+   * Useful for cleaning up test users after batch registration
+   */
+  async deleteAccount(): Promise<void> {
+    try {
+      const deleteLink = this.page.locator('a[href="/delete_account"]').or(
+        this.page.getByRole('link', { name: /Delete Account/i })
+      );
+      
+      const isDeleteVisible = await deleteLink.isVisible({ timeout: 2000 }).catch(() => false);
+      
+      if (isDeleteVisible) {
+        await deleteLink.click();
+        await this.page.waitForLoadState('domcontentloaded');
+        console.log('✓ Account deleted successfully');
+      }
+    } catch (error) {
+      console.log('⚠ Delete account failed:', error);
+    }
   }
 }

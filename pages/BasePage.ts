@@ -63,10 +63,10 @@ export class BasePage {
   }
 
   /**
-   * Wait for page to load
+   * Wait for page to load (DOM ready, not networkidle)
    */
   async waitForPageLoad(timeout: number = 30000): Promise<void> {
-    await this.page.waitForLoadState('networkidle', { timeout });
+    await this.page.waitForLoadState('domcontentloaded', { timeout });
   }
 
   /**

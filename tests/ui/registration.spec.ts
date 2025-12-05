@@ -180,7 +180,8 @@ test.describe('User Registration E2E Tests', () => {
         if (i === 0) {
           await registrationPage.navigateToSignup();
         } else {
-          // Navigate back to signup for next user
+          // For subsequent users, logout first then navigate to signup
+          await registrationPage.logout();
           await registrationPage.goto();
         }
 
@@ -194,10 +195,8 @@ test.describe('User Registration E2E Tests', () => {
         expect(isAccountCreated).toBe(true);
         console.log(`✓ User ${i + 1} registered successfully`);
 
-        // Continue to next registration if not the last user
-        if (i < users.length - 1) {
-          await registrationPage.clickContinueAfterSuccess();
-        }
+        // Continue to complete registration
+        await registrationPage.clickContinueAfterSuccess();
       }
 
       console.log('✓ All users registered successfully');
@@ -233,6 +232,9 @@ test.describe('User Registration E2E Tests', () => {
       await registrationPage.submitRegistration();
       await registrationPage.isAccountCreatedMessageVisible();
       await registrationPage.clickContinueAfterSuccess();
+
+      // Logout before testing second user (otherwise we're logged in as first user)
+      await registrationPage.logout();
 
       // Test user without offers
       await registrationPage.navigateToSignup();

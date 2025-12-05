@@ -22,8 +22,8 @@ export class ModalHandler {
    * FunnyConsent modal configuration
    */
   static readonly FUNNY_CONSENT: ModalConfig = {
-    rootSelector: '.fc-consent-root',
-    closeButtonSelector: '.fc-close-button',
+    rootSelector: '.fc-dialog-container',
+    closeButtonSelector: '.fc-cta-consent',
     timeout: 2000,
     retries: 3,
   };
