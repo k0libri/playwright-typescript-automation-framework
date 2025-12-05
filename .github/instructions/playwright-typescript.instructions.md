@@ -86,3 +86,14 @@ Before finalizing tests, ensure:
 - [ ] Assertions are meaningful and reflect user expectations
 - [ ] Tests follow consistent naming conventions
 - [ ] Code is properly formatted and commented
+
+## Pre-commit Validation
+
+Before pushing code, ensure linting and formatting checks pass without errors:
+
+- **Lint code**: `npx eslint .` — Verify no linting violations
+- **Format code**: `npx prettier --check .` — Verify code formatting compliance
+- **Auto-fix**: `npx prettier --write .` — Automatically fix formatting issues
+- **Git hooks**: Husky pre-commit hooks enforce these checks and block commits with violations
+
+Resolve all linting and formatting errors before submitting a pull request.

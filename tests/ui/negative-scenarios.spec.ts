@@ -99,7 +99,9 @@ test.describe('Negative Scenario Tests', () => {
       // Should either sanitize the input or reject it
       // Verify no alert popup appears
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const alertPresent: boolean = await (page as any).evaluate('() => typeof window.alert !== "undefined"');
+      const alertPresent: boolean = await (page as any).evaluate(
+        '() => typeof window.alert !== "undefined"',
+      );
 
       expect(alertPresent).toBeTruthy(); // Alert function should exist but not be called
     });
