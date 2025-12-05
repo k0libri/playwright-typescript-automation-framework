@@ -1,5 +1,6 @@
 import { APIRequestContext } from '@playwright/test';
 import { User } from '../utils/UserFactory';
+import { UserResponse, LoginResponse } from './ApiResponse';
 import { API_BASE_URL, API_ENDPOINTS } from '../config/constants';
 
 export class UserService {
@@ -19,7 +20,7 @@ export class UserService {
     return params.toString();
   }
 
-  async createUser(user: User): Promise<any> {
+  async createUser(user: User): Promise<UserResponse> {
     const data = this.buildFormData({
       name: user.name,
       email: user.email,
@@ -50,7 +51,7 @@ export class UserService {
     return response.json();
   }
 
-  async verifyLogin(email: string, password: string): Promise<any> {
+  async verifyLogin(email: string, password: string): Promise<LoginResponse> {
     const data = this.buildFormData({ email, password });
 
     const response = await this.request.post(`${API_BASE_URL}${API_ENDPOINTS.VERIFY_LOGIN}`, {
@@ -63,7 +64,7 @@ export class UserService {
     return response.json();
   }
 
-  async deleteUser(email: string, password: string): Promise<any> {
+  async deleteUser(email: string, password: string): Promise<UserResponse> {
     const data = this.buildFormData({ email, password });
 
     const response = await this.request.delete(`${API_BASE_URL}${API_ENDPOINTS.DELETE_ACCOUNT}`, {
@@ -76,7 +77,7 @@ export class UserService {
     return response.json();
   }
 
-  async getUserByEmail(email: string): Promise<any> {
+  async getUserByEmail(email: string): Promise<UserResponse> {
     const response = await this.request.get(`${API_BASE_URL}${API_ENDPOINTS.GET_USER_BY_EMAIL}`, {
       params: { email },
     });
@@ -84,7 +85,7 @@ export class UserService {
     return response.json();
   }
 
-  async updateUser(user: User): Promise<any> {
+  async updateUser(user: User): Promise<UserResponse> {
     const data = this.buildFormData({
       name: user.name,
       email: user.email,
