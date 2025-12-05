@@ -121,6 +121,9 @@ export class ModalHandler {
         // Use force: true to bypass overlay blocking
         await closeButton.click({ force: true, timeout: 2000 });
 
+        // Small delay for modal to close
+        await new Promise((r) => setTimeout(r, 100));
+
         // Wait for modal to disappear
         const closed = await this.waitForModalToClose(config);
         if (closed) {

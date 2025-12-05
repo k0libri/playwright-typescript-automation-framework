@@ -188,21 +188,40 @@ export class RegistrationPage extends BasePage {
    * @param email User's email address
    */
   async performInitialSignup(name: string, email: string): Promise<void> {
+    // Close any modals before starting
+    await this.handleModalIfPresent();
+    
+    // Wait for signup form to be visible
+    await this.signupNameInput.waitFor({ state: 'visible', timeout: 10000 });
+    
+    // Close modal again if it reappeared
+    await this.handleModalIfPresent();
+
+    // Fill signup form
     await this.signupNameInput.fill(name);
+    await this.handleModalIfPresent(); // Handle modal after typing name
+    
     await this.signupEmailInput.fill(email);
+    await this.handleModalIfPresent(); // Handle modal after typing email
 
     // Wait for Signup button to be clickable
     await this.signupButton.waitFor({ state: 'visible', timeout: 10000 });
 
+    // Close modal before clicking signup button - CRITICAL
+    await this.handleModalIfPresent();
+    await new Promise(r => setTimeout(r, 300)); // Small delay to ensure modal is gone
+
     // Click with force to bypass any modal interception
-    // The FunnyConsent modal might block the click, so we use force: true
     await this.signupButton.click({ force: true, timeout: 10000 });
 
     // Wait for page to load after form submission
     await this.page.waitForLoadState('networkidle', { timeout: 15000 }).catch(() => {});
     
-    // Wait a bit for page to settle
+    // Wait a bit for page to settle and modal to potentially appear
     await this.page.waitForTimeout(800);
+
+    // Handle modal on new page - IMPORTANT
+    await this.handleModalIfPresent();
 
     // Log current URL for debugging
     const currentUrl = this.page.url();
@@ -216,6 +235,9 @@ export class RegistrationPage extends BasePage {
       console.log('Password field with data-qa not found, trying fallback...');
       await this.page.waitForSelector('input[type="password"]', { state: 'visible', timeout: 10000 });
     }
+
+    // Final modal handling before returning
+    await this.handleModalIfPresent();
   }
 
   /**
@@ -234,11 +256,15 @@ export class RegistrationPage extends BasePage {
     // Wait for page to be fully ready
     await this.page.waitForLoadState('networkidle', { timeout: 10000 }).catch(() => {});
 
-    // Close consent modal if present before filling form
-    await this.closeConsentModalIfPresent();
+    // Close consent modal if present before filling form - CRITICAL
+    await this.handleModalIfPresent();
+    await new Promise(r => setTimeout(r, 300));
 
     // Wait for title radio button to be visible and stable
     await this.titleMrRadio.waitFor({ state: 'visible', timeout: 5000 });
+
+    // Close modal again before interactions
+    await this.handleModalIfPresent();
 
     // Select title using force: true to bypass modal overlays
     if (userDetails.title === 'Mr.') {
@@ -271,6 +297,9 @@ export class RegistrationPage extends BasePage {
         await this.specialOffersCheckbox.click({ force: true, timeout: 5000 });
       }
     }
+
+    // Handle modal before address section
+    await this.handleModalIfPresent();
 
     // Fill address information
     await this.firstNameInput.fill(userDetails.firstName);
