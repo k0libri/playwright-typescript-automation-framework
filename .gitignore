@@ -147,4 +147,38 @@ vite.config.ts.timestamp-*
 /playwright/.auth/
 
 allure-results/
+**/mcp.json
 
+# Documentation and notes
+*.md
+!README.md
+!CONTRIBUTING.md
+!LICENSE.md
+
+# PowerShell scripts
+*.ps1
+*.ps2
+*.psc1
+*.psc2
+
+# Windows/OS files
+Thumbs.db
+.DS_Store
+*.tmp
+*.bak
+*.swp
+*.swo
+*~
+
+# IDE and editor files
+*.sublime-project
+*.sublime-workspace
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# Miscellaneous development files
+.history/
+*.orig
+debug.log
