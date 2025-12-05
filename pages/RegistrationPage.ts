@@ -2,16 +2,15 @@
  * RegistrationPage - Page Object Model
  * Encapsulates all interactions with the Automation Exercise registration page
  * Implements POM best practices: locators, navigation, and interaction methods
+ * Extends BasePage for automatic modal handling
  */
 
 import { Page, Locator } from '@playwright/test';
 import { UserDetails } from '../utils/UserFactory';
 import { ModalHandler } from '../utils/ModalHandler';
+import { BasePage } from './BasePage';
 
-export class RegistrationPage {
-  readonly page: Page;
-  private modalHandler: ModalHandler;
-
+export class RegistrationPage extends BasePage {
   // Navigation elements
   readonly signupLoginLink: Locator;
 
@@ -51,9 +50,8 @@ export class RegistrationPage {
   readonly accountCreatedHeading: Locator;
   readonly successContinueButton: Locator;
 
-  constructor(page: Page) {
-    this.page = page;
-    this.modalHandler = new ModalHandler(page);
+  constructor(page: Page, modalHandler?: ModalHandler) {
+    super(page, modalHandler);
 
     // Navigation elements
     this.signupLoginLink = page.locator('a[href="/login"]').or(
@@ -154,14 +152,16 @@ export class RegistrationPage {
   /**
    * Navigate to the login/signup page
    * Includes retry logic for network errors
+   * @param path Optional path to navigate to (default: /login)
    */
-  async goto(): Promise<void> {
+  async goto(path: string = '/login'): Promise<void> {
     let attempts = 0;
     const maxAttempts = 3;
 
     while (attempts < maxAttempts) {
       try {
-        await this.page.goto('/login', { waitUntil: 'domcontentloaded', timeout: 10000 });
+        await this.page.goto(path, { waitUntil: 'domcontentloaded', timeout: 10000 });
+        await this.handleModalIfPresent(); // Handle modal after navigation
         break; // Success
       } catch (error: any) {
         attempts++;
