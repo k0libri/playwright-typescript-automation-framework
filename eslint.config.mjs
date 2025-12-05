@@ -23,7 +23,6 @@ export default [
         exports: 'readonly',
         global: 'readonly',
         URLSearchParams: 'readonly',
-        window: 'readonly',
       },
     },
     plugins: {

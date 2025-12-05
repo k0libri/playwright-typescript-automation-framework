@@ -59,7 +59,7 @@ test.describe('Purchase Flow Tests', () => {
         cardNumber: '4242424242424242',
         cvc: '123',
         expiryMonth: '12',
-        expiryYear: '2025',
+        expiryYear: String(new Date().getFullYear() + 1),
       };
 
       await checkoutPage.completeOrder(cardDetails, 'Test order comment');
@@ -100,7 +100,7 @@ test.describe('Purchase Flow Tests', () => {
         cardNumber: '4242424242424242',
         cvc: '123',
         expiryMonth: '12',
-        expiryYear: '2025',
+        expiryYear: String(new Date().getFullYear() + 1),
       };
 
       await checkoutPage.completeOrder(cardDetails);
@@ -153,7 +153,7 @@ test.describe('Purchase Flow Tests', () => {
         cardNumber: '4242424242424242',
         cvc: '123',
         expiryMonth: '12',
-        expiryYear: '2025',
+        expiryYear: String(new Date().getFullYear() + 1),
       };
 
       await checkoutPage.completeOrder(cardDetails);
@@ -172,7 +172,9 @@ test.describe('Purchase Flow Tests', () => {
         await checkoutPage.continueAfterOrder();
 
         // Should be redirected to home page or account page
-        await expect(page).toHaveURL(/.*\/(home|account)?/);
+        await expect(page).toHaveURL(
+          new RegExp(`${BASE_URL.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}/(home|account)`),
+        );
       }
     });
   });

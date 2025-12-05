@@ -15,13 +15,14 @@ test.describe('User Registration Tests', () => {
   });
 
   test('TC001: Should register a new user successfully', async ({ page }) => {
+    const newUser = UserFactory.createRandomUser();
+
     await test.step('Navigate to signup/login page', async () => {
       await homePage.navigateToSignupLogin();
       await expect(page).toHaveURL(/.*\/login/);
     });
 
     await test.step('Enter signup details', async () => {
-      const newUser = UserFactory.createRandomUser();
       await loginPage.signup(newUser.name, newUser.email);
 
       // Verify we're on account information page
@@ -29,7 +30,6 @@ test.describe('User Registration Tests', () => {
     });
 
     await test.step('Fill account information and create account', async () => {
-      const newUser = UserFactory.createRandomUser();
       await loginPage.fillSignupForm(newUser);
 
       // Verify account created successfully
@@ -42,6 +42,10 @@ test.describe('User Registration Tests', () => {
       // Verify user is logged in (logout link should be visible)
       await expect(homePage.logoutLink).toBeVisible();
       await expect(homePage.deleteAccountLink).toBeVisible();
+    });
+
+    await test.step('Cleanup: Delete created user', async () => {
+      await homePage.deleteAccount();
     });
   });
 

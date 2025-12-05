@@ -26,6 +26,7 @@ export class CartPage {
     this.removeButtons = page.locator('.cart_quantity_delete');
     this.proceedToCheckoutButton = page.locator('.check_out');
     this.registerLoginLink = page.getByRole('link', { name: 'Register / Login' });
+    // Note: The ID 'susbscribe_email' matches the actual element ID on the website (typo in the source)
     this.subscriptionInput = page.locator('#susbscribe_email');
     this.subscriptionButton = page.locator('#subscribe');
     this.emptyCartMessage = page.locator('text=Cart is empty!');
@@ -38,7 +39,11 @@ export class CartPage {
   async getCartItemsCount(): Promise<number> {
     try {
       return await this.cartItems.count();
-    } catch {
+    } catch (error) {
+      // Cart items not found - intentionally returning 0
+      if (process.env.DEBUG) {
+        console.log('getCartItemsCount: Could not count cart items', error);
+      }
       return 0;
     }
   }
@@ -114,7 +119,11 @@ export class CartPage {
   async isCartEmpty(): Promise<boolean> {
     try {
       return await this.emptyCartMessage.isVisible({ timeout: 5000 });
-    } catch {
+    } catch (error) {
+      // Empty cart message not found - fallback to checking item count
+      if (process.env.DEBUG) {
+        console.log('isCartEmpty: Falling back to item count check', error);
+      }
       const itemCount = await this.getCartItemsCount();
       return itemCount === 0;
     }

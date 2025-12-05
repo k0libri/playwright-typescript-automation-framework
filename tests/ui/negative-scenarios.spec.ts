@@ -187,12 +187,13 @@ test.describe('Negative Scenario Tests', () => {
     });
 
     await test.step('Attempt payment with invalid card details', async () => {
+      // Using intentionally invalid values to test validation
       const invalidCardDetails = {
-        nameOnCard: '',
-        cardNumber: '1234',
-        cvc: '1',
-        expiryMonth: '13',
-        expiryYear: '2020',
+        nameOnCard: '', // Intentionally blank for negative testing
+        cardNumber: '1234', // Invalid card number - too short
+        cvc: '1', // Invalid CVC - too short
+        expiryMonth: '13', // Invalid month (should be 1-12)
+        expiryYear: '2020', // Past year - intentionally expired
       };
 
       await checkoutPage.placeOrder();
@@ -200,8 +201,11 @@ test.describe('Negative Scenario Tests', () => {
       await checkoutPage.payAndConfirmButton.click();
 
       // Should either show validation errors or reject the payment
-      // Payment should not be successful
+      // Payment should not be successful with these invalid details
       const isConfirmed = await checkoutPage.isOrderConfirmed();
+
+      // Payment with invalid details should not be confirmed
+      // Note: If this assertion fails, it indicates the system lacks proper validation
       expect(isConfirmed).toBeFalsy();
     });
   });

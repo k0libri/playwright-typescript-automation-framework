@@ -33,6 +33,7 @@ export class HomePage {
     this.addToCartButtons = page.locator('.add-to-cart');
     this.viewProductLinks = page.getByRole('link', { name: 'View Product' });
     this.subscriptionSection = page.locator('#subscribe');
+    // Note: The ID 'susbscribe_email' matches the actual element ID on the website (typo in the source)
     this.subscriptionInput = page.locator('#susbscribe_email');
     this.subscriptionButton = page.locator('#subscribe');
   }
@@ -102,8 +103,11 @@ export class HomePage {
       if (await usernameElement.isVisible()) {
         return await usernameElement.textContent();
       }
-    } catch {
-      // User not logged in
+    } catch (error) {
+      // User not logged in or element not found - intentionally ignored
+      if (process.env.DEBUG) {
+        console.log('getLoggedInUsername: User not logged in or element not found', error);
+      }
     }
     return null;
   }

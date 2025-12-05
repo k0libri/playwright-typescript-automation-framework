@@ -24,13 +24,19 @@ test.describe('Login and Cart Management Tests', () => {
   });
 
   test('TC004: Should login successfully with valid credentials', async ({ page }) => {
+    await test.step('Register user before login', async () => {
+      await homePage.navigateToSignupLogin();
+      await loginPage.signup(validUser.name, validUser.email);
+      await loginPage.fillSignupForm(validUser);
+      await page.getByRole('link', { name: 'Continue' }).click();
+      await homePage.logout();
+    });
+
     await test.step('Navigate to login page', async () => {
       await homePage.navigateToSignupLogin();
     });
 
     await test.step('Login with valid credentials', async () => {
-      // Note: For demo purposes, using test credentials
-      // In real scenario, you'd create a user first via API
       await loginPage.login(validUser.email, validUser.password!);
 
       // Verify login success (checking if we're redirected or see logout link)
@@ -86,7 +92,7 @@ test.describe('Login and Cart Management Tests', () => {
     });
   });
 
-  test('TC006: Should update product quantity in cart', async ({ page }) => {
+  test('TC006: Should verify cart state after adding product', async ({ page }) => {
     await test.step('Add a product to cart first', async () => {
       await homePage.navigateToProducts();
       await homePage.viewFirstProduct();
@@ -94,13 +100,14 @@ test.describe('Login and Cart Management Tests', () => {
       await productPage.viewCart();
     });
 
-    await test.step('Verify initial cart state', async () => {
-      const initialItemCount = await cartPage.getCartItemsCount();
-      expect(initialItemCount).toBeGreaterThan(0);
-    });
+    await test.step('Verify cart state', async () => {
+      const itemCount = await cartPage.getCartItemsCount();
+      expect(itemCount).toBeGreaterThan(0);
 
-    // Note: Quantity update might need to be done by removing and re-adding
-    // as the website might not have direct quantity edit functionality
+      // Verify product details are visible
+      const productNames = await cartPage.getCartProductNames();
+      expect(productNames.length).toBeGreaterThan(0);
+    });
   });
 
   test('TC007: Should remove products from cart', async ({ page }) => {
@@ -127,6 +134,14 @@ test.describe('Login and Cart Management Tests', () => {
   });
 
   test('TC008: Should verify cart persistence after login', async ({ page }) => {
+    await test.step('Register user before testing cart persistence', async () => {
+      await homePage.navigateToSignupLogin();
+      await loginPage.signup(validUser.name, validUser.email);
+      await loginPage.fillSignupForm(validUser);
+      await page.getByRole('link', { name: 'Continue' }).click();
+      await homePage.logout();
+    });
+
     await test.step('Add products to cart before login', async () => {
       await homePage.navigateToProducts();
       await homePage.addFirstProductToCart();
