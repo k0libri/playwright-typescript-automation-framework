@@ -25,9 +25,11 @@ playwright-typescript-automation-framework/
 ## 📋 Projects
 
 ### Mini Project 1: API Testing
+
 **Target**: [RESTful Booker API](https://restful-booker.herokuapp.com/)
 
 Tests for CRUD operations on the Restful-Booker API:
+
 - **Authentication**: Obtain auth tokens
 - **Create**: Add new bookings
 - **Read**: Retrieve booking details
@@ -36,20 +38,24 @@ Tests for CRUD operations on the Restful-Booker API:
 - **Delete**: Remove bookings
 
 **Key Files**:
+
 - `utils/BookingFactory.ts` - Factory Pattern for generating booking data
 - `services/BookingService.ts` - API service layer with dependency injection
 - `tests/api/booking.spec.ts` - Comprehensive CRUD test suite
 
 ### Mini Project 2: UI/E2E Testing
+
 **Target**: [Automation Exercise](https://automationexercise.com/)
 
 End-to-end testing for user registration workflow:
+
 - **Navigation**: Access signup/login page
 - **Registration**: Fill out complete registration form
 - **Verification**: Confirm account creation success
 - **Data Validation**: Verify all form fields are persisted correctly
 
 **Key Files**:
+
 - `utils/UserFactory.ts` - Factory Pattern for generating user data
 - `pages/RegistrationPage.ts` - Page Object Model for registration page
 - `tests/ui/registration.spec.ts` - Complete E2E registration tests
@@ -57,19 +63,27 @@ End-to-end testing for user registration workflow:
 ## 🏗️ Design Patterns
 
 ### Factory Pattern
+
 Used for data generation in both API and UI testing:
+
 ```typescript
 // API Testing
-const booking = BookingFactory.createBooking({ /* overrides */ });
+const booking = BookingFactory.createBooking({
+  /* overrides */
+});
 const bookings = BookingFactory.createBatch(5);
 
 // UI Testing
-const user = UserFactory.createUser({ /* overrides */ });
+const user = UserFactory.createUser({
+  /* overrides */
+});
 const users = UserFactory.createBatch(3);
 ```
 
 ### Page Object Model (POM)
+
 Encapsulates page interactions and locators:
+
 ```typescript
 const registrationPage = new RegistrationPage(page);
 await registrationPage.completeRegistration(userDetails);
@@ -77,7 +91,9 @@ const isSuccess = await registrationPage.isAccountCreatedMessageVisible();
 ```
 
 ### Dependency Inversion
+
 Services accept dependencies through constructors:
+
 ```typescript
 const bookingService = new BookingService(request); // Inject APIRequestContext
 await bookingService.authenticate();
@@ -87,17 +103,20 @@ await bookingService.createBooking(booking);
 ## 🚀 Getting Started
 
 ### Prerequisites
+
 - Node.js 16+
 - npm or yarn
 
 ### Installation
 
 1. **Install dependencies**:
+
 ```bash
 npm install
 ```
 
 2. **Install Playwright browsers**:
+
 ```bash
 npx playwright install
 ```
@@ -112,26 +131,31 @@ The framework automatically configures two Playwright projects:
 ## 📝 Running Tests
 
 ### Run all tests
+
 ```bash
 npm test
 ```
 
 ### Run API tests only
+
 ```bash
 npm run test:api
 ```
 
 ### Run UI/E2E tests only
+
 ```bash
 npm run test:ui
 ```
 
 ### Run tests in headed mode (visible browser)
+
 ```bash
 npm run test:ui:headed
 ```
 
 ### Debug mode
+
 ```bash
 npm run test:debug
 ```
@@ -139,11 +163,13 @@ npm run test:debug
 ## 📊 Reporting
 
 ### Generate Allure Report
+
 ```bash
 npm run allure:report
 ```
 
 ### Serve Allure Results
+
 ```bash
 npm run allure:serve
 ```
@@ -151,12 +177,14 @@ npm run allure:serve
 ## 🧹 Code Quality
 
 ### Linting
+
 ```bash
 npm run lint           # Check for errors
 npm run lint:fix       # Fix linting errors
 ```
 
 ### Formatting
+
 ```bash
 npm run format         # Format code with Prettier
 npm run format:check   # Check if code is formatted
@@ -165,12 +193,14 @@ npm run format:check   # Check if code is formatted
 ## 📚 API Testing Guide
 
 ### Authentication
+
 ```typescript
 const bookingService = new BookingService(request);
 const token = await bookingService.authenticate();
 ```
 
 ### Creating Bookings
+
 ```typescript
 // Random booking
 const booking = BookingFactory.createBooking();
@@ -181,7 +211,7 @@ const booking = BookingFactory.createCustomBooking({
   lastname: 'Doe',
   price: 1500,
   checkinDate: '2025-12-20',
-  checkoutDate: '2025-12-25'
+  checkoutDate: '2025-12-25',
 });
 
 // Create via API
@@ -190,20 +220,22 @@ const bookingId = response.bookingid;
 ```
 
 ### Updating Bookings
+
 ```typescript
 // Full update (PUT)
 const updated = await bookingService.updateBooking(bookingId, {
   firstname: 'Jane',
-  lastname: 'Smith'
+  lastname: 'Smith',
 });
 
 // Partial update (PATCH)
 const patched = await bookingService.partialUpdateBooking(bookingId, {
-  additionalneeds: 'Extra bed'
+  additionalneeds: 'Extra bed',
 });
 ```
 
 ### Deleting Bookings
+
 ```typescript
 await bookingService.deleteBooking(bookingId);
 ```
@@ -230,6 +262,7 @@ expect(isSuccess).toBe(true);
 ```
 
 ### Step-by-step registration
+
 ```typescript
 // Initial signup (name + email)
 await registrationPage.performInitialSignup(user.name, user.email);
@@ -247,39 +280,41 @@ const successMessage = await registrationPage.getSuccessMessageText();
 ## 🏭 Factory Pattern Usage
 
 ### BookingFactory
+
 ```typescript
 // Full booking with random data
-BookingFactory.createBooking()
+BookingFactory.createBooking();
 
 // Minimal booking (required fields only)
-BookingFactory.createMinimalBooking()
+BookingFactory.createMinimalBooking();
 
 // Custom booking with specific fields
 BookingFactory.createCustomBooking({
   firstname: 'John',
-  price: 2000
-})
+  price: 2000,
+});
 
 // Batch creation
-BookingFactory.createBatch(5)
+BookingFactory.createBatch(5);
 ```
 
 ### UserFactory
+
 ```typescript
 // Full user with random data
-UserFactory.createUser()
+UserFactory.createUser();
 
 // Minimal user
-UserFactory.createMinimalUser()
+UserFactory.createMinimalUser();
 
 // Custom user
 UserFactory.createCustomUser({
   firstName: 'John',
-  country: 'United States'
-})
+  country: 'United States',
+});
 
 // Batch creation
-UserFactory.createBatch(3)
+UserFactory.createBatch(3);
 ```
 
 ## 🔐 Best Practices
@@ -371,14 +406,17 @@ When adding new features:
 ## 🐛 Troubleshooting
 
 ### Tests timeout
+
 - Increase timeout in individual tests: `test.setTimeout(30000)`
 - Check network connectivity to target sites
 
 ### Locator issues
+
 - Run with `--debug` flag: `npm run test:debug`
 - Check selector visibility: `await page.waitForSelector(selector)`
 
 ### API failures
+
 - Verify API base URL in `playwright.config.ts`
 - Check authentication token validity
 - Validate request payload with factory

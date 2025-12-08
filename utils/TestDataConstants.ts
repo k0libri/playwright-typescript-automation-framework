@@ -83,12 +83,7 @@ export const TEST_DATA_CONSTANTS = {
   ],
 
   // ========== EMAIL DOMAINS ==========
-  EMAIL_DOMAINS: [
-    'gmail.com',
-    'yahoo.com',
-    'outlook.com',
-    'test.com',
-  ],
+  EMAIL_DOMAINS: ['gmail.com', 'yahoo.com', 'outlook.com', 'test.com'],
 
   // ========== VALIDATION RULES ==========
   VALIDATION: {

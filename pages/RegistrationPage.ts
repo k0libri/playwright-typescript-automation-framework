@@ -55,102 +55,98 @@ export class RegistrationPage extends BasePage {
     super(page, modalHandler);
 
     // Navigation elements
-    this.signupLoginLink = page.locator('a[href="/login"]').or(
-      page.getByRole('link', { name: /Signup \/ Login/i })
-    );
-    this.logoutLink = page.locator('a[href="/logout"]').or(
-      page.getByRole('link', { name: /Logout/i })
-    );
+    this.signupLoginLink = page
+      .locator('a[href="/login"]')
+      .or(page.getByRole('link', { name: /Signup \/ Login/i }));
+    this.logoutLink = page
+      .locator('a[href="/logout"]')
+      .or(page.getByRole('link', { name: /Logout/i }));
 
     // Login/Signup form selectors
-    this.signupNameInput = page.locator('input[data-qa="signup-name"]').or(
-      page.locator('form').filter({ hasText: 'Signup' }).getByPlaceholder('Name')
-    );
-    this.signupEmailInput = page.locator('input[data-qa="signup-email"]').or(
-      page.locator('form').filter({ hasText: 'Signup' }).getByPlaceholder('Email Address')
-    );
-    this.signupButton = page.locator('button[data-qa="signup-button"]').or(
-      page.getByRole('button', { name: /^Signup$/i })
-    );
+    this.signupNameInput = page
+      .locator('input[data-qa="signup-name"]')
+      .or(page.locator('form').filter({ hasText: 'Signup' }).getByPlaceholder('Name'));
+    this.signupEmailInput = page
+      .locator('input[data-qa="signup-email"]')
+      .or(page.locator('form').filter({ hasText: 'Signup' }).getByPlaceholder('Email Address'));
+    this.signupButton = page
+      .locator('button[data-qa="signup-button"]')
+      .or(page.getByRole('button', { name: /^Signup$/i }));
 
     // Registration form - Account Information
-    this.titleMrRadio = page.locator('input[id="id_gender1"]').or(
-      page.locator('input[value="Mr"]').first()
-    );
-    this.titleMrsRadio = page.locator('input[id="id_gender2"]').or(
-      page.locator('input[value="Mrs"]').first()
-    );
-    this.nameInput = page.locator('input[data-qa="name"]').or(
-      page.locator('input[name="name"]').first()
-    );
-    this.emailInput = page.locator('input[data-qa="email"]').or(
-      page.locator('input[name="email"][disabled]')
-    );
-    this.passwordInput = page.locator('input[data-qa="password"]').or(
-      page.locator('input[type="password"]').first()
-    );
-    this.dayDropdown = page.locator('select[data-qa="days"]').or(
-      page.locator('select').nth(0)
-    );
-    this.monthDropdown = page.locator('select[data-qa="months"]').or(
-      page.locator('select').nth(1)
-    );
-    this.yearDropdown = page.locator('select[data-qa="years"]').or(
-      page.locator('select').nth(2)
-    );
-    this.newsletterCheckbox = page.locator('input[id="newsletter"]').or(
-      page.locator('input[name="newsletter"]')
-    );
-    this.specialOffersCheckbox = page.locator('input[id="optin"]').or(
-      page.locator('input[name="optin"]')
-    );
+    this.titleMrRadio = page
+      .locator('input[id="id_gender1"]')
+      .or(page.locator('input[value="Mr"]').first());
+    this.titleMrsRadio = page
+      .locator('input[id="id_gender2"]')
+      .or(page.locator('input[value="Mrs"]').first());
+    this.nameInput = page
+      .locator('input[data-qa="name"]')
+      .or(page.locator('input[name="name"]').first());
+    this.emailInput = page
+      .locator('input[data-qa="email"]')
+      .or(page.locator('input[name="email"][disabled]'));
+    this.passwordInput = page
+      .locator('input[data-qa="password"]')
+      .or(page.locator('input[type="password"]').first());
+    this.dayDropdown = page.locator('select[data-qa="days"]').or(page.locator('select').nth(0));
+    this.monthDropdown = page.locator('select[data-qa="months"]').or(page.locator('select').nth(1));
+    this.yearDropdown = page.locator('select[data-qa="years"]').or(page.locator('select').nth(2));
+    this.newsletterCheckbox = page
+      .locator('input[id="newsletter"]')
+      .or(page.locator('input[name="newsletter"]'));
+    this.specialOffersCheckbox = page
+      .locator('input[id="optin"]')
+      .or(page.locator('input[name="optin"]'));
 
     // Registration form - Address Information
-    this.firstNameInput = page.locator('input[data-qa="first_name"]').or(
-      page.locator('input[placeholder="First name *"]')
-    );
-    this.lastNameInput = page.locator('input[data-qa="last_name"]').or(
-      page.locator('input[placeholder="Last name *"]')
-    );
-    this.companyInput = page.locator('input[data-qa="company"]').or(
-      page.locator('input[placeholder="Company"]')
-    );
-    this.address1Input = page.locator('input[data-qa="address"]').or(
-      page.locator('textarea[placeholder*="Street address"]').or(
-        page.locator('input[name="address1"]')
-      )
-    );
-    this.address2Input = page.locator('input[data-qa="address2"]').or(
-      page.locator('input[placeholder="Address 2"]')
-    );
-    this.countryDropdown = page.locator('select[data-qa="country"]').or(
-      page.locator('select[name="country"]')
-    );
-    this.stateInput = page.locator('input[data-qa="state"]').or(
-      page.locator('input[placeholder="State *"]')
-    );
-    this.cityInput = page.locator('input[data-qa="city"]').or(
-      page.locator('input[placeholder*="City"]')
-    );
-    this.zipcodeInput = page.locator('input[data-qa="zipcode"]').or(
-      page.locator('input[placeholder="Zipcode *"]')
-    );
-    this.mobileNumberInput = page.locator('input[data-qa="mobile_number"]').or(
-      page.locator('input[placeholder="Mobile Number *"]')
-    );
+    this.firstNameInput = page
+      .locator('input[data-qa="first_name"]')
+      .or(page.locator('input[placeholder="First name *"]'));
+    this.lastNameInput = page
+      .locator('input[data-qa="last_name"]')
+      .or(page.locator('input[placeholder="Last name *"]'));
+    this.companyInput = page
+      .locator('input[data-qa="company"]')
+      .or(page.locator('input[placeholder="Company"]'));
+    this.address1Input = page
+      .locator('input[data-qa="address"]')
+      .or(
+        page
+          .locator('textarea[placeholder*="Street address"]')
+          .or(page.locator('input[name="address1"]')),
+      );
+    this.address2Input = page
+      .locator('input[data-qa="address2"]')
+      .or(page.locator('input[placeholder="Address 2"]'));
+    this.countryDropdown = page
+      .locator('select[data-qa="country"]')
+      .or(page.locator('select[name="country"]'));
+    this.stateInput = page
+      .locator('input[data-qa="state"]')
+      .or(page.locator('input[placeholder="State *"]'));
+    this.cityInput = page
+      .locator('input[data-qa="city"]')
+      .or(page.locator('input[placeholder*="City"]'));
+    this.zipcodeInput = page
+      .locator('input[data-qa="zipcode"]')
+      .or(page.locator('input[placeholder="Zipcode *"]'));
+    this.mobileNumberInput = page
+      .locator('input[data-qa="mobile_number"]')
+      .or(page.locator('input[placeholder="Mobile Number *"]'));
 
     // Action buttons
-    this.createAccountButton = page.locator('button[data-qa="create-account"]').or(
-      page.getByRole('button', { name: /Create Account/i })
-    );
+    this.createAccountButton = page
+      .locator('button[data-qa="create-account"]')
+      .or(page.getByRole('button', { name: /Create Account/i }));
 
     // Success message
-    this.accountCreatedHeading = page.locator('h2:has-text("Account Created!")').or(
-      page.getByRole('heading', { name: /Account Created/i })
-    );
-    this.successContinueButton = page.locator('a[data-qa="continue-button"]').or(
-      page.getByRole('link', { name: /Continue/i })
-    );
+    this.accountCreatedHeading = page
+      .locator('h2:has-text("Account Created!")')
+      .or(page.getByRole('heading', { name: /Account Created/i }));
+    this.successContinueButton = page
+      .locator('a[data-qa="continue-button"]')
+      .or(page.getByRole('link', { name: /Continue/i }));
   }
 
   /**
@@ -172,7 +168,7 @@ export class RegistrationPage extends BasePage {
           throw error; // Give up after max attempts
         }
         // Wait before retrying
-        await new Promise(r => setTimeout(r, 500 * attempts));
+        await new Promise((r) => setTimeout(r, 500 * attempts));
       }
     }
   }
@@ -202,14 +198,20 @@ export class RegistrationPage extends BasePage {
 
     // Wait for page navigation to happen (not networkidle, as page is never fully idle)
     await this.page.waitForLoadState('domcontentloaded', { timeout: 15000 }).catch(() => {});
-    
+
     // Wait for the registration form to load - look for password field
     try {
-      await this.page.waitForSelector('input[data-qa="password"]', { state: 'visible', timeout: 10000 });
+      await this.page.waitForSelector('input[data-qa="password"]', {
+        state: 'visible',
+        timeout: 10000,
+      });
     } catch {
       // Fallback: wait for any password input field
       console.log('Password field with data-qa not found, trying fallback...');
-      await this.page.waitForSelector('input[type="password"]', { state: 'visible', timeout: 10000 });
+      await this.page.waitForSelector('input[type="password"]', {
+        state: 'visible',
+        timeout: 10000,
+      });
     }
   }
 
@@ -231,7 +233,7 @@ export class RegistrationPage extends BasePage {
 
     // Close consent modal if present before filling form - CRITICAL
     await this.handleModalIfPresent();
-    await new Promise(r => setTimeout(r, 300));
+    await new Promise((r) => setTimeout(r, 300));
 
     // Wait for title radio button to be visible and stable
     await this.titleMrRadio.waitFor({ state: 'visible', timeout: 5000 });
@@ -325,10 +327,10 @@ export class RegistrationPage extends BasePage {
 
     // Scroll to Create Account button to ensure it's visible and not obscured by ads
     await this.createAccountButton.scrollIntoViewIfNeeded();
-    
+
     // Wait briefly for any dynamic ads to finish loading/repositioning
     await this.page.waitForTimeout(500);
-    
+
     // Click the Create Account button - uses actionability checks to avoid clicking ads
     await this.createAccountButton.click({ timeout: 10000 });
 
@@ -387,7 +389,7 @@ export class RegistrationPage extends BasePage {
     try {
       // Check if logout link is visible (user is logged in)
       const isLogoutVisible = await this.logoutLink.isVisible({ timeout: 2000 }).catch(() => false);
-      
+
       if (isLogoutVisible) {
         await this.logoutLink.click();
         await this.page.waitForLoadState('domcontentloaded');
@@ -406,12 +408,12 @@ export class RegistrationPage extends BasePage {
    */
   async deleteAccount(): Promise<void> {
     try {
-      const deleteLink = this.page.locator('a[href="/delete_account"]').or(
-        this.page.getByRole('link', { name: /Delete Account/i })
-      );
-      
+      const deleteLink = this.page
+        .locator('a[href="/delete_account"]')
+        .or(this.page.getByRole('link', { name: /Delete Account/i }));
+
       const isDeleteVisible = await deleteLink.isVisible({ timeout: 2000 }).catch(() => false);
-      
+
       if (isDeleteVisible) {
         await deleteLink.click();
         await this.page.waitForLoadState('domcontentloaded');

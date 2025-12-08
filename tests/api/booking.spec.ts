@@ -148,10 +148,7 @@ test.describe('Booking API - Full CRUD Flow', () => {
       additionalneeds: 'Smoking room, Extra bed',
     };
 
-    const patchResponse = await bookingService.partialUpdateBooking(
-      patchBookingId,
-      partialUpdate
-    );
+    const patchResponse = await bookingService.partialUpdateBooking(patchBookingId, partialUpdate);
 
     expect(patchResponse.firstname).toBe('Patch'); // Should remain unchanged
     expect(patchResponse.lastname).toBe('Test'); // Should remain unchanged

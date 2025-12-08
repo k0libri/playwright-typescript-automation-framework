@@ -7,10 +7,10 @@ const tseslint = require('typescript-eslint');
 module.exports = [
   // Base ESLint recommended rules
   eslint.configs.recommended,
-  
+
   // TypeScript ESLint recommended rules
   ...tseslint.configs.recommended,
-  
+
   // Global configuration
   {
     languageOptions: {
@@ -31,17 +31,17 @@ module.exports = [
         navigator: 'readonly',
       },
     },
-    
+
     rules: {
-      'semi': ['error', 'always'],
-      'quotes': ['error', 'single'],
+      semi: ['error', 'always'],
+      quotes: ['error', 'single'],
       '@typescript-eslint/no-explicit-any': 'warn',
       '@typescript-eslint/explicit-module-boundary-types': 'off',
       '@typescript-eslint/no-unused-vars': ['warn'],
       'no-console': 'off',
     },
   },
-  
+
   // Ignore patterns
   {
     ignores: [

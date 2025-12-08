@@ -51,6 +51,7 @@ npx playwright test --project=e2e
 ## Storage State Contents
 
 The generated `cookie-consent-state.json` includes:
+
 - Cookies (including FunnyConsent consent acceptance)
 - LocalStorage values
 - SessionStorage values
@@ -59,16 +60,19 @@ The generated `cookie-consent-state.json` includes:
 ## Troubleshooting
 
 ### Tests still show modal after setup
+
 - Run setup again: `npx playwright test --project=setup`
 - The storage state may have expired or become stale
 - Check `.auth/cookie-consent-state.json` exists and is recent
 
 ### Setup fails to find modal
+
 - Site may have changed the modal selectors
 - Check `utils/ModalHandler.ts` for current selectors
 - Update `FUNNY_CONSENT` config if needed
 
 ### Want to regenerate state periodically
+
 - Delete `.auth/cookie-consent-state.json`
 - Run: `npx playwright test --project=setup`
 - Or run: `npm run test:setup` if you add this script to package.json
@@ -76,11 +80,13 @@ The generated `cookie-consent-state.json` includes:
 ## CI/CD Integration
 
 For CI environments:
+
 1. Run setup once: `npx playwright test --project=setup`
 2. Commit `.auth/cookie-consent-state.json` to repo (or generate in pipeline)
 3. Run tests: `npx playwright test`
 
 Or run fresh each time:
+
 ```bash
 npx playwright test  # setup runs automatically due to dependsOn
 ```

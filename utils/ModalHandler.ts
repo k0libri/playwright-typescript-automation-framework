@@ -108,9 +108,7 @@ export class ModalHandler {
 
         // Try to close with force click
         const closeButton = this.page.locator(config.closeButtonSelector);
-        const closeButtonVisible = await closeButton
-          .isVisible({ timeout: 500 })
-          .catch(() => false);
+        const closeButtonVisible = await closeButton.isVisible({ timeout: 500 }).catch(() => false);
 
         if (!closeButtonVisible) {
           console.log(

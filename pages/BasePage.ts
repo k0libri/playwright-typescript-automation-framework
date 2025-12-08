@@ -34,10 +34,7 @@ export class BasePage {
   /**
    * Execute action with modal handling before and after
    */
-  async executeWithModalHandling<T>(
-    action: () => Promise<T>,
-    config?: ModalConfig,
-  ): Promise<T> {
+  async executeWithModalHandling<T>(action: () => Promise<T>, config?: ModalConfig): Promise<T> {
     return this.modalHandler.executeWithModalHandling(action, config);
   }
 

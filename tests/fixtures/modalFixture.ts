@@ -30,7 +30,7 @@ export const test = base.extend<ModalFixtures>({
     // Handle modals on page load - simple, single check
     page.on('load', async () => {
       await new Promise((r) => setTimeout(r, 300)); // Wait for modal to appear
-      
+
       if (!isHandlingModal) {
         isHandlingModal = true;
         try {

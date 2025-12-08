@@ -271,17 +271,11 @@ export class TestDataValidator {
       );
     }
 
-    if (
-      TEST_DATA_CONSTANTS.VALIDATION.PASSWORD.REQUIRES_UPPERCASE &&
-      !/[A-Z]/.test(password)
-    ) {
+    if (TEST_DATA_CONSTANTS.VALIDATION.PASSWORD.REQUIRES_UPPERCASE && !/[A-Z]/.test(password)) {
       errors.push('Password must contain at least one uppercase letter');
     }
 
-    if (
-      TEST_DATA_CONSTANTS.VALIDATION.PASSWORD.REQUIRES_LOWERCASE &&
-      !/[a-z]/.test(password)
-    ) {
+    if (TEST_DATA_CONSTANTS.VALIDATION.PASSWORD.REQUIRES_LOWERCASE && !/[a-z]/.test(password)) {
       errors.push('Password must contain at least one lowercase letter');
     }
 
@@ -289,10 +283,7 @@ export class TestDataValidator {
       errors.push('Password must contain at least one number');
     }
 
-    if (
-      TEST_DATA_CONSTANTS.VALIDATION.PASSWORD.REQUIRES_SPECIAL &&
-      !/[!@#$%^&*]/.test(password)
-    ) {
+    if (TEST_DATA_CONSTANTS.VALIDATION.PASSWORD.REQUIRES_SPECIAL && !/[!@#$%^&*]/.test(password)) {
       errors.push('Password must contain at least one special character');
     }
 
@@ -361,9 +352,7 @@ export function assertDataValid(data: Booking | UserDetails, dataType: 'booking'
       : TestDataValidator.validateUser(data as UserDetails);
 
   if (!result.isValid) {
-    throw new Error(
-      `Invalid ${dataType} data:\n${result.errors.map((e) => `- ${e}`).join('\n')}`,
-    );
+    throw new Error(`Invalid ${dataType} data:\n${result.errors.map((e) => `- ${e}`).join('\n')}`);
   }
 
   if (result.warnings.length > 0) {

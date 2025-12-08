@@ -122,7 +122,10 @@ export class BookingService {
    * @param partialBooking Partial booking data
    * @returns Promise with patched booking details
    */
-  async partialUpdateBooking(bookingId: number, partialBooking: Partial<Booking>): Promise<Booking> {
+  async partialUpdateBooking(
+    bookingId: number,
+    partialBooking: Partial<Booking>,
+  ): Promise<Booking> {
     // Ensure we have an auth token
     if (!this.authToken) {
       await this.authenticate();

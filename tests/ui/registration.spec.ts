@@ -2,7 +2,7 @@
  * E2E Registration Test
  * Pure UI/E2E testing for user registration on Automation Exercise
  * Uses: RegistrationPage POM, UserFactory, and Modal Fixture
- * 
+ *
  * Cookie Consent Handling:
  * - Storage state (.auth/cookie-consent-state.json) is loaded automatically
  * - This prevents the FunnyConsent modal from appearing in tests
