@@ -13,7 +13,7 @@ export class UserService {
   private buildFormData(data: Record<string, string | undefined>): string {
     const params = new URLSearchParams();
     Object.entries(data).forEach(([key, value]) => {
-      if (value !== undefined) {
+      if (value !== undefined && value !== null) {
         params.append(key, value);
       }
     });
@@ -24,7 +24,7 @@ export class UserService {
     const data = this.buildFormData({
       name: user.name,
       email: user.email,
-      password: user.password,
+      password: user.password ?? '',
       title: user.title,
       birth_date: user.birth_date,
       birth_month: user.birth_month,
@@ -48,7 +48,7 @@ export class UserService {
       data,
     });
 
-    return response.json();
+    return response.json() as Promise<UserResponse>;
   }
 
   async verifyLogin(email: string, password: string): Promise<LoginResponse> {
@@ -61,7 +61,7 @@ export class UserService {
       data,
     });
 
-    return response.json();
+    return response.json() as Promise<LoginResponse>;
   }
 
   async deleteUser(email: string, password: string): Promise<UserResponse> {
@@ -74,7 +74,7 @@ export class UserService {
       data,
     });
 
-    return response.json();
+    return response.json() as Promise<UserResponse>;
   }
 
   async getUserByEmail(email: string): Promise<UserResponse> {
@@ -82,14 +82,14 @@ export class UserService {
       params: { email },
     });
 
-    return response.json();
+    return response.json() as Promise<UserResponse>;
   }
 
   async updateUser(user: User): Promise<UserResponse> {
     const data = this.buildFormData({
       name: user.name,
       email: user.email,
-      password: user.password,
+      password: user.password ?? '',
       title: user.title,
       birth_date: user.birth_date,
       birth_month: user.birth_month,
@@ -113,6 +113,6 @@ export class UserService {
       data,
     });
 
-    return response.json();
+    return response.json() as Promise<UserResponse>;
   }
 }

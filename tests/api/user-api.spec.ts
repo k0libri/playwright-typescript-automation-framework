@@ -23,7 +23,7 @@ test.describe('User API Tests', () => {
   });
 
   test('API-002: Should verify user login with valid credentials', async () => {
-    await test.step('Create user first', async () => {
+    await test.step('Create user and verify login with valid credentials', async () => {
       const newUser = UserFactory.createRandomUser();
       await userService.createUser(newUser);
 
@@ -102,12 +102,8 @@ test.describe('User API Tests', () => {
   });
 
   test('API-007: Should reject user creation with missing required fields', async () => {
-    await test.step('Attempt to create user with missing email', async () => {
-      const invalidUser = {
-        name: 'Test User',
-        email: '', // Missing email
-        password: 'password123',
-      };
+    await test.step('Attempt to create user with missing required fields', async () => {
+      const invalidUser = UserFactory.createInvalidUser();
 
       const response = await userService.createUser(invalidUser);
 

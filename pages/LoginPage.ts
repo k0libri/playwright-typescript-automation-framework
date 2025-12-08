@@ -28,27 +28,25 @@ export class LoginPage {
     this.signupErrorMessage = page.locator('text=Email Address already exist!');
   }
 
-  async goto() {
+  async goto(): Promise<void> {
     await this.page.goto('/login');
   }
 
-  async login(email: string, password: string) {
+  async login(email: string, password: string): Promise<void> {
     await this.loginEmailInput.fill(email);
     await this.loginPasswordInput.fill(password);
     await this.loginButton.click();
   }
 
-  async signup(name: string, email: string) {
+  async signup(name: string, email: string): Promise<void> {
     await this.signupNameInput.fill(name);
     await this.signupEmailInput.fill(email);
     await this.signupButton.click();
   }
 
-  async fillSignupForm(user: User) {
-    // This assumes we're on the signup form page after clicking signup
+  async fillSignupForm(user: User): Promise<void> {
     if (user.title) {
       const genderInput = this.page.locator(`#id_gender${user.title === 'Mr' ? '1' : '2'}`);
-      // Wait for the element to be available
       await genderInput.waitFor({ state: 'visible', timeout: 5000 }).catch(() => {});
       await genderInput.check({ force: true });
     }
@@ -69,11 +67,9 @@ export class LoginPage {
       await this.page.locator('[data-qa="years"]').selectOption(user.birth_year);
     }
 
-    // Newsletter and special offers checkboxes
     await this.page.locator('#newsletter').check();
     await this.page.locator('#optin').check();
 
-    // Address information
     if (user.firstname) {
       await this.page.locator('[data-qa="first_name"]').fill(user.firstname);
     }
@@ -114,7 +110,6 @@ export class LoginPage {
       await this.page.locator('[data-qa="mobile_number"]').fill(user.mobile_number);
     }
 
-    // Submit the form
     await this.page.locator('[data-qa="create-account"]').click();
   }
 

@@ -65,32 +65,32 @@ export class ProductPage {
     return await this.productBrand.textContent();
   }
 
-  async setQuantity(quantity: number) {
+  async setQuantity(quantity: number): Promise<void> {
     await this.quantityInput.clear();
     await this.quantityInput.fill(quantity.toString());
   }
 
-  async addToCart() {
+  async addToCart(): Promise<void> {
     await this.addToCartButton.click();
   }
 
-  async addToCartWithQuantity(quantity: number) {
+  async addToCartWithQuantity(quantity: number): Promise<void> {
     await this.setQuantity(quantity);
     await this.addToCart();
   }
 
-  async addReview(name: string, email: string, reviewText: string) {
+  async addReview(name: string, email: string, reviewText: string): Promise<void> {
     await this.reviewNameInput.fill(name);
     await this.reviewEmailInput.fill(email);
     await this.reviewTextArea.fill(reviewText);
     await this.reviewSubmitButton.click();
   }
 
-  async continueShopping() {
+  async continueShopping(): Promise<void> {
     await this.continueShoppingButton.click();
   }
 
-  async viewCart() {
+  async viewCart(): Promise<void> {
     await this.viewCartButton.click();
   }
 

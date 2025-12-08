@@ -33,7 +33,7 @@ export class CheckoutPage {
     this.expiryMonthInput = page.locator('[data-qa="expiry-month"]');
     this.expiryYearInput = page.locator('[data-qa="expiry-year"]');
     this.payAndConfirmButton = page.locator('[data-qa="pay-button"]');
-    this.orderConfirmationMessage = page.locator('text=Your order has been placed successfully!');
+    this.orderConfirmationMessage = page.locator('text=Order Placed!');
     this.downloadInvoiceButton = page.getByRole('link', { name: 'Download Invoice' });
     this.continueButton = page.getByRole('link', { name: 'Continue' });
   }
@@ -45,7 +45,7 @@ export class CheckoutPage {
 
     for (let i = 0; i < count; i++) {
       const itemName = await itemElements.nth(i).textContent();
-      if (itemName) {
+      if (itemName !== null) {
         items.push(itemName.trim());
       }
     }
@@ -61,11 +61,11 @@ export class CheckoutPage {
     return await this.billingAddress.textContent();
   }
 
-  async addOrderComment(comment: string) {
+  async addOrderComment(comment: string): Promise<void> {
     await this.commentTextArea.fill(comment);
   }
 
-  async placeOrder() {
+  async placeOrder(): Promise<void> {
     await this.placeOrderButton.click();
   }
 
@@ -75,7 +75,7 @@ export class CheckoutPage {
     cvc: string;
     expiryMonth: string;
     expiryYear: string;
-  }) {
+  }): Promise<void> {
     await this.nameOnCardInput.fill(cardDetails.nameOnCard);
     await this.cardNumberInput.fill(cardDetails.cardNumber);
     await this.cvcInput.fill(cardDetails.cvc);
@@ -83,7 +83,7 @@ export class CheckoutPage {
     await this.expiryYearInput.fill(cardDetails.expiryYear);
   }
 
-  async payAndConfirmOrder() {
+  async payAndConfirmOrder(): Promise<void> {
     await this.payAndConfirmButton.click();
   }
 
@@ -96,7 +96,7 @@ export class CheckoutPage {
       expiryYear: string;
     },
     comment?: string,
-  ) {
+  ): Promise<void> {
     if (comment) {
       await this.addOrderComment(comment);
     }
@@ -117,11 +117,11 @@ export class CheckoutPage {
     return null;
   }
 
-  async downloadInvoice() {
+  async downloadInvoice(): Promise<void> {
     await this.downloadInvoiceButton.click();
   }
 
-  async continueAfterOrder() {
+  async continueAfterOrder(): Promise<void> {
     await this.continueButton.click();
   }
 
@@ -132,17 +132,21 @@ export class CheckoutPage {
     const deliveryText = await this.getDeliveryAddress();
     const billingText = await this.getBillingAddress();
 
-    const deliveryMatch = deliveryText
-      ? deliveryText.includes(user.firstname || '') &&
-        deliveryText.includes(user.lastname || '') &&
-        deliveryText.includes(user.address1 || '')
-      : false;
+    const firstname = user.firstname ?? '';
+    const lastname = user.lastname ?? '';
+    const address1 = user.address1 ?? '';
 
-    const billingMatch = billingText
-      ? billingText.includes(user.firstname || '') &&
-        billingText.includes(user.lastname || '') &&
-        billingText.includes(user.address1 || '')
-      : false;
+    const deliveryMatch =
+      deliveryText !== null &&
+      deliveryText.includes(firstname) &&
+      deliveryText.includes(lastname) &&
+      deliveryText.includes(address1);
+
+    const billingMatch =
+      billingText !== null &&
+      billingText.includes(firstname) &&
+      billingText.includes(lastname) &&
+      billingText.includes(address1);
 
     return {
       deliveryAddressMatch: deliveryMatch,

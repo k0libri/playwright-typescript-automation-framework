@@ -26,24 +26,19 @@ export class CartPage {
     this.removeButtons = page.locator('.cart_quantity_delete');
     this.proceedToCheckoutButton = page.locator('.check_out');
     this.registerLoginLink = page.getByRole('link', { name: 'Register / Login' });
-    // Note: The ID 'susbscribe_email' matches the actual element ID on the website (typo in the source)
     this.subscriptionInput = page.locator('#susbscribe_email');
     this.subscriptionButton = page.locator('#subscribe');
     this.emptyCartMessage = page.locator('text=Cart is empty!');
   }
 
-  async goto() {
+  async goto(): Promise<void> {
     await this.page.goto('/view_cart');
   }
 
   async getCartItemsCount(): Promise<number> {
     try {
       return await this.cartItems.count();
-    } catch (error) {
-      // Cart items not found - intentionally returning 0
-      if (process.env.DEBUG) {
-        console.log('getCartItemsCount: Could not count cart items', error);
-      }
+    } catch {
       return 0;
     }
   }
@@ -53,9 +48,9 @@ export class CartPage {
     const count = await this.cartProductNames.count();
 
     for (let i = 0; i < count; i++) {
-      const name = await this.cartProductNames.nth(i).textContent();
-      if (name) {
-        productNames.push(name.trim());
+      const itemName = await this.cartProductNames.nth(i).textContent();
+      if (itemName !== null) {
+        productNames.push(itemName.trim());
       }
     }
 
@@ -68,7 +63,7 @@ export class CartPage {
 
     for (let i = 0; i < count; i++) {
       const price = await this.cartProductPrices.nth(i).textContent();
-      if (price) {
+      if (price !== null) {
         prices.push(price.trim());
       }
     }
@@ -82,36 +77,35 @@ export class CartPage {
 
     for (let i = 0; i < count; i++) {
       const quantity = await this.cartProductQuantities.nth(i).textContent();
-      if (quantity) {
-        quantities.push(parseInt(quantity.trim()));
+      if (quantity !== null) {
+        quantities.push(parseInt(quantity.trim(), 10));
       }
     }
 
     return quantities;
   }
 
-  async removeProduct(index: number = 0) {
+  async removeProduct(index: number = 0): Promise<void> {
     await this.removeButtons.nth(index).click();
   }
 
-  async removeAllProducts() {
+  async removeAllProducts(): Promise<void> {
     const count = await this.removeButtons.count();
     for (let i = count - 1; i >= 0; i--) {
       await this.removeButtons.nth(i).click();
-      // Wait for the item to be removed from the DOM
       await this.cartItems.nth(i).waitFor({ state: 'detached' });
     }
   }
 
-  async proceedToCheckout() {
+  async proceedToCheckout(): Promise<void> {
     await this.proceedToCheckoutButton.click();
   }
 
-  async goToRegisterLogin() {
+  async goToRegisterLogin(): Promise<void> {
     await this.registerLoginLink.click();
   }
 
-  async subscribeToNewsletter(email: string) {
+  async subscribeToNewsletter(email: string): Promise<void> {
     await this.subscriptionInput.fill(email);
     await this.subscriptionButton.click();
   }
@@ -119,11 +113,7 @@ export class CartPage {
   async isCartEmpty(): Promise<boolean> {
     try {
       return await this.emptyCartMessage.isVisible({ timeout: 5000 });
-    } catch (error) {
-      // Empty cart message not found - fallback to checking item count
-      if (process.env.DEBUG) {
-        console.log('isCartEmpty: Falling back to item count check', error);
-      }
+    } catch {
       const itemCount = await this.getCartItemsCount();
       return itemCount === 0;
     }

@@ -33,40 +33,40 @@ export class HomePage {
     this.addToCartButtons = page.locator('.add-to-cart');
     this.viewProductLinks = page.getByRole('link', { name: 'View Product' });
     this.subscriptionSection = page.locator('#subscribe');
-    // Note: The ID 'susbscribe_email' matches the actual element ID on the website (typo in the source)
     this.subscriptionInput = page.locator('#susbscribe_email');
     this.subscriptionButton = page.locator('#subscribe');
   }
 
-  async goto() {
+  async goto(): Promise<void> {
     await this.page.goto('/');
   }
 
-  async navigateToProducts() {
+  async navigateToProducts(): Promise<void> {
     await this.productsLink.click();
   }
 
-  async navigateToCart() {
-    await this.cartLink.click();
+  async navigateToCart(): Promise<void> {
+    // Handle potential ad interference by using force click
+    await this.cartLink.click({ force: true });
   }
 
-  async navigateToSignupLogin() {
+  async navigateToSignupLogin(): Promise<void> {
     await this.signupLoginLink.click();
   }
 
-  async logout() {
+  async logout(): Promise<void> {
     await this.logoutLink.click();
   }
 
-  async deleteAccount() {
+  async deleteAccount(): Promise<void> {
     await this.deleteAccountLink.click();
   }
 
-  async addFirstProductToCart() {
+  async addFirstProductToCart(): Promise<void> {
     await this.addToCartButtons.first().click();
   }
 
-  async viewFirstProduct() {
+  async viewFirstProduct(): Promise<void> {
     await this.viewProductLinks.first().click();
   }
 
@@ -80,7 +80,7 @@ export class HomePage {
 
     for (let i = 0; i < count; i++) {
       const productName = await this.featuredItems.nth(i).locator('p').textContent();
-      if (productName) {
+      if (productName !== null) {
         productNames.push(productName);
       }
     }
@@ -88,7 +88,7 @@ export class HomePage {
     return productNames;
   }
 
-  async subscribeToNewsletter(email: string) {
+  async subscribeToNewsletter(email: string): Promise<void> {
     await this.subscriptionInput.fill(email);
     await this.subscriptionButton.click();
   }
@@ -103,11 +103,9 @@ export class HomePage {
       if (await usernameElement.isVisible()) {
         return await usernameElement.textContent();
       }
-    } catch (error) {
-      // User not logged in or element not found - intentionally ignored
-      if (process.env.DEBUG) {
-        console.log('getLoggedInUsername: User not logged in or element not found', error);
-      }
+    } catch {
+      // User not logged in or element not found
+      return null;
     }
     return null;
   }

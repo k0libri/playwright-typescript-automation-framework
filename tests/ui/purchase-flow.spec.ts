@@ -66,9 +66,7 @@ test.describe('Purchase Flow Tests', () => {
 
       // Verify order confirmation
       const isConfirmed = await checkoutPage.isOrderConfirmed();
-      if (isConfirmed) {
-        await expect(checkoutPage.orderConfirmationMessage).toBeVisible();
-      }
+      expect(isConfirmed).toBeTruthy();
     });
   });
 
@@ -104,6 +102,10 @@ test.describe('Purchase Flow Tests', () => {
       };
 
       await checkoutPage.completeOrder(cardDetails);
+
+      // Verify order was successfully placed
+      const isConfirmed = await checkoutPage.isOrderConfirmed();
+      expect(isConfirmed).toBeTruthy();
     });
   });
 
@@ -171,10 +173,8 @@ test.describe('Purchase Flow Tests', () => {
         // Continue after order
         await checkoutPage.continueAfterOrder();
 
-        // Should be redirected to home page or account page
-        await expect(page).toHaveURL(
-          new RegExp(`${BASE_URL.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}/(home|account)`),
-        );
+        // Should be redirected to home page (root path)
+        await expect(page).toHaveURL(BASE_URL);
       }
     });
   });
