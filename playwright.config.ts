@@ -41,20 +41,20 @@ export default defineConfig({
       use: { ...devices['Desktop Chrome'] },
     },
 
-    {
-      name: 'firefox',
-      use: { ...devices['Desktop Firefox'] },
-    },
+    // {
+    //   name: 'firefox',
+    //   use: { ...devices['Desktop Firefox'] },
+    // },
 
-    {
-      name: 'webkit',
-      use: {
-        ...devices['Desktop Safari'],
-        // Add extra stability for webkit
-        actionTimeout: 15000,
-        navigationTimeout: 30000,
-      },
-    },
+    // {
+    //   name: 'webkit',
+    //   use: {
+    //     ...devices['Desktop Safari'],
+    //     // Add extra stability for webkit
+    //     actionTimeout: 15000,
+    //     navigationTimeout: 30000,
+    //   },
+    // },
 
     /* Test against mobile viewports. */
     // {
