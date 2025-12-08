@@ -81,7 +81,7 @@ test.describe('User Registration E2E Tests', () => {
     }
   });
 
-  test('Register with minimal required information', async ({ pageWithModalHandling, modalHandler }) => {
+  test('Register with minimal required information only', async ({ page }) => {
     try {
       const userDetails = UserFactory.createMinimalUser();
 
@@ -101,7 +101,7 @@ test.describe('User Registration E2E Tests', () => {
     }
   });
 
-  test('Register with custom user data', async ({ pageWithModalHandling, modalHandler }) => {
+  test('Register with custom user data', async ({ page }) => {
     try {
       const customUser = UserFactory.createCustomUser({
         firstName: 'AutoTest',
@@ -131,7 +131,7 @@ test.describe('User Registration E2E Tests', () => {
     }
   });
 
-  test('Verify all form fields are filled correctly', async ({ pageWithModalHandling, modalHandler }) => {
+  test('Verify all form fields are filled correctly', async ({ page }) => {
     try {
       const userDetails = UserFactory.createUser();
 
@@ -173,8 +173,7 @@ test.describe('User Registration E2E Tests', () => {
     }
   });
 
-  test('Register multiple users in batch', async ({ browser }) => {
-    console.log(await browser.contexts()[0].storageState());
+  test('Register multiple users in batch', async ({ page }) => {
     try {
       const users = UserFactory.createBatch(2);
 
@@ -212,7 +211,7 @@ test.describe('User Registration E2E Tests', () => {
     }
   });
 
-  test('Verify newsletter and special offers checkboxes', async ({ pageWithModalHandling, modalHandler }) => {
+  test('Verify newsletter and special offers checkboxes', async ({ page }) => {
     try {
       const userWithOffers = UserFactory.createCustomUser({
         newsletter: true,

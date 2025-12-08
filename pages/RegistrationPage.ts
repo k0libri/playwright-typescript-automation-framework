@@ -166,7 +166,7 @@ export class RegistrationPage extends BasePage {
       try {
         await this.page.goto(path, { waitUntil: 'domcontentloaded', timeout: 10000 });
         break; // Success
-      } catch (error: any) {
+      } catch (error) {
         attempts++;
         if (attempts >= maxAttempts) {
           throw error; // Give up after max attempts

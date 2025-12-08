@@ -9,7 +9,7 @@ import { ModalHandler } from '../../utils/ModalHandler';
 
 const STORAGE_STATE_FILE = '.auth/cookie-consent-state.json';
 
-setup('Accept cookie consent and save state', async ({ page }, testInfo) => {
+setup('Accept cookie consent and save state', async ({ page }) => {
   console.log('🍪 Setting up cookie consent state...');
   
   // Navigate to the site

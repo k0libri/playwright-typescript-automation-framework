@@ -3,7 +3,8 @@
  * Demonstrates best practices using the refined test data system
  */
 
-import { test, expect } from '@playwright/test';
+import { expect } from '@playwright/test';
+// import { test } from '@playwright/test'; // Commented out - used only in examples
 import {
   BookingFactory,
   BookingDataProvider,
@@ -13,7 +14,7 @@ import {
   TestDataValidator,
   assertDataValid,
   TEST_DATA_CONSTANTS,
-  TEST_SCENARIOS,
+  // TEST_SCENARIOS,
   type Booking,
   type UserDetails,
 } from './index';
@@ -175,7 +176,6 @@ export async function example11_completeRegistrationTest() {
   const scenario = TestScenarioProvider.getCompleteRegistrationScenario();
 
   // Use in test
-  const registrationPage = {}; // Mock for example
   const user = scenario.user;
 
   console.log('Registering user:', user.name);
