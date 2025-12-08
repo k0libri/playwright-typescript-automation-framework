@@ -1,11 +1,17 @@
+export const uiApiTestUser = {
+  email: "uiapitestuser@example.com",
+  password: "UiApiTest123!"
+};
 // Centralized test data and config
 export const testUser = {
-  username: 'testuser@example.com',
-  password: 'Password123!'
+  username: 'admin',
+  password: 'password123'
 };
+
+export const apiBaseUrl = 'https://restful-booker.herokuapp.com';
 
 export const apiEndpoints = {
   auth: '/auth',
   booking: '/booking',
-  products: '/products',
+  // restful-booker does not have products endpoint
 };

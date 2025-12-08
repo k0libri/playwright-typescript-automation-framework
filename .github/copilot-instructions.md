@@ -1,3 +1,4 @@
+
 # Copilot Instructions for AI Agents
 
 ## Project Overview

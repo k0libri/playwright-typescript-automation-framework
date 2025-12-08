@@ -5,6 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "npx playwright test",
+    "test:api": "npx playwright test --project=API",
+    "test:ui": "npx playwright test --project=UI",
     "lint": "npx eslint .",
     "format": "npx prettier --check .",
     "allure:serve": "npx allure serve allure-results",

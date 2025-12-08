@@ -1,5 +1,5 @@
 // Service layer for Booking API
-import { apiEndpoints } from '../config/test-data';
+import { apiEndpoints, apiBaseUrl } from '../config/test-data';
 import { APIRequestContext } from '@playwright/test';
 
 export class BookingService {
@@ -18,5 +18,14 @@ export class BookingService {
     });
   }
 
-  // ...update, delete, etc.
+  async updateBooking(id: string, data: any) {
+    return this.apiRequest.put(`${apiEndpoints.booking}/${id}`, {
+      data,
+      headers: {
+        Authorization: `Bearer ${this.token}`,
+        'Content-Type': 'application/json',
+      },
+    });
+  }
+  // ...delete, etc.
 }
