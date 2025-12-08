@@ -3,24 +3,28 @@
 ## What Was Done
 
 ### 1. **Created EnvConfig Manager** (`utils/EnvConfig.ts`)
-   - Centralized environment variable management
-   - Type-safe configuration interface
-   - Convenient accessor functions
-   - Default values for all variables
-   - Validation on load
+
+- Centralized environment variable management
+- Type-safe configuration interface
+- Convenient accessor functions
+- Default values for all variables
+- Validation on load
 
 ### 2. **Environment Files**
-   - `.env.example` - Template with all available variables
-   - `.env` - Actual configuration (git-ignored)
-   - Both files contain documentation for each variable
+
+- `.env.example` - Template with all available variables
+- `.env` - Actual configuration (git-ignored)
+- Both files contain documentation for each variable
 
 ### 3. **Installed dotenv Package**
-   - `npm install dotenv`
-   - Enables `.env` file loading
+
+- `npm install dotenv`
+- Enables `.env` file loading
 
 ### 4. **Updated Framework Files**
 
 #### `playwright.config.ts`
+
 - Removed hardcoded URLs:
   - `'https://automationexercise.com'` → `config.ui.baseUrl`
   - `'https://restful-booker.herokuapp.com'` → `config.api.baseUrl`
@@ -34,6 +38,7 @@
   - `'.auth/cookie-consent-state.json'` → `config.storageStatePath`
 
 #### `services/BookingService.ts`
+
 - Removed hardcoded API URL:
   - `'https://restful-booker.herokuapp.com'` → `config.api.baseUrl`
 - Removed hardcoded credentials:
@@ -41,16 +46,19 @@
   - `password: 'password123'` → `config.api.auth.password`
 
 #### `utils/TestDataProvider.ts`
+
 - Removed hardcoded test data:
   - `'India'` → `config.testData.defaultCountry`
   - `'New York'` → `config.testData.defaultCity`
 
 ### 5. **Security**
+
 - Added `.env` to `.gitignore`
 - `.env.example` committed (safe template)
 - `.env` excluded from git (contains sensitive values)
 
 ### 6. **Documentation**
+
 - Created `ENV_CONFIGURATION.md` with:
   - Complete setup guide
   - All available configuration variables
@@ -60,12 +68,14 @@
   - Troubleshooting section
 
 ### 7. **Fixed TypeScript Issues**
+
 - Updated `utils/index.ts` to use `export type` for interfaces
 - All TypeScript compilation passes
 
 ## Available Configuration Variables
 
 ### API Configuration
+
 ```env
 API_BASE_URL=https://restful-booker.herokuapp.com
 API_AUTH_USERNAME=admin
@@ -73,11 +83,13 @@ API_AUTH_PASSWORD=password123
 ```
 
 ### UI Configuration
+
 ```env
 UI_BASE_URL=https://automationexercise.com
 ```
 
 ### Timeouts (milliseconds)
+
 ```env
 ACTION_TIMEOUT=15000
 NAVIGATION_TIMEOUT=30000
@@ -87,6 +99,7 @@ E2E_TEST_TIMEOUT=90000
 ```
 
 ### Storage & Reporting
+
 ```env
 STORAGE_STATE_PATH=.auth/cookie-consent-state.json
 ALLURE_REPORT_PATH=allure-report
@@ -94,6 +107,7 @@ ALLURE_RESULTS_PATH=allure-results
 ```
 
 ### Test Data
+
 ```env
 DEFAULT_COUNTRY=India
 DEFAULT_CITY=New York
@@ -101,6 +115,7 @@ EMAIL_DOMAINS=gmail.com,outlook.com,yahoo.com
 ```
 
 ### Other
+
 ```env
 SCREENSHOT_PATH=./screenshots
 CI=false
@@ -109,12 +124,14 @@ CI=false
 ## How to Use
 
 ### 1. Setup
+
 ```bash
 cp .env.example .env
 # Edit .env with your values
 ```
 
 ### 2. In Code
+
 ```typescript
 import { config } from './utils/EnvConfig';
 
@@ -129,7 +146,9 @@ const url = getApiBaseUrl();
 ```
 
 ### 3. For Different Environments
+
 Create environment-specific files:
+
 ```
 .env (local development)
 .env.staging
@@ -141,10 +160,12 @@ Load based on NODE_ENV if needed.
 ## CI/CD Integration
 
 For GitHub Actions, set environment variables via:
+
 1. **Secrets** (for sensitive values like passwords)
 2. **Repository variables** (for non-sensitive values)
 
 Example workflow:
+
 ```yaml
 env:
   API_BASE_URL: ${{ secrets.API_BASE_URL }}
