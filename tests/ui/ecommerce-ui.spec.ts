@@ -4,12 +4,14 @@ import { test, testInvalid } from './login.fixtures';
 import { RegisterPage } from '../../pages/registerPage';
 import { ProductsPage } from '../../pages/productsPage';
 import { CartPage } from '../../pages/cartPage';
+import { LoginPage } from '../../pages/loginPage';
 
 test('should register a new user via UI and verify via API', async ({ page, request }) => {
   const registerPage = new RegisterPage(page);
   await registerPage.goto();
   // Close consent modal if present
-  const consentBtn = await page.$('button:has-text("Consent")');
+  const loginPage = new LoginPage(page);
+  const consentBtn = await page.$((loginPage as any).consentButton ?? 'button:has-text("Consent")');
   if (consentBtn) await consentBtn.click();
     const uniqueEmail = `newuser.${Date.now()}@example.com`;
     await registerPage.register('New User', uniqueEmail, 'Password123!');
@@ -33,7 +35,7 @@ test('should login, add product to cart, and verify on checkout page', async ({ 
   await cartPage.goto();
   await expect.poll(async () => {
     await page.goto('/view_cart');
-    const visible = await page.locator('td.cart_product').isVisible();
+    const visible = await page.locator(cartPage.cartItemSelector).isVisible();
     return visible;
   }, { timeout: 5000 }).toBe(true);
 });
