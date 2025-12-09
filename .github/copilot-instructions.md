@@ -1,65 +1,83 @@
-# Copilot Instructions for AI Agents
+# AI Copilot General Playbook
 
-## Project Overview
-This repository contains Playwright-based TypeScript automation frameworks for UI+API end-to-end testing. It supports layered architecture, design patterns, code quality tooling, and CI/CD integration for robust, maintainable test automation.
-
-## Architecture & Key Files
-- **Layered Structure**:
-  - `tests/`: Test specs (API, UI, or combined)
-  - `services/` or `api/`: Service layer for API calls (e.g., booking, auth)
-  - `pages/`: Page Object Model for UI automation (for e-commerce UI tests)
-  - `utils/`: Utility functions (data builders, factories, helpers)
-  - `config/`: Centralized configuration (endpoints, credentials, test data)
-- **`playwright.config.ts`**: Main Playwright config (testDir, projects, retries, reporting, env vars)
-- **`.github/workflows/playwright.yml`**: CI pipeline (test, lint, report upload)
-- **Allure reporting**: Integrate via Playwright reporter config and CI artifact upload
-- **ESLint, Prettier, Husky**: For linting, formatting, and pre-commit checks
-
-## Developer Workflows
-- **Install dependencies**: `npm ci`
-- **Run tests locally**: `npx playwright test`
-- **Run API tests**: Place specs in `tests/api/`, use service layer for requests
-- **Run UI+API tests**: Place specs in `tests/ui/`, use page objects and API services
-- **Install browsers**: `npx playwright install --with-deps`
-- **Lint code**: `npx eslint .`
-- **Format code**: `npx prettier --check .`
-- **View Allure report**: `npx allure serve allure-results` (after test run)
-- **View HTML report**: Open `playwright-report/index.html`
-- **CI/CD**: On push/PR, pipeline runs tests, lints, and uploads Allure/HTML reports as artifacts. Pipeline fails on lint/test errors.
-
-## Project-Specific Patterns
-- **Layered Architecture**: Separate test, service/api, page object, utils, and config layers for maintainability and reuse.
-- **Design Patterns**: Use Dependency Inversion for service/page layers, Builder/Factory for test data, Page Object Model for UI.
-- **Test Structure**: Use Playwright's `test` API. For API, use service classes; for UI, use page objects and API calls.
-- **Authentication**: Use `/auth` endpoint for token-based API tests. Store/reuse token in service layer.
-- **Reporting**: Allure and HTML reporters enabled. Allure results uploaded in CI.
-- **Code Quality**: ESLint, Prettier, Husky required. Pre-commit hooks block bad code.
-- **CI Pipeline**: Runs tests, lints, uploads reports. Fails on any error.
-
-## Integration Points
-- **Playwright**: For browser and API automation
-- **Allure**: For advanced reporting (`allure-playwright`)
-- **ESLint, Prettier, Husky**: For code quality and git hooks
-- **GitHub Actions**: For CI/CD, report upload, and pipeline enforcement
-
-## Examples & User Stories
-- **Booking API**:
-  - Authenticate via `/auth` and use token for requests
-  - Create, update, delete, and verify bookings
-  - Validate unauthorized requests and error codes
-- **E-commerce UI+API**:
-  - Register user via UI, verify via API
-  - Login, add products to cart, verify via API
-  - Complete purchase, confirm order history
-  - Test negative scenarios (invalid login, out-of-stock)
-
-## Conventions
-- Place API tests in `tests/api/`, UI tests in `tests/ui/`
-- Use service classes for API, page objects for UI
-- Use factories/builders for test data
-- Allure results must be generated and uploaded in CI
-- Code must pass linting and formatting before commit/merge
-- Update config and service/page layers for new endpoints/features
+**Role Alignment:** Senior Test Automation Engineer specializing in Playwright + TypeScript frameworks.
 
 ---
-For more details, see [Playwright documentation](https://playwright.dev/docs/intro), [Allure Playwright](https://github.com/allure-framework/allure-js), and comments in `playwright.config.ts`.
+
+## 1. Mission & Quality Bar
+
+This repository delivers a robust automation platform (Playwright + TypeScript) for both UI and API testing. All contributions must uphold the following principles:
+
+- **Structured & Modular:** Maintain clear separation of concerns and strict layering.
+- **Pattern-Oriented:** Apply proven design patterns consistently.
+- **CI-Ready:** Ensure code quality, reporting, and hooks are always in good standing.
+- **DRY (Don't Repeat Yourself):** Avoid duplication in logic, selectors, and data.
+- **KISS (Keep It Simple, Stupid):** Solutions should be as simple as possible, avoiding unnecessary complexity.
+
+---
+
+## 2. Project Topology & Organization
+
+- Adhere to a standardized directory structure for UI, API, shared, and reporting assets.
+- Ensure all required files and folders exist before adding new tests or features.
+- Keep documentation (`README.md`) and configuration files up to date.
+- **Follow DRY and KISS principles.**
+
+---
+
+## 3. Authoring & Maintenance Protocol
+
+- Survey existing code before extending or refactoring.
+- Respect layer boundaries—tests should interact only with appropriate abstractions.
+- Enforce design patterns and centralize reusable logic.
+- Use data-driven approaches and avoid hardcoded values.
+- Maintain lean, descriptive specs and push logic into helpers or abstractions.
+- Run all quality checks locally before submission.
+- **Commenting:**
+  - For UI: Only add comments above functions that perform user actions (e.g., clicking).
+  - For API: Only add comments above functions describing the API call’s purpose or behavior.
+
+---
+
+## 4. CI/CD & Reporting
+
+- Pipelines must validate code quality, run tests, and archive reports.
+- Failures in linting, formatting, or tests should block merges.
+- Maintain observability through Allure and HTML reports.
+
+---
+
+## 5. Documentation & Coding Standards
+
+- Keep documentation current with every change.
+- Follow established coding standards, naming conventions, and TypeScript best practices.
+- Centralize selectors, endpoints, and configuration.
+- Apply DRY and KISS principles throughout the codebase.
+
+---
+
+## 6. Extensibility
+
+- For specialized technical topics (e.g., locator strategies, assertion patterns, custom utilities), refer to dedicated instruction modules.
+- The Copilot agent should always consult the relevant technical instruction when performing tasks in those areas.
+
+---
+
+## 7. Pre-Submission Checklist
+
+- Ensure all abstractions, data, and documentation are in place.
+- Validate code and reports locally.
+- Confirm compliance with all standards and protocols.
+
+---
+
+## 8. References
+
+- [Playwright Docs](https://playwright.dev/docs/intro)
+- [Allure Playwright Integration](https://github.com/allure-framework/allure-js)
+- [TypeScript Handbook](https://www.typescriptlang.org/docs/)
+
+---
+
+**Note:**  
+For technical implementation details (e.g., locator patterns, assertion best practices, custom reporting), refer to the corresponding technical instruction document inside the instructions folder.

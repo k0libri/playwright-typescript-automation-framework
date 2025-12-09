@@ -5,10 +5,25 @@
   "main": "index.js",
   "scripts": {
     "test": "npx playwright test",
-    "lint": "npx eslint .",
-    "format": "npx prettier --check .",
-    "allure:serve": "npx allure serve allure-results",
-    "allure:generate": "npx allure generate allure-results --clean -o allure-report"
+    "test:ui": "npx playwright test src/ui",
+    "test:smoke": "npx playwright test --grep \"@smoke\"",
+    "test:regression": "npx playwright test --grep \"@regression\"",
+    "test:critical": "npx playwright test --grep \"@critical\"",
+    "test:navigation": "npx playwright test --grep \"@navigation\"",
+    "test:headed": "npx playwright test --headed",
+    "test:debug": "npx playwright test --debug",
+    "test:chrome": "npx playwright test --project=chromium",
+    "test:firefox": "npx playwright test --project=firefox",
+    "test:webkit": "npx playwright test --project=webkit",
+    "report": "npx playwright show-report",
+    "test:list": "npx playwright test --list",
+    "test:list:smoke": "npx playwright test --grep \"@smoke\" --list",
+    "test:list:critical": "npx playwright test --grep \"@critical\" --list",
+    "setup": "npx playwright install",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --check \"**/*.{ts,js,json,md}\"",
+    "format:fix": "prettier --write \"**/*.{ts,js,json,md}\""
   },
   "repository": {
     "type": "git",
@@ -28,8 +43,11 @@
     "@types/node": "^24.10.1",
     "allure-playwright": "^3.4.3",
     "eslint": "^9.39.1",
+    "@eslint/js": "^9.6.0",
+    "typescript": "^5.6.3",
+    "typescript-eslint": "^8.13.0",
     "husky": "^9.1.7",
-    "prettier": "^3.7.4"
+    "prettier": "^3.7.4",
+    "rimraf": "^6.0.1"
   }
-  
 }
