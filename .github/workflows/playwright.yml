@@ -62,7 +62,7 @@ jobs:
     name: Deploy to GitHub Pages
     needs: test
     runs-on: ubuntu-latest
-    if: false  # Disabled - only deploy manually or on merge to main
+    if: false # Disabled - only deploy manually or on merge to main
     permissions:
       contents: read
       pages: write
