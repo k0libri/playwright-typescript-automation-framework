@@ -1,5 +1,6 @@
 // Page Object Model for Registration UI
 import { Page, Locator } from '@playwright/test';
+import { closeConsentModal } from '../utils/helpers';
 
 export class RegisterPage {
   public nameInput: string;
@@ -33,7 +34,10 @@ export class RegisterPage {
     this.mobileNumberInput = 'input[data-qa="mobile_number"]';
     this.createAccountButton = 'button[data-qa="create-account"]';
   }
-  async goto() { await this.page.goto('/login'); }
+  async goto() {
+    await this.page.goto('/login');
+    await closeConsentModal(this.page);
+  }
   async register(name: string, email: string, password: string) {
     await this.page.locator(this.nameInput).waitFor({ state: 'visible' });
     await this.page.fill(this.nameInput, name);

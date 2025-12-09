@@ -1,5 +1,6 @@
 // Page Object Model for Login UI
 import { Page } from '@playwright/test';
+import { closeConsentModal } from '../utils/helpers';
 
 export class LoginPage {
   public usernameInput = 'input[data-qa="login-email"]';

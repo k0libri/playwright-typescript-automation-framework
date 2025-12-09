@@ -1,5 +1,6 @@
 // Page Object Model for Products UI
 import { Page } from '@playwright/test';
+import { closeConsentModal } from '../utils/helpers';
 
 export class ProductsPage {
   private productCard = '.features_items .single-products';
@@ -7,7 +8,10 @@ export class ProductsPage {
   private outOfStockAddToCartButton = '.product-card.out-of-stock button.add-to-cart';
 
   constructor(private page: Page) {}
-  async goto() { await this.page.goto('/products'); }
+  async goto() {
+    await this.page.goto('/products');
+    await closeConsentModal(this.page);
+  }
   async addFirstProductToCart() {
     const firstCard = this.page.locator(this.productCard).first();
     await firstCard.scrollIntoViewIfNeeded();
