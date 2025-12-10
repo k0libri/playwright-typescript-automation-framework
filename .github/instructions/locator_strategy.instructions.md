@@ -2,7 +2,6 @@
 applyTo: '**'
 ---
 
-````markdown
 # Locator Strategy & Selector Patterns Guide
 
 ## Purpose
@@ -82,6 +81,7 @@ export class HomePage extends BasePage {
   }
 }
 ```
+
 ````
 
 ### Bad
@@ -127,6 +127,4 @@ const submitBtn = page.locator('[data-testid="submit-btn"][data-role="main"][cla
 
 **Reference this guide before every new locator implementation or review. Reliable selectors are key to stable automation!**
 
-```
-
-```
+````

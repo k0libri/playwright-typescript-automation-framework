@@ -2,7 +2,6 @@
 applyTo: '**'
 ---
 
-```markdown
 # Test Generation & Structure Guide
 
 ## Purpose
@@ -86,4 +85,3 @@ It is referenced by Copilot and reviewers to ensure tests are clear, maintainabl
 ---
 
 **Reference this guide before generating or reviewing any new test cases or spec files. Consistent structure, reliability, and code quality are key to maintainable automation!**
-```

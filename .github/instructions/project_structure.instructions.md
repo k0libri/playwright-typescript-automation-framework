@@ -2,13 +2,12 @@
 applyTo: '**'
 ---
 
-````markdown
 # Project Structure Guide
 
 ## Purpose
 
 This guide defines the required directory and file structure for the Playwright + TypeScript automation platform, covering both UI and API automation.  
-It is referenced by Copilot and reviewers to ensure all contributions are consistent, maintainable, and easy to onboard.
+It is referenced by Copilot and reviewers to ensure all contributions are consistent, maintainable, and easy to onboard. The code is written using windows Operating System dont use /n.
 
 **Always consult this guide before adding, moving, or reviewing files in the repository.**
 
@@ -56,7 +55,6 @@ shared/
   utils/                         # Shared utilities (env resolution, logging)
 reports/                         # Built-in HTML report artifacts
 ```
-````
 
 > **All components must be placed in `src/ui/po/components/` and imported into page objects as needed. Do not place components inside feature folders.**
 
@@ -189,7 +187,3 @@ reports/                         # Built-in HTML report artifacts
 ---
 
 **Reference this guide before every new contribution or review. Consistency is key!**
-
-```
-
-```

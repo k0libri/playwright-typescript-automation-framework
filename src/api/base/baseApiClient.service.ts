@@ -24,8 +24,12 @@ export abstract class BaseApiClient {
     },
   ): Promise<APIResponse> {
     const url = this.buildUrl(endpoint, options?.params);
+    const defaultHeaders = {
+      Referer: 'https://automationexercise.com/',
+      Origin: 'https://automationexercise.com',
+    };
     return await this.request.get(url, {
-      ...(options?.headers && { headers: options.headers }),
+      headers: { ...defaultHeaders, ...options?.headers },
     });
   }
 
@@ -35,15 +39,19 @@ export abstract class BaseApiClient {
   protected async post(
     endpoint: string,
     options?: {
-      data?: Record<string, unknown>;
+      data?: Record<string, unknown> | string;
       headers?: Record<string, string>;
       params?: Record<string, string>;
     },
   ): Promise<APIResponse> {
     const url = this.buildUrl(endpoint, options?.params);
+    const defaultHeaders = {
+      Referer: 'https://automationexercise.com/',
+      Origin: 'https://automationexercise.com',
+    };
     return await this.request.post(url, {
       ...(options?.data && { data: options.data }),
-      ...(options?.headers && { headers: options.headers }),
+      headers: { ...defaultHeaders, ...options?.headers },
     });
   }
 
@@ -53,15 +61,19 @@ export abstract class BaseApiClient {
   protected async put(
     endpoint: string,
     options?: {
-      data?: Record<string, unknown>;
+      data?: Record<string, unknown> | string;
       headers?: Record<string, string>;
       params?: Record<string, string>;
     },
   ): Promise<APIResponse> {
     const url = this.buildUrl(endpoint, options?.params);
+    const defaultHeaders = {
+      Referer: 'https://automationexercise.com/',
+      Origin: 'https://automationexercise.com',
+    };
     return await this.request.put(url, {
       ...(options?.data && { data: options.data }),
-      ...(options?.headers && { headers: options.headers }),
+      headers: { ...defaultHeaders, ...options?.headers },
     });
   }
 
@@ -71,13 +83,19 @@ export abstract class BaseApiClient {
   protected async delete(
     endpoint: string,
     options?: {
+      data?: Record<string, unknown> | string;
       headers?: Record<string, string>;
       params?: Record<string, string>;
     },
   ): Promise<APIResponse> {
     const url = this.buildUrl(endpoint, options?.params);
+    const defaultHeaders = {
+      Referer: 'https://automationexercise.com/',
+      Origin: 'https://automationexercise.com',
+    };
     return await this.request.delete(url, {
-      ...(options?.headers && { headers: options.headers }),
+      ...(options?.data && { data: options.data }),
+      headers: { ...defaultHeaders, ...options?.headers },
     });
   }
 

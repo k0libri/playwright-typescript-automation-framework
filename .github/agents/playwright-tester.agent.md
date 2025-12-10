@@ -3,14 +3,23 @@ description: 'Testing mode for Playwright tests'
 tools:
   [
     'edit/editFiles',
+    'runNotebooks',
     'search',
+    'new',
     'runCommands',
     'runTasks',
     'playwright-mcp/*',
+    'usages',
+    'vscodeAPI',
     'problems',
     'changes',
     'testFailure',
+    'openSimpleBrowser',
     'fetch',
+    'githubRepo',
+    'extensions',
+    'todos',
+    'runSubagent',
     'runTests',
   ]
 model: Claude Sonnet 4
@@ -44,11 +53,7 @@ model: Claude Sonnet 4
 6. **Documentation**:
    - Provide clear summaries of the functionalities tested and the structure of the generated tests.
 
-7. **Commit Discipline**:
-   - After each user story, commit the changes with a clear message.
-   - After the last user story, run the entire test suite (using `.only` or a script if needed) to ensure all tests work together, then commit the final changes using CLI.
-
-8. **No Flaky Tests**:
+7. **No Flaky Tests**:
    - Flaky tests are not allowed. If any flakiness is detected, diagnose and fix before proceeding.
 
 ---

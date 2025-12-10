@@ -1,4 +1,5 @@
 import type { Locator, Page } from '@playwright/test';
+import { CookieConsentComponent } from '../components/cookieConsent.component';
 
 /**
  * BasePage - Shared page behaviors and navigation helpers
@@ -6,9 +7,11 @@ import type { Locator, Page } from '@playwright/test';
  */
 export abstract class BasePage {
   protected readonly page: Page;
+  protected readonly cookieConsent: CookieConsentComponent;
 
   constructor(page: Page) {
     this.page = page;
+    this.cookieConsent = new CookieConsentComponent(page);
   }
 
   /**
@@ -17,6 +20,7 @@ export abstract class BasePage {
   public async navigateTo(url: string): Promise<void> {
     await this.page.goto(url);
     await this.waitForPageReady();
+    await this.handleCookieConsentIfPresent();
   }
 
   /**
@@ -25,6 +29,14 @@ export abstract class BasePage {
   public async waitForPageReady(): Promise<void> {
     await this.page.waitForLoadState('networkidle');
     await this.page.waitForLoadState('domcontentloaded');
+  }
+
+  /**
+   * Handle cookie consent if present
+   */
+  public async handleCookieConsentIfPresent(): Promise<void> {
+    await this.cookieConsent.handleCookieConsent();
+    await this.cookieConsent.waitForConsentDialogToBeDismissed();
   }
 
   /**
