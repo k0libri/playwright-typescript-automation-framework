@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
 . "$(dirname "$0")/_/husky.sh"
 
-npm run lint || exit 1
-npm run format:write || exit 1
+npm run lint:src || exit 1
+npm run format:src || exit 1
