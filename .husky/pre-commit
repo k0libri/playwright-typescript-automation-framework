@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
 . "$(dirname "$0")/_/husky.sh"
 
-npm run lint:src || exit 1
-npm run format:src || exit 1
+git diff --cached --name-only --diff-filter=ACM | grep -E '\.(js|ts|tsx)$' | xargs -r npx eslint || exit 1
+git diff --cached --name-only --diff-filter=ACM | grep -E '\.(js|ts|tsx|json|css|md)$' | xargs -r npx prettier --check || exit 1
