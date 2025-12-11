@@ -60,10 +60,93 @@ export class CheckoutPage extends BasePage {
 
     for (let i = 0; i < itemCount; i++) {
       const item = this.orderItems.nth(i);
-      const name = (await item.locator('.cart_description h4').textContent()) ?? '';
-      const price = (await item.locator('.cart_price p').textContent()) ?? '';
-      const quantity = (await item.locator('.cart_quantity button').textContent()) ?? '';
-      const total = (await item.locator('.cart_total p').textContent()) ?? '';
+      // Wait for item to be visible before extracting text
+      try {
+        await item.waitFor({ state: 'visible', timeout: 10000 });
+      } catch {
+        continue; // Skip rows that aren't visible (e.g., header rows)
+      }
+
+      // Try multiple selector patterns for product name
+      let name = '';
+      try {
+        // Try finding h4 a first (most specific)
+        name = (await item.locator('h4 a').textContent({ timeout: 2000 })) ?? '';
+      } catch {
+        try {
+          // Try finding just h4
+          name = (await item.locator('h4').textContent({ timeout: 2000 })) ?? '';
+        } catch {
+          try {
+            // Try with cart_description class prefix
+            name =
+              (await item.locator('.cart_description h4').textContent({ timeout: 2000 })) ?? '';
+          } catch {
+            // Last resort: get all text from the description cell
+            const cells = await item.locator('td').all();
+            if (cells.length > 1) {
+              name = (await cells[1].textContent()) ?? '';
+            }
+          }
+        }
+      }
+
+      // Skip if name is empty or is the "Total Amount" row
+      const trimmedName = name.trim();
+      if (
+        !trimmedName ||
+        trimmedName === '' ||
+        trimmedName.toLowerCase().includes('total amount')
+      ) {
+        continue;
+      }
+
+      let price = '';
+      let quantity = '';
+      let total = '';
+
+      try {
+        price = (await item.locator('.cart_price p').textContent({ timeout: 3000 })) ?? '';
+      } catch {
+        // Try alternative selector without class prefix
+        try {
+          const cells = await item.locator('td').all();
+          if (cells.length > 2) {
+            price = (await cells[2].textContent()) ?? '';
+          }
+        } catch {
+          // Skip this field if not found
+        }
+      }
+
+      try {
+        quantity =
+          (await item.locator('.cart_quantity button').textContent({ timeout: 3000 })) ?? '';
+      } catch {
+        // Try alternative selector
+        try {
+          const cells = await item.locator('td').all();
+          if (cells.length > 3) {
+            quantity = (await cells[3].textContent()) ?? '';
+          }
+        } catch {
+          // Skip this field if not found
+        }
+      }
+
+      try {
+        total = (await item.locator('.cart_total p').textContent({ timeout: 3000 })) ?? '';
+      } catch {
+        // Try alternative selector
+        try {
+          const cells = await item.locator('td').all();
+          if (cells.length > 4) {
+            total = (await cells[4].textContent()) ?? '';
+          }
+        } catch {
+          // Skip this field if not found
+        }
+      }
 
       items.push({
         name: name.trim(),

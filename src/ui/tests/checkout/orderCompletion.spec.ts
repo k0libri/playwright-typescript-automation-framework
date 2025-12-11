@@ -10,7 +10,7 @@ test.describe('Order Completion - Purchase + Order History @critical @e2e', () =
     console.log('Starting Order Completion test suite');
   });
 
-  test.skip('should complete purchase flow and verify order confirmation', async ({
+  test('should complete purchase flow and verify order confirmation', async ({
     authenticationPage,
     productsPage,
     cartPage,
@@ -124,7 +124,7 @@ test.describe('Order Completion - Purchase + Order History @critical @e2e', () =
     });
   });
 
-  test.skip('should handle checkout with single product', async ({
+  test('should handle checkout with single product', async ({
     authenticationPage,
     productsPage,
     cartPage,
@@ -178,7 +178,7 @@ test.describe('Order Completion - Purchase + Order History @critical @e2e', () =
     });
   });
 
-  test.skip('should validate order details match cart contents', async ({
+  test('should validate order details match cart contents', async ({
     authenticationPage,
     productsPage,
     cartPage,

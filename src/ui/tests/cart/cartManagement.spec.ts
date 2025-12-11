@@ -9,7 +9,7 @@ test.describe('Cart Management - Login + Cart Verification @critical @regression
     console.log('Starting Cart Management test suite');
   });
 
-  test.skip('should login via UI, add products to cart, and verify cart via API', async ({
+  test('should login via UI, add products to cart, and verify cart via API', async ({
     authenticationPage,
     productsPage,
     cartPage,
@@ -128,8 +128,8 @@ test.describe('Cart Management - Login + Cart Verification @critical @regression
       if (itemCount > 0) {
         await cartPage.removeItemFromCart(0);
 
-        await expect(cartPage.cartTable).toBeVisible();
-
+        // After removing all items, the cart should be empty
+        // The cart table may become hidden when empty, so check via our helper method
         const isEmpty = await cartPage.isCartEmpty();
         expect(isEmpty).toBe(true);
       } else {

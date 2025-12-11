@@ -51,7 +51,7 @@ test.describe('Negative Scenarios - Error Handling @critical @negative', () => {
     });
   });
 
-  test.skip('should handle empty required fields during registration', async ({
+  test('should handle empty required fields during registration', async ({
     authenticationPage,
     page,
   }) => {

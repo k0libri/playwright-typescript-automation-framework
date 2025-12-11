@@ -62,7 +62,7 @@ test.describe('User Registration - UI to API Verification @critical @smoke', () 
     });
   });
 
-  test.skip('should display error for duplicate email registration', async ({
+  test('should display error for duplicate email registration', async ({
     page,
     authenticationPage,
     uniqueUserData,

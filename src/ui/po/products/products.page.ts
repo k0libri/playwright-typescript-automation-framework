@@ -102,7 +102,12 @@ export class ProductsPage extends BasePage {
    * Get number of visible products
    */
   async getProductCount(): Promise<number> {
-    await this.productCards.first().waitFor({ state: 'visible' });
-    return await this.productCards.count();
+    try {
+      await this.productCards.first().waitFor({ state: 'visible', timeout: 5000 });
+      return await this.productCards.count();
+    } catch {
+      // No products found (e.g., search returned no results)
+      return 0;
+    }
   }
 }

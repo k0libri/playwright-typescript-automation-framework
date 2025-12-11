@@ -114,7 +114,9 @@ export class CartPage extends BasePage {
   async removeItemFromCart(itemIndex: number): Promise<void> {
     await this.removeItemButtons.nth(itemIndex).click();
     // Wait for page to reload and process the removal
-    await this.page.waitForLoadState('networkidle');
+    await this.page.waitForLoadState('domcontentloaded');
+    // Give it a moment for the item to be removed from DOM
+    await this.page.waitForTimeout(500);
     await this.waitForPageReady();
   }
 
