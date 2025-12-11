@@ -173,7 +173,7 @@ export class ModalHandler {
                 console.log('Modal forcefully removed from DOM');
               }
             }, config.rootSelector);
-          } catch (e) {
+            } catch {
             // Silently ignore DOM manipulation failures
           }
         }

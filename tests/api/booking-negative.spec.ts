@@ -41,7 +41,7 @@ test.describe('Booking API - Negative Scenarios', () => {
       // Should fail or return bad request
       expect([400, 422, 500]).toContain(response.status);
       console.log(`✓ Missing required fields returns ${response.status}`);
-    } catch (error) {
+    } catch {
       console.log('✓ Request with missing fields failed as expected');
     }
   });
@@ -222,7 +222,7 @@ test.describe('Booking API - Negative Scenarios', () => {
         checkin: '2025-01-01',
         checkout: '2025-01-05',
       },
-      additionalneeds: "'; DROP TABLE bookings; --",
+        additionalneeds: '\'; DROP TABLE bookings; --',
     };
 
     const response = await fetch('https://restful-booker.herokuapp.com/booking', {

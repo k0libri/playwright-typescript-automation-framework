@@ -7,6 +7,9 @@
 
 import { test, expect } from '@playwright/test';
 import { BookingService } from '../../services/BookingService';
+interface BookingResult {
+  bookingid: number;
+}
 
 test.describe('Booking API - Filters and Queries', () => {
   let bookingService: BookingService;
@@ -40,14 +43,13 @@ test.describe('Booking API - Filters and Queries', () => {
     console.log(`✓ Retrieved ${data.length} total bookings`);
 
     // Each item should have a bookingid
-    data.slice(0, 5).forEach((booking: any) => {
+      data.slice(0, 5).forEach((booking: BookingResult) => {
       expect(booking.bookingid).toBeTruthy();
     });
   });
 
   test('Filter bookings by firstname', async () => {
     // Create a booking with specific firstname
-    const token = await bookingService.authenticate();
     const uniqueName = `Filter${Date.now()}`;
 
     const created = await bookingService.createBooking({
@@ -77,13 +79,12 @@ test.describe('Booking API - Filters and Queries', () => {
     console.log(`✓ Found ${results.length} booking(s) with firstname: ${uniqueName}`);
 
     // Verify at least one result matches
-    const bookingIds = results.map((r: any) => r.bookingid);
+      const bookingIds = results.map((r: BookingResult) => r.bookingid);
     expect(bookingIds).toContain(created.bookingid);
   });
 
   test('Filter bookings by lastname', async () => {
     // Create a booking with specific lastname
-    const token = await bookingService.authenticate();
     const uniqueLastName = `LastName${Date.now()}`;
 
     const created = await bookingService.createBooking({
@@ -115,7 +116,6 @@ test.describe('Booking API - Filters and Queries', () => {
 
   test('Filter bookings by checkin date', async () => {
     // Create bookings with specific checkin date
-    const token = await bookingService.authenticate();
     const checkinDate = '2025-08-15';
 
     const created1 = await bookingService.createBooking({
@@ -146,7 +146,6 @@ test.describe('Booking API - Filters and Queries', () => {
 
   test('Filter bookings by checkout date', async () => {
     // Create booking with specific checkout date
-    const token = await bookingService.authenticate();
     const checkoutDate = '2025-09-30';
 
     const created = await bookingService.createBooking({
@@ -177,7 +176,6 @@ test.describe('Booking API - Filters and Queries', () => {
 
   test('Combine multiple filters', async () => {
     // Create booking
-    const token = await bookingService.authenticate();
     const firstName = `First${Date.now()}`;
     const lastName = `Last${Date.now()}`;
 
@@ -204,7 +202,7 @@ test.describe('Booking API - Filters and Queries', () => {
     const results = await response.json();
     expect(Array.isArray(results)).toBe(true);
 
-    console.log(`✓ Combined firstname and lastname filters work correctly`);
+    console.log('✓ Combined firstname and lastname filters work correctly');
   });
 
   test.skip('Pagination with limit parameter', async () => {
@@ -222,7 +220,6 @@ test.describe('Booking API - Filters and Queries', () => {
 
   test('Get specific booking by ID', async () => {
     // Create a booking
-    const token = await bookingService.authenticate();
 
     const created = await bookingService.createBooking({
       firstname: 'GetById',
@@ -249,14 +246,14 @@ test.describe('Booking API - Filters and Queries', () => {
 
   test('Filter with special characters in query', async () => {
     const response = await fetch(
-      `https://restful-booker.herokuapp.com/booking?firstname=O'Brien&lastname=Smith`,
+      'https://restful-booker.herokuapp.com/booking?firstname=O\'Brien&lastname=Smith',
     );
 
     expect(response.status).toBe(200);
     const results = await response.json();
     expect(Array.isArray(results)).toBe(true);
 
-    console.log(`✓ Special characters in filter handled correctly`);
+    console.log('✓ Special characters in filter handled correctly');
   });
 
   test('Filter with empty string returns results', async () => {
@@ -281,12 +278,12 @@ test.describe('Booking API - Filters and Queries', () => {
     expect(Array.isArray(results)).toBe(true);
     expect(results.length).toBe(0);
 
-    console.log(`✓ Non-existent filter returns empty array`);
+    console.log('✓ Non-existent filter returns empty array');
   });
 
   test('Case-sensitive filter behavior', async () => {
     // Create booking
-    const token = await bookingService.authenticate();
+    await bookingService.authenticate();
 
     const created = await bookingService.createBooking({
       firstname: 'CaseSensitive',

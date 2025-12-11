@@ -134,7 +134,8 @@ export class RegistrationPage extends BasePage {
       .locator('input[data-qa="zipcode"]')
       .or(page.locator('input#zipcode'))
       .or(page.locator('input[name="zipcode"]'))
-    this.mobileNumberInput = page
+      ;
+      this.mobileNumberInput = page
       .locator('input[data-qa="mobile_number"]')
       .or(page.locator('input[placeholder="Mobile Number *"]'));
 
@@ -232,7 +233,7 @@ export class RegistrationPage extends BasePage {
     // Click signup button (using force if needed to bypass any remaining overlays)
     try {
       await this.signupButton.click({ timeout: 10000 });
-    } catch (error) {
+      } catch {
       // If normal click fails, try with force
       console.log('Normal click failed, attempting forced click...');
       await this.signupButton.click({ force: true, timeout: 10000 });

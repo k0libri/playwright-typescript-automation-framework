@@ -264,7 +264,6 @@ export class TestDataValidator {
    */
   private static validatePassword(password: string): ValidationResult {
     const errors: string[] = [];
-    const warnings: string[] = [];
 
     if (TEST_DATA_CONSTANTS.VALIDATION.PASSWORD.REQUIRES_UPPERCASE && !/[A-Z]/.test(password)) {
       errors.push('Password must contain at least one uppercase letter');

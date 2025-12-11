@@ -52,7 +52,7 @@ export const test = base.extend<ModalFixtures>({
                 await new Promise((r) => setTimeout(r, 300));
                 console.log('✅ Alternative consent button clicked');
               }
-            } catch (altErr) {
+              } catch {
               console.log('⚠️  Alternative strategy also failed');
             }
 
@@ -65,7 +65,7 @@ export const test = base.extend<ModalFixtures>({
                   console.log('Modal hidden via CSS');
                 }
               });
-            } catch (hideErr) {
+            } catch {
               console.log('Could not hide modal via CSS');
             }
           }
