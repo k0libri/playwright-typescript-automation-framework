@@ -164,10 +164,7 @@ test-results.json
 !README.md
 !CONTRIBUTING.md
 !LICENSE.md
-!ENV_CONFIGURATION.md
-!ENV_SETUP_SUMMARY.md
 !tests/fixtures/FIXTURE_USAGE.md
-!tests/auth/README.md
 
 # PowerShell scripts
 *.ps1
