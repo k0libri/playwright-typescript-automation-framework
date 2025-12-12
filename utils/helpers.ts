@@ -1,5 +1,3 @@
-// Consent modal logic moved to components/consentModal.ts
-
 export function buildBookingData(
   overrides: Partial<{
     firstname: string;
