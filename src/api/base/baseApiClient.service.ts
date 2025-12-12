@@ -52,7 +52,7 @@ export abstract class BaseApiClient {
     options?: {
       headers?: Record<string, string>;
       params?: Record<string, string>;
-    },
+    }
   ): Promise<APIResponse> {
     const url = this.buildUrl(endpoint, options?.params);
     const defaultHeaders = {
@@ -73,7 +73,7 @@ export abstract class BaseApiClient {
       data?: Record<string, unknown> | string;
       headers?: Record<string, string>;
       params?: Record<string, string>;
-    },
+    }
   ): Promise<APIResponse> {
     const url = this.buildUrl(endpoint, options?.params);
     const csrfToken = await this.fetchCsrfToken();
@@ -100,7 +100,7 @@ export abstract class BaseApiClient {
       data?: Record<string, unknown> | string;
       headers?: Record<string, string>;
       params?: Record<string, string>;
-    },
+    }
   ): Promise<APIResponse> {
     const url = this.buildUrl(endpoint, options?.params);
     const csrfToken = await this.fetchCsrfToken();
@@ -127,7 +127,7 @@ export abstract class BaseApiClient {
       data?: Record<string, unknown> | string;
       headers?: Record<string, string>;
       params?: Record<string, string>;
-    },
+    }
   ): Promise<APIResponse> {
     const url = this.buildUrl(endpoint, options?.params);
     const csrfToken = await this.fetchCsrfToken();

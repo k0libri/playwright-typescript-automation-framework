@@ -42,7 +42,10 @@ export abstract class BaseComponent {
     try {
       await locator.waitFor({ timeout });
     } catch (error) {
-      if (error instanceof Error && error.message.includes('Target page, context or browser has been closed')) {
+      if (
+        error instanceof Error &&
+        error.message.includes('Target page, context or browser has been closed')
+      ) {
         throw new Error('Browser context was closed unexpectedly');
       }
       throw error;

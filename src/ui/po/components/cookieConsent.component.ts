@@ -13,7 +13,7 @@ export class CookieConsentComponent extends BaseComponent {
     super(page);
     this.consentDialog = page.locator('.fc-consent-root');
     this.acceptAllButton = page.locator(
-      'button[aria-label="Consent"], .fc-button[data-role="all"], .fc-cta-consent',
+      'button[aria-label="Consent"], .fc-button[data-role="all"], .fc-cta-consent'
     );
   }
 

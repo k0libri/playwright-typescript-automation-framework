@@ -52,7 +52,7 @@ test.describe('User API @api @critical', () => {
     await test.step('Verify login with valid credentials', async () => {
       const loginResponse = await userService.verifyLogin(
         uniqueUserData.email,
-        uniqueUserData.password,
+        uniqueUserData.password
       );
       expect(loginResponse.status()).toBe(200);
 

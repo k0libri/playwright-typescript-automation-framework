@@ -75,6 +75,20 @@ export default [
       '@typescript-eslint/no-explicit-any': 'off',
       'no-magic-numbers': 'off',
       'no-empty': 'off',
+      // Prevent test.only to avoid accidentally committing focused tests
+      'no-restricted-properties': [
+        'error',
+        {
+          object: 'test',
+          property: 'only',
+          message: 'test.only is not allowed. Remove .only before committing.',
+        },
+        {
+          object: 'describe',
+          property: 'only',
+          message: 'describe.only is not allowed. Remove .only before committing.',
+        },
+      ],
     },
   },
   {
@@ -83,12 +97,14 @@ export default [
       'playwright-report/**',
       'test-results/**',
       'allure-results/**',
+      'allure-report/**',
       'reports/**',
       'scripts/**',
       'coverage/**',
       '*.config.js',
       '*.config.mjs',
       '*.config.ts',
+      'test-results.json',
     ],
   },
 ];
