@@ -1,7 +1,0 @@
-{
-  "id": "72a7fdbdd64ba4083e03bdd0c4a04d3b",
-  "fullName": "ui/cookie-banner.spec.ts:61:7",
-  "name": "Cookie consent handles multiple acceptance attempts gracefully",
-  "status": "passed",
-  "testResultsByEnv": { "default": "10427867cbe90b413049b22df9dcf809" }
-}

@@ -1,7 +1,0 @@
-{
-  "id": "b5d6c02188a2b27186d4f5e25d7889e4",
-  "fullName": "ui/tests/cookie-consent/cookieBanner.spec.ts:95:7",
-  "name": "should handle cookie consent in iframe context",
-  "status": "passed",
-  "testResultsByEnv": { "default": "3b9118479734be768e3de52d2e010d7d" }
-}

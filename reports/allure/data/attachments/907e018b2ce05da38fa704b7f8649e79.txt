@@ -1,0 +1,6 @@
+Starting Cart Management test suite
+Cookie consent accepted successfully
+User created and logged in successfully
+No cookie consent dialog detected or already handled
+No cookie consent dialog detected or already handled
+Cart contents verified and user session maintained

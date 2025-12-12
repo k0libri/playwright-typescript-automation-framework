@@ -1,0 +1,5 @@
+Cookie consent accepted successfully
+No cookie consent dialog detected or already handled
+No cookie consent dialog detected or already handled
+Cart items after removal attempt: 0
+Cart operations test completed without user creation

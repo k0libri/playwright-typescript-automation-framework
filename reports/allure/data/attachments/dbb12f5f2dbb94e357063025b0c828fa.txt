@@ -1,0 +1,5 @@
+Starting Order Completion test suite
+No cookie consent dialog detected or already handled
+User created and logged in successfully
+No cookie consent dialog detected or already handled
+No cookie consent dialog detected or already handled

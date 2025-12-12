@@ -91,10 +91,8 @@ export class AuthenticationPage extends BasePage {
    * Perform user login
    */
   async login(email: string, password: string): Promise<void> {
-    await this.handleCookieConsentIfPresent();
     await this.loginEmailInput.fill(email);
     await this.loginPasswordInput.fill(password);
-    await this.handleCookieConsentIfPresent(); // Handle again before click
     await this.loginButton.click();
   }
 
@@ -102,10 +100,8 @@ export class AuthenticationPage extends BasePage {
    * Start signup process with name and email
    */
   async startSignup(name: string, email: string): Promise<void> {
-    await this.handleCookieConsentIfPresent();
     await this.signupNameInput.fill(name);
     await this.signupEmailInput.fill(email);
-    await this.handleCookieConsentIfPresent(); // Handle again before click
     await this.signupButton.click();
   }
 

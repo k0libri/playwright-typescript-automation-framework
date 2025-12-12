@@ -1,7 +1,0 @@
-{
-  "id": "c260826d4e90e5902d5c484fb95470c2",
-  "fullName": "ui/tests/cookie-consent/cookieBanner.spec.ts:47:7",
-  "name": "should load page correctly after automatic cookie handling",
-  "status": "passed",
-  "testResultsByEnv": { "default": "cb09ff5c43abfbd053aa762cd2ad2795" }
-}

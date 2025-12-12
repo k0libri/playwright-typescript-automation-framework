@@ -68,9 +68,30 @@ export class UserDataFactory {
   static generateInvalidUserData(): Partial<UserData> {
     return {
       email: 'invalid-email-format',
-      password: '123', // Too short
-      name: '', // Empty name
+      password: '123',
+      name: '',
       mobile_number: 'invalid-phone',
+    };
+  }
+
+  static generateCompleteInvalidUserData(): UserData {
+    return {
+      name: '',
+      email: 'invalid-email',
+      password: '123',
+      title: 'Mr',
+      birth_date: '1',
+      birth_month: 'January',
+      birth_year: '1990',
+      firstname: '',
+      lastname: '',
+      company: 'Test',
+      address1: 'Test',
+      country: 'US',
+      zipcode: '12345',
+      state: 'CA',
+      city: 'LA',
+      mobile_number: 'invalid',
     };
   }
 }

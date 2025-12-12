@@ -1,7 +1,0 @@
-{
-  "id": "79e6b93af864c064e6f187ebbf97f491",
-  "fullName": "ui/cookie-banner.spec.ts:152:7",
-  "name": "Cookie banner appears and can be accepted",
-  "status": "failed",
-  "testResultsByEnv": { "default": "3c17a438f2b3051ccc50c86d4f89aa41" }
-}

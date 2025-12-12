@@ -1,7 +1,0 @@
-{
-  "id": "639f240236cbb28a99cf1cd2079b03a3",
-  "fullName": "ui/tests/authentication/userRegistration.spec.ts:14:7",
-  "name": "should register new user via UI and verify user creation via API",
-  "status": "failed",
-  "testResultsByEnv": { "default": "972502515fa484dfd7489e393aa3edcb" }
-}

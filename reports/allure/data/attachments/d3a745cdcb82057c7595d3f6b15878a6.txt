@@ -1,0 +1,6 @@
+Starting Order Completion test suite
+Cookie consent accepted successfully
+User created and logged in successfully
+No cookie consent dialog detected or already handled
+No cookie consent dialog detected or already handled
+Order history API verification would go here when endpoint is available

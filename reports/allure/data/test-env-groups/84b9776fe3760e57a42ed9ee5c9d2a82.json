@@ -1,7 +1,0 @@
-{
-  "id": "84b9776fe3760e57a42ed9ee5c9d2a82",
-  "fullName": "ui/tests/cookie-consent/cookieBanner.spec.ts:104:7",
-  "name": "should verify navigation elements work after cookie consent",
-  "status": "passed",
-  "testResultsByEnv": { "default": "3bab78d8e596ac546c56e4f37c6be9d1" }
-}

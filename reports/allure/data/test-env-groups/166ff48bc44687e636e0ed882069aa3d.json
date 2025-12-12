@@ -1,7 +1,0 @@
-{
-  "id": "166ff48bc44687e636e0ed882069aa3d",
-  "fullName": "ui/tests/authentication/userRegistration.spec.ts:89:7",
-  "name": "should display error for duplicate email registration",
-  "status": "failed",
-  "testResultsByEnv": { "default": "8ea18fcfba8d99a30112e3026f7ddb47" }
-}

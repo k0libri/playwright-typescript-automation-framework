@@ -1,0 +1,1 @@
+{"id":"97889a552befc41938bd727d45669233","fullName":"ui/tests/authentication/authentication.spec.ts:202:9","name":"should validate login with non-existent user via API","status":"passed","testResultsByEnv":{"default":"cc054c967072a46ec1781b9e926571c5"}}

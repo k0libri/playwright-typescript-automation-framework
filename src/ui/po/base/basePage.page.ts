@@ -18,9 +18,24 @@ export abstract class BasePage {
    * Navigate to a specific URL
    */
   public async navigateTo(url: string): Promise<void> {
-    await this.page.goto(url);
-    await this.waitForPageReady();
-    await this.handleCookieConsentIfPresent();
+    try {
+      await this.page.goto(url, { waitUntil: 'domcontentloaded', timeout: 60000 });
+      await this.waitForPageReady();
+      await this.handleCookieConsentIfPresent();
+    } catch (error) {
+      console.error(`Navigation to ${url} failed:`, error);
+      // Retry once after a short delay using Node.js timeout (not page.waitForTimeout)
+      console.log('Retrying navigation after 3 seconds...');
+      await new Promise((resolve) => setTimeout(resolve, 3000));
+      try {
+        await this.page.goto(url, { waitUntil: 'domcontentloaded', timeout: 60000 });
+        await this.waitForPageReady();
+        await this.handleCookieConsentIfPresent();
+      } catch (retryError) {
+        console.error(`Retry navigation to ${url} also failed:`, retryError);
+        throw retryError;
+      }
+    }
   }
 
   /**

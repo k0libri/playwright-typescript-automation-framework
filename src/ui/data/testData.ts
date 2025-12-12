@@ -43,3 +43,23 @@ export const ScreenshotPaths = {
   NO_COOKIE_BANNER: 'test-results/no-cookie-banner.png',
   TEST_FAILURE: 'test-results/test-failure.png',
 } as const;
+
+export const HttpStatus = {
+  OK: 200,
+  CREATED: 201,
+  BAD_REQUEST: 400,
+  UNAUTHORIZED: 401,
+  FORBIDDEN: 403,
+  NOT_FOUND: 404,
+} as const;
+
+export const ApiResponseCodes = {
+  NOT_FOUND: 404,
+  OK: 200,
+  CREATED: 201,
+} as const;
+
+export interface ApiErrorResponse {
+  responseCode: number;
+  message: string;
+}

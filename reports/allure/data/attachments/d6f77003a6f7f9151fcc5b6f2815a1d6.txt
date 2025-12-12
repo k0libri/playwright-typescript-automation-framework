@@ -1,0 +1,2 @@
+Starting Authentication Negative Tests
+Cookie consent accepted successfully

@@ -1,0 +1,3 @@
+Starting Order Completion test suite
+Cookie consent accepted successfully
+No cookie consent dialog detected or already handled

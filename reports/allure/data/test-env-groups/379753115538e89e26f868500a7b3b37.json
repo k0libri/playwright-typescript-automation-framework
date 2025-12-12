@@ -1,0 +1,1 @@
+{"id":"379753115538e89e26f868500a7b3b37","fullName":"ui/tests/cart/cartManagement.spec.ts:8:7","name":"should login via UI, add products to cart, and verify cart via API","status":"passed","testResultsByEnv":{"default":"81353ce4546eb4cec5ea8f1ea5388d73"}}

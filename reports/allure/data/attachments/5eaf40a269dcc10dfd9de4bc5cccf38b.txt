@@ -1,0 +1,4 @@
+Cookie consent accepted successfully
+No cookie consent dialog detected or already handled
+No cookie consent dialog detected or already handled
+Network idle timeout, continuing with DOM ready state

@@ -1,4 +1,0 @@
-Starting User Registration test suite
-Cookie consent accepted successfully
-No cookie consent dialog detected or already handled
-No cookie consent dialog detected or already handled
