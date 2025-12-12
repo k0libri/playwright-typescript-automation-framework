@@ -4,6 +4,12 @@ on:
     branches: [main, master]
   pull_request:
     branches: [main, master]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
 jobs:
   test:
     timeout-minutes: 60
@@ -24,6 +30,7 @@ jobs:
       - name: Run Playwright tests
         run: npx playwright test
       - name: Generate Allure report
+        if: ${{ !cancelled() }}
         run: npx allure@latest generate allure-results -o allure-report
       - name: Upload Playwright HTML report
         uses: actions/upload-artifact@v4
@@ -32,10 +39,27 @@ jobs:
           name: playwright-report
           path: playwright-report/
           retention-days: 30
-      - name: Upload Allure report
+      - name: Upload Allure report artifact
         uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
         with:
           name: allure-report
           path: allure-report/
           retention-days: 30
+      - name: Upload Allure report to Pages
+        uses: actions/upload-pages-artifact@v3
+        if: ${{ !cancelled() }}
+        with:
+          path: allure-report/
+
+  deploy:
+    needs: test
+    if: ${{ !cancelled() }}
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
