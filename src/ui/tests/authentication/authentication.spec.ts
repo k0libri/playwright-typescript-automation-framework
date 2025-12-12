@@ -12,7 +12,7 @@ test.describe('Authentication @critical', () => {
       console.log('Starting User Registration test suite');
     });
 
-    test.only('should register new user via UI and verify user creation via API', async ({
+    test('should register new user via UI and verify user creation via API', async ({
       page,
       authenticationPage,
       uniqueUserData,
