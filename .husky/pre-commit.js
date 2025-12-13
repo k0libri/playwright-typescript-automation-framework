@@ -31,10 +31,10 @@ if (eslintFiles.length) {
   log('[husky] Running ESLint on staged files:');
   log(eslintFiles.join('\n'));
   const eslintJsonLog = '.husky/eslint-report.json';
-  const jsonOut = safeExec(`npx eslint --format json ${eslintFiles.map(f => `'${f.replace(/'/g, "'\\''")}'`).join(' ')}`);
+  const jsonOut = safeExec(`npx eslint --format json ${eslintFiles.join(' ')}`);
   try { fs.writeFileSync(eslintJsonLog, jsonOut); log(`[husky] ESLint JSON log saved to: ${eslintJsonLog}`); } catch {}
   try {
-    execSync(`npx eslint --format stylish ${eslintFiles.map(f => `'${f.replace(/'/g, "'\\''")}'`).join(' ')}`, { stdio: 'inherit' });
+    execSync(`npx eslint --format stylish ${eslintFiles.join(' ')}`, { stdio: 'inherit' });
   } catch (e) {
     eslintStatus = 1;
   }
@@ -46,7 +46,7 @@ if (prettierFiles.length) {
   log('[husky] Running Prettier --write on staged files:');
   log(prettierFiles.join('\n'));
   const prettierLog = '.husky/prettier-report.txt';
-  const out = safeExec(`npx prettier --write ${prettierFiles.map(f => `'${f.replace(/'/g, "'\\''")}'`).join(' ')}`);
+  const out = safeExec(`npx prettier --write ${prettierFiles.join(' ')}`);
   try { fs.writeFileSync(prettierLog, out); log(`[husky] Prettier log saved to: ${prettierLog}`); } catch {}
 } else {
   log('[husky] No staged files for Prettier.');

@@ -1,0 +1,1 @@
+[[31merror[39m] No files matching the pattern were found: "'tests/ui/ecommerce-ui.spec.ts'".
