@@ -1,4 +1,0 @@
-#!/usr/bin/env sh
-# Husky v10-compatible wrapper: delegate to Node script
-# Uses absolute repository path to handle spaces on Windows
-node "$PWD/.husky/pre-commit.js"
