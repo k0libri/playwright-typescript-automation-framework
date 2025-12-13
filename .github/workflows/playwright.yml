@@ -4,6 +4,14 @@ on:
     branches: [main, master, gergo_test_branch]
   pull_request:
     branches: [main, master]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+  checks: write
+  pull-requests: write
+
 jobs:
   test:
     timeout-minutes: 60
@@ -23,22 +31,61 @@ jobs:
         run: npx prettier --check .
       - name: Run Playwright tests
         run: npx playwright test
-        continue-on-error: true
       - name: Generate Allure report
         if: ${{ !cancelled() }}
-        run: npx allure generate allure-results -o reports/allure
+        run: |
+          npx allure@latest generate allure-results -o allure-report
+      - name: Restore Allure history for trends
+        if: ${{ !cancelled() }}
+        uses: actions/cache@v4
+        with:
+          path: allure-report/history
+          key: allure-history-${{ github.ref }}
+          restore-keys: |
+            allure-history-
+      - name: Verify Allure report generated
+        if: ${{ !cancelled() }}
+        run: |
+          echo "Allure report directory contents:"
+          ls -la allure-report/ || echo "Directory does not exist"
+          echo ""
+          if [ -f allure-report/index.html ]; then
+            echo "✓ Allure report index.html found"
+            wc -c allure-report/index.html
+          else
+            echo "✗ Allure report index.html NOT found"
+            echo "Checking for allure-results:"
+            ls -la allure-results/ 2>/dev/null || echo "No allure-results directory"
+          fi
       - name: Upload Playwright HTML report
         uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
         with:
           name: playwright-report
-          path: playwright-report
+          path: playwright-report/
           retention-days: 30
-          if-no-files-found: warn
-      - name: Upload Allure report
+      - name: Upload Allure report artifact
         uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
         with:
           name: allure-report
-          path: reports/allure/
+          path: allure-report/
           retention-days: 30
+      - name: Upload Allure report to Pages
+        uses: actions/upload-pages-artifact@v3
+        if: ${{ !cancelled() }}
+        with:
+          path: allure-report/
+
+  deploy:
+    name: Deploy to GitHub Pages
+    needs: test
+    if: ${{ !cancelled() && github.ref == 'refs/heads/gergo_test_branch' }}
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

@@ -1,0 +1,1393 @@
+{
+  "config": {
+    "configFile": "C:\\Users\\GergoDobrosi\\Desktop\\playwright-typescript-automation-framework\\playwright.config.ts",
+    "rootDir": "C:/Users/GergoDobrosi/Desktop/playwright-typescript-automation-framework/src",
+    "forbidOnly": false,
+    "fullyParallel": true,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "reporter": [
+      [
+        "html",
+        {
+          "open": "never",
+          "outputFolder": "playwright-report"
+        }
+      ],
+      [
+        "json",
+        {
+          "outputFile": "test-results.json"
+        }
+      ],
+      [
+        "C:\\Users\\GergoDobrosi\\Desktop\\playwright-typescript-automation-framework\\node_modules\\allure-playwright\\dist\\cjs\\index.js",
+        {
+          "outputFolder": "allure-results",
+          "suiteTitle": "Playwright Automation Exercise Tests"
+        }
+      ],
+      [
+        "list",
+        null
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "quiet": false,
+    "projects": [
+      {
+        "outputDir": "C:/Users/GergoDobrosi/Desktop/playwright-typescript-automation-framework/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "C:/Users/GergoDobrosi/Desktop/playwright-typescript-automation-framework/src",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.57.0",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "api\\tests\\user\\user.spec.ts",
+      "file": "api/tests/user/user.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "User API @api @critical",
+          "file": "api/tests/user/user.spec.ts",
+          "line": 7,
+          "column": 6,
+          "specs": [
+            {
+              "title": "should create user account via API",
+              "ok": true,
+              "tags": [
+                "api",
+                "critical"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 2391,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "Starting User API test suite\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Create user account via API",
+                          "duration": 1322
+                        },
+                        {
+                          "title": "Verify user creation by fetching user details",
+                          "duration": 239
+                        },
+                        {
+                          "title": "Cleanup: Delete test user",
+                          "duration": 344
+                        }
+                      ],
+                      "startTime": "2025-12-12T15:17:43.082Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "47539eed2181862a1d58-bae86632a7f7c6a3f7d9",
+              "file": "api/tests/user/user.spec.ts",
+              "line": 12,
+              "column": 7
+            },
+            {
+              "title": "should verify login with valid credentials",
+              "ok": true,
+              "tags": [
+                "api",
+                "critical"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1565,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Create user for login test",
+                          "duration": 560
+                        },
+                        {
+                          "title": "Verify login with valid credentials",
+                          "duration": 274
+                        },
+                        {
+                          "title": "Cleanup: Delete test user",
+                          "duration": 336
+                        }
+                      ],
+                      "startTime": "2025-12-12T15:17:45.658Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "47539eed2181862a1d58-a3daeedf8ce466c5c24b",
+              "file": "api/tests/user/user.spec.ts",
+              "line": 42,
+              "column": 7
+            },
+            {
+              "title": "should return error for invalid login credentials",
+              "ok": true,
+              "tags": [
+                "api",
+                "critical"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 444,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Attempt login with invalid credentials",
+                          "duration": 432
+                        }
+                      ],
+                      "startTime": "2025-12-12T15:17:47.239Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "47539eed2181862a1d58-77704590a9535c4979bc",
+              "file": "api/tests/user/user.spec.ts",
+              "line": 74,
+              "column": 7
+            },
+            {
+              "title": "should get user details by email",
+              "ok": true,
+              "tags": [
+                "api",
+                "critical"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1543,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Create user for details test",
+                          "duration": 666
+                        },
+                        {
+                          "title": "Get user details by email",
+                          "duration": 220
+                        },
+                        {
+                          "title": "Cleanup: Delete test user",
+                          "duration": 283
+                        }
+                      ],
+                      "startTime": "2025-12-12T15:17:47.698Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "47539eed2181862a1d58-3f234e681d1b5a85d1a7",
+              "file": "api/tests/user/user.spec.ts",
+              "line": 85,
+              "column": 7
+            },
+            {
+              "title": "should return error for non-existent user email",
+              "ok": true,
+              "tags": [
+                "api",
+                "critical"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 263,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Get details for non-existent user",
+                          "duration": 256
+                        }
+                      ],
+                      "startTime": "2025-12-12T15:17:49.256Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "47539eed2181862a1d58-5df72d7af446be160577",
+              "file": "api/tests/user/user.spec.ts",
+              "line": 117,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "ui\\tests\\authentication\\authentication.spec.ts",
+      "file": "ui/tests/authentication/authentication.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Authentication @critical",
+          "file": "ui/tests/authentication/authentication.spec.ts",
+          "line": 9,
+          "column": 6,
+          "specs": [],
+          "suites": [
+            {
+              "title": "Positive Test Cases @smoke",
+              "file": "ui/tests/authentication/authentication.spec.ts",
+              "line": 10,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "should register new user via UI and verify user creation via API",
+                  "ok": true,
+                  "tags": [
+                    "critical",
+                    "smoke"
+                  ],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 0,
+                          "parallelIndex": 0,
+                          "status": "passed",
+                          "duration": 10500,
+                          "errors": [],
+                          "stdout": [
+                            {
+                              "text": "Starting User Registration test suite\n"
+                            },
+                            {
+                              "text": "Cookie consent accepted successfully\n"
+                            },
+                            {
+                              "text": "User registration verified:  TestFirst153 TestLast153\n"
+                            },
+                            {
+                              "text": "Note: User account created will remain due to API CSRF protection - this is expected for automation exercise\n"
+                            }
+                          ],
+                          "stderr": [],
+                          "retry": 0,
+                          "steps": [
+                            {
+                              "title": "Navigate to signup/login page",
+                              "duration": 7393
+                            },
+                            {
+                              "title": "Initiate signup with name and email",
+                              "duration": 468
+                            },
+                            {
+                              "title": "Complete registration form",
+                              "duration": 1304
+                            },
+                            {
+                              "title": "Continue after account creation",
+                              "duration": 1014
+                            },
+                            {
+                              "title": "Verify user account was created successfully",
+                              "duration": 40
+                            },
+                            {
+                              "title": "Note: User cleanup not performed",
+                              "duration": 0
+                            }
+                          ],
+                          "startTime": "2025-12-12T15:17:49.559Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "94c134cac35d2aa52f67-bfb6cb5705cd62efcaf9",
+                  "file": "ui/tests/authentication/authentication.spec.ts",
+                  "line": 15,
+                  "column": 9
+                },
+                {
+                  "title": "should display error for duplicate email registration",
+                  "ok": true,
+                  "tags": [
+                    "critical",
+                    "smoke"
+                  ],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 0,
+                          "parallelIndex": 0,
+                          "status": "passed",
+                          "duration": 24851,
+                          "errors": [],
+                          "stdout": [
+                            {
+                              "text": "Cookie consent accepted successfully\n"
+                            },
+                            {
+                              "text": "Network idle timeout, continuing with DOM ready state\n"
+                            },
+                            {
+                              "text": "No cookie consent dialog detected or already handled\n"
+                            }
+                          ],
+                          "stderr": [],
+                          "retry": 0,
+                          "steps": [
+                            {
+                              "title": "Create initial user",
+                              "duration": 8244
+                            },
+                            {
+                              "title": "Attempt duplicate email registration",
+                              "duration": 16345
+                            }
+                          ],
+                          "startTime": "2025-12-12T15:18:00.086Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "94c134cac35d2aa52f67-3e4864279ae2695197b9",
+                  "file": "ui/tests/authentication/authentication.spec.ts",
+                  "line": 56,
+                  "column": 9
+                }
+              ]
+            },
+            {
+              "title": "Negative Test Cases @negative",
+              "file": "ui/tests/authentication/authentication.spec.ts",
+              "line": 92,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "should display error for invalid login credentials via UI",
+                  "ok": true,
+                  "tags": [
+                    "critical",
+                    "negative"
+                  ],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 0,
+                          "parallelIndex": 0,
+                          "status": "passed",
+                          "duration": 4426,
+                          "errors": [],
+                          "stdout": [
+                            {
+                              "text": "Starting Authentication Negative Tests\n"
+                            },
+                            {
+                              "text": "Cookie consent accepted successfully\n"
+                            }
+                          ],
+                          "stderr": [],
+                          "retry": 0,
+                          "steps": [
+                            {
+                              "title": "Attempt login with invalid credentials",
+                              "duration": 4124
+                            }
+                          ],
+                          "startTime": "2025-12-12T15:18:24.949Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "94c134cac35d2aa52f67-ed1a053ed5a25626c5ae",
+                  "file": "ui/tests/authentication/authentication.spec.ts",
+                  "line": 141,
+                  "column": 9
+                },
+                {
+                  "title": "should return error for invalid login via API",
+                  "ok": true,
+                  "tags": [
+                    "critical",
+                    "negative"
+                  ],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 0,
+                          "parallelIndex": 0,
+                          "status": "passed",
+                          "duration": 5,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "steps": [
+                            {
+                              "title": "Verify login error via API using beforeAll response",
+                              "duration": 4
+                            }
+                          ],
+                          "startTime": "2025-12-12T15:18:30.581Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "94c134cac35d2aa52f67-64c23e4f02868841a22c",
+                  "file": "ui/tests/authentication/authentication.spec.ts",
+                  "line": 151,
+                  "column": 9
+                },
+                {
+                  "title": "should handle invalid email format during registration",
+                  "ok": true,
+                  "tags": [
+                    "critical",
+                    "negative"
+                  ],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 0,
+                          "parallelIndex": 0,
+                          "status": "passed",
+                          "duration": 3664,
+                          "errors": [],
+                          "stdout": [
+                            {
+                              "text": "Cookie consent accepted successfully\n"
+                            }
+                          ],
+                          "stderr": [],
+                          "retry": 0,
+                          "steps": [
+                            {
+                              "title": "Attempt registration with invalid email format",
+                              "duration": 3379
+                            }
+                          ],
+                          "startTime": "2025-12-12T15:18:30.601Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "94c134cac35d2aa52f67-667af1a49cc547b30863",
+                  "file": "ui/tests/authentication/authentication.spec.ts",
+                  "line": 159,
+                  "column": 9
+                },
+                {
+                  "title": "should handle empty required fields during registration",
+                  "ok": true,
+                  "tags": [
+                    "critical",
+                    "negative"
+                  ],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 0,
+                          "parallelIndex": 0,
+                          "status": "passed",
+                          "duration": 20708,
+                          "errors": [],
+                          "stdout": [
+                            {
+                              "text": "Cookie consent accepted successfully\n"
+                            },
+                            {
+                              "text": "Network idle timeout, continuing with DOM ready state\n"
+                            },
+                            {
+                              "text": "No cookie consent dialog detected or already handled\n"
+                            }
+                          ],
+                          "stderr": [],
+                          "retry": 0,
+                          "steps": [
+                            {
+                              "title": "Verify browser prevents empty name submission",
+                              "duration": 4402
+                            },
+                            {
+                              "title": "Verify browser prevents empty email submission",
+                              "duration": 16038
+                            }
+                          ],
+                          "startTime": "2025-12-12T15:18:34.284Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "94c134cac35d2aa52f67-6e8c81363020de070066",
+                  "file": "ui/tests/authentication/authentication.spec.ts",
+                  "line": 171,
+                  "column": 9
+                },
+                {
+                  "title": "should validate login with non-existent user via API",
+                  "ok": true,
+                  "tags": [
+                    "critical",
+                    "negative"
+                  ],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 0,
+                          "parallelIndex": 0,
+                          "status": "passed",
+                          "duration": 2,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "steps": [
+                            {
+                              "title": "Verify non-existent user login error via API using beforeAll response",
+                              "duration": 2
+                            }
+                          ],
+                          "startTime": "2025-12-12T15:18:55.003Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "94c134cac35d2aa52f67-c41e7b7241c969547cdd",
+                  "file": "ui/tests/authentication/authentication.spec.ts",
+                  "line": 201,
+                  "column": 9
+                },
+                {
+                  "title": "should handle invalid user data during API registration",
+                  "ok": true,
+                  "tags": [
+                    "critical",
+                    "negative"
+                  ],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 0,
+                          "parallelIndex": 0,
+                          "status": "passed",
+                          "duration": 1,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "steps": [
+                            {
+                              "title": "Verify invalid registration data error via API using beforeAll response",
+                              "duration": 1
+                            }
+                          ],
+                          "startTime": "2025-12-12T15:18:55.012Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "94c134cac35d2aa52f67-381e934eba4c3597171b",
+                  "file": "ui/tests/authentication/authentication.spec.ts",
+                  "line": 209,
+                  "column": 9
+                },
+                {
+                  "title": "should handle API errors gracefully",
+                  "ok": true,
+                  "tags": [
+                    "critical",
+                    "negative"
+                  ],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 0,
+                          "parallelIndex": 0,
+                          "status": "passed",
+                          "duration": 2,
+                          "errors": [],
+                          "stdout": [
+                            {
+                              "text": "API error handled with status: \u001b[33m200\u001b[39m\n"
+                            }
+                          ],
+                          "stderr": [],
+                          "retry": 0,
+                          "steps": [
+                            {
+                              "title": "Verify API error handling for malformed requests using beforeAll response",
+                              "duration": 2
+                            }
+                          ],
+                          "startTime": "2025-12-12T15:18:55.019Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "94c134cac35d2aa52f67-369a378957b5ec99364f",
+                  "file": "ui/tests/authentication/authentication.spec.ts",
+                  "line": 215,
+                  "column": 9
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "ui\\tests\\cart\\cartManagement.spec.ts",
+      "file": "ui/tests/cart/cartManagement.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Cart Management - Login + Cart Verification @critical @regression",
+          "file": "ui/tests/cart/cartManagement.spec.ts",
+          "line": 3,
+          "column": 6,
+          "specs": [
+            {
+              "title": "should login via UI, add products to cart, and verify cart via API",
+              "ok": true,
+              "tags": [
+                "critical",
+                "regression"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 24473,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "Starting Cart Management test suite\n"
+                        },
+                        {
+                          "text": "Cookie consent accepted successfully\n"
+                        },
+                        {
+                          "text": "User created and logged in successfully\n"
+                        },
+                        {
+                          "text": "No cookie consent dialog detected or already handled\n"
+                        },
+                        {
+                          "text": "No cookie consent dialog detected or already handled\n"
+                        },
+                        {
+                          "text": "Cart contents verified and user session maintained\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Create user account via UI",
+                          "duration": 5833
+                        },
+                        {
+                          "title": "Add products to cart via UI",
+                          "duration": 8109
+                        },
+                        {
+                          "title": "Verify cart contents via UI",
+                          "duration": 8116
+                        },
+                        {
+                          "title": "Verify cart contents and session maintained",
+                          "duration": 2074
+                        }
+                      ],
+                      "startTime": "2025-12-12T15:18:55.042Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "31f942c72e3afdc979a1-24c861a59786bcb0ed24",
+              "file": "ui/tests/cart/cartManagement.spec.ts",
+              "line": 8,
+              "column": 7
+            },
+            {
+              "title": "should handle basic cart operations without login",
+              "ok": true,
+              "tags": [
+                "critical",
+                "regression"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 21736,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "Cookie consent accepted successfully\n"
+                        },
+                        {
+                          "text": "No cookie consent dialog detected or already handled\n"
+                        },
+                        {
+                          "text": "No cookie consent dialog detected or already handled\n"
+                        },
+                        {
+                          "text": "Cart items after removal attempt: 0\n"
+                        },
+                        {
+                          "text": "Cart operations test completed without user creation\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Navigate to home page",
+                          "duration": 3906
+                        },
+                        {
+                          "title": "Navigate to products page",
+                          "duration": 5476
+                        },
+                        {
+                          "title": "Add product to cart",
+                          "duration": 2165
+                        },
+                        {
+                          "title": "Verify cart contents",
+                          "duration": 2149
+                        },
+                        {
+                          "title": "Remove item from cart",
+                          "duration": 7772
+                        },
+                        {
+                          "title": "Test completed successfully",
+                          "duration": 0
+                        }
+                      ],
+                      "startTime": "2025-12-12T15:19:19.536Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "31f942c72e3afdc979a1-baeba175d0b8165fb007",
+              "file": "ui/tests/cart/cartManagement.spec.ts",
+              "line": 66,
+              "column": 7
+            },
+            {
+              "title": "should require login for checkout process",
+              "ok": true,
+              "tags": [
+                "critical",
+                "regression"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 14884,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "Cookie consent accepted successfully\n"
+                        },
+                        {
+                          "text": "No cookie consent dialog detected or already handled\n"
+                        },
+                        {
+                          "text": "Checkout correctly requires login\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Navigate to home page",
+                          "duration": 5925
+                        },
+                        {
+                          "title": "Add product to cart without login",
+                          "duration": 8619
+                        },
+                        {
+                          "title": "Verify checkout requires login",
+                          "duration": 91
+                        }
+                      ],
+                      "startTime": "2025-12-12T15:19:41.285Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "31f942c72e3afdc979a1-8339ecff8f78c4867820",
+              "file": "ui/tests/cart/cartManagement.spec.ts",
+              "line": 122,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "ui\\tests\\checkout\\orderCompletion.spec.ts",
+      "file": "ui/tests/checkout/orderCompletion.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Order Completion - Purchase + Order History @critical @e2e",
+          "file": "ui/tests/checkout/orderCompletion.spec.ts",
+          "line": 5,
+          "column": 6,
+          "specs": [
+            {
+              "title": "should complete purchase flow and verify order confirmation",
+              "ok": true,
+              "tags": [
+                "critical",
+                "e2e"
+              ],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 31041,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "Starting Order Completion test suite\n"
+                        },
+                        {
+                          "text": "Cookie consent accepted successfully\n"
+                        },
+                        {
+                          "text": "User created and logged in successfully\n"
+                        },
+                        {
+                          "text": "No cookie consent dialog detected or already handled\n"
+                        },
+                        {
+                          "text": "No cookie consent dialog detected or already handled\n"
+                        },
+                        {
+                          "text": "Order history API verification would go here when endpoint is available\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Create user account via UI",
+                          "duration": 8453
+                        },
+                        {
+                          "title": "Add products to cart",
+                          "duration": 8406
+                        },
+                        {
+                          "title": "Review cart and proceed to checkout",
+                          "duration": 5836
+                        },
+                        {
+                          "title": "Review order details on checkout page",
+                          "duration": 2170
+                        },
+                        {
+                          "title": "Place order",
+                          "duration": 2073
+                        },
+                        {
+                          "title": "Complete payment process",
+                          "duration": 1965
+                        },
+                        {
+                          "title": "Verify order history via API (if available)",
+                          "duration": 736
+                        },
+                        {
+                          "title": "Continue after order confirmation",
+                          "duration": 430
+                        },
+                        {
+                          "title": "Cleanup: Delete test user",
+                          "duration": 647
+                        }
+                      ],
+                      "startTime": "2025-12-12T15:19:56.191Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "7524e5d98ba0b4c322b4-082ecf268a3763e9d06a",
+              "file": "ui/tests/checkout/orderCompletion.spec.ts",
+              "line": 10,
+              "column": 7
+            },
+            {
+              "title": "should handle checkout with single product",
+              "ok": true,
+              "tags": [
+                "critical",
+                "e2e"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 21758,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "Cookie consent accepted successfully\n"
+                        },
+                        {
+                          "text": "No cookie consent dialog detected or already handled\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Setup: Create user and add single product",
+                          "duration": 14559
+                        },
+                        {
+                          "title": "Complete checkout with single product",
+                          "duration": 5689
+                        },
+                        {
+                          "title": "Cleanup: Delete test user",
+                          "duration": 1262
+                        }
+                      ],
+                      "startTime": "2025-12-12T15:20:27.251Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "7524e5d98ba0b4c322b4-edc802f75afc3b017883",
+              "file": "ui/tests/checkout/orderCompletion.spec.ts",
+              "line": 110,
+              "column": 7
+            },
+            {
+              "title": "should validate order details match cart contents",
+              "ok": true,
+              "tags": [
+                "critical",
+                "e2e"
+              ],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 35826,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "Cookie consent accepted successfully\n"
+                        },
+                        {
+                          "text": "No cookie consent dialog detected or already handled\n"
+                        },
+                        {
+                          "text": "Network idle timeout, continuing with DOM ready state\n"
+                        },
+                        {
+                          "text": "No cookie consent dialog detected or already handled\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Setup: Create user and add products",
+                          "duration": 16356
+                        },
+                        {
+                          "title": "Get cart item details",
+                          "duration": 15511
+                        },
+                        {
+                          "title": "Verify order details match cart contents",
+                          "duration": 3103
+                        },
+                        {
+                          "title": "Cleanup: Delete test user",
+                          "duration": 559
+                        }
+                      ],
+                      "startTime": "2025-12-12T15:20:49.021Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "7524e5d98ba0b4c322b4-7794aa54476f872fd1a1",
+              "file": "ui/tests/checkout/orderCompletion.spec.ts",
+              "line": 161,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "ui\\tests\\products\\products.spec.ts",
+      "file": "ui/tests/products/products.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Products @regression",
+          "file": "ui/tests/products/products.spec.ts",
+          "line": 3,
+          "column": 6,
+          "specs": [],
+          "suites": [
+            {
+              "title": "Negative Test Cases @negative",
+              "file": "ui/tests/products/products.spec.ts",
+              "line": 4,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "should validate product search with invalid terms",
+                  "ok": true,
+                  "tags": [
+                    "regression",
+                    "negative"
+                  ],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 0,
+                          "parallelIndex": 0,
+                          "status": "passed",
+                          "duration": 38022,
+                          "errors": [],
+                          "stdout": [
+                            {
+                              "text": "Cookie consent accepted successfully\n"
+                            },
+                            {
+                              "text": "Network idle timeout, continuing with DOM ready state\n"
+                            },
+                            {
+                              "text": "Network idle timeout, continuing with DOM ready state\n"
+                            }
+                          ],
+                          "stderr": [],
+                          "retry": 0,
+                          "steps": [
+                            {
+                              "title": "Search for non-existent products",
+                              "duration": 21301
+                            },
+                            {
+                              "title": "Search with special characters",
+                              "duration": 16035
+                            }
+                          ],
+                          "startTime": "2025-12-12T15:21:24.876Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "1548c5317d39578ce7ff-f8a62c914c8f5b1d0c9e",
+                  "file": "ui/tests/products/products.spec.ts",
+                  "line": 5,
+                  "column": 9
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2025-12-12T15:17:41.766Z",
+    "duration": 262076.902,
+    "expected": 21,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}
