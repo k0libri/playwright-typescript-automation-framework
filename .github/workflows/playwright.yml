@@ -145,11 +145,7 @@ jobs:
         run: |
           rm -rf pages-dist
           mkdir -p pages-dist
-          cp -R allure-report pages-dist/
-          if [ -f .allure/history.jsonl ]; then
-            mkdir -p pages-dist/.allure
-            cp .allure/history.jsonl pages-dist/.allure/history.jsonl
-          fi
+          cp -R allure-report/* pages-dist/
 
       - name: Upload Allure report to Pages
         uses: actions/upload-pages-artifact@v3
