@@ -9,9 +9,7 @@ on:
     - cron: '0 3 * * 0' # Every Sunday at 3 AM UTC - clear history
 
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+  contents: write
   checks: write
   pull-requests: write
 
@@ -40,16 +38,28 @@ jobs:
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
 
-      # Step 5: Restore Allure history (skip on Sunday cleanup)
-      - name: Download previous Allure history
+      # Step 5: Restore Allure history from gh-pages branch
+      - name: Checkout gh-pages for history
         if: ${{ github.event_name != 'schedule' }}
-        uses: dawidd6/action-download-artifact@v3
+        uses: actions/checkout@v4
         continue-on-error: true
         with:
-          name: allure-history-${{ github.ref_name }}
-          path: .allure
-          workflow: playwright.yml
-          branch: ${{ github.ref_name }}
+          ref: gh-pages
+          path: gh-pages-checkout
+
+      - name: Restore branch-specific history
+        if: ${{ github.event_name != 'schedule' }}
+        run: |
+          mkdir -p .allure
+          HISTORY_PATH="gh-pages-checkout/_history/${{ github.ref_name }}"
+          if [ -d "$HISTORY_PATH" ]; then
+            echo "📋 Restoring history for branch: ${{ github.ref_name }}"
+            cp -R "$HISTORY_PATH"/* .allure/
+          else
+            echo "No previous history found for this branch"
+            mkdir -p .allure/history
+          fi
+          rm -rf gh-pages-checkout
 
       # Step 6: Clear history on Sunday
       - name: Clear Allure history (Sunday cleanup)
@@ -92,101 +102,36 @@ jobs:
             cp -R allure-report/history .allure/
           fi
 
-      # Step 11: Prepare GitHub Pages artifact
+      # Step 11: Prepare GitHub Pages deployment
       - name: Prepare GitHub Pages content
         if: ${{ !cancelled() }}
         run: |
-          echo "📦 Preparing GitHub Pages artifact..."
+          echo "📦 Preparing GitHub Pages deployment..."
           rm -rf gh-pages-deploy
           mkdir -p gh-pages-deploy
 
-          # Copy Allure report
+          # Copy Allure report to root
           cp -R allure-report/* gh-pages-deploy/
 
-          # Copy Allure history
-          if [ -d .allure ]; then
-            mkdir -p gh-pages-deploy/.allure
-            cp -R .allure/* gh-pages-deploy/.allure/
-          fi
+          # Store branch-specific history in _history folder
+          mkdir -p gh-pages-deploy/_history/${{ github.ref_name }}
+          cp -R .allure/* gh-pages-deploy/_history/${{ github.ref_name }}/
+          echo "💾 History saved for branch: ${{ github.ref_name }}"
 
           # Add .nojekyll to prevent Jekyll processing
           touch gh-pages-deploy/.nojekyll
 
-          echo "✅ GitHub Pages content ready:"
-          ls -la gh-pages-deploy/
+          echo "✅ GitHub Pages content ready"
 
-      # Step 12: Generate test summary
-      - name: Generate test summary
+      # Step 12: Deploy to gh-pages branch
+      - name: Deploy to gh-pages branch
         if: ${{ !cancelled() }}
-        run: |
-          echo "## 📊 Test Execution Summary" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-
-          if [ -f test-results.json ]; then
-            TOTAL=$(jq '.suites[].specs | length' test-results.json | awk '{s+=$1} END {print s}')
-            echo "- **Total Tests:** $TOTAL" >> $GITHUB_STEP_SUMMARY
-          fi
-
-          if [ -f allure-report/widgets/summary.json ]; then
-            echo "- **Report:** [View Allure Report](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})" >> $GITHUB_STEP_SUMMARY
-          fi
-
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "### 📁 Artifacts Available:" >> $GITHUB_STEP_SUMMARY
-          echo "1. 🎭 Playwright HTML Report" >> $GITHUB_STEP_SUMMARY
-          echo "2. 📊 Allure Report" >> $GITHUB_STEP_SUMMARY
-          echo "3. 🌐 GitHub Pages (deployed)" >> $GITHUB_STEP_SUMMARY
-
-      # Artifact 1: Playwright Report
-      - name: Upload Playwright Report
-        uses: actions/upload-artifact@v4
-        if: ${{ !cancelled() }}
+        uses: peaceiris/actions-gh-pages@v3
         with:
-          name: playwright-report-${{ github.ref_name }}
-          path: playwright-report/
-          retention-days: 30
-
-      # Artifact 2: Allure Report
-      - name: Upload Allure Report
-        uses: actions/upload-artifact@v4
-        if: ${{ !cancelled() }}
-        with:
-          name: allure-report-${{ github.ref_name }}
-          path: allure-report/
-          retention-days: 30
-
-      # Artifact 3: Allure History
-      - name: Upload Allure History
-        uses: actions/upload-artifact@v4
-        if: ${{ !cancelled() }}
-        with:
-          name: allure-history-${{ github.ref_name }}
-          path: .allure/
-          retention-days: 30
-
-      # Artifact 4: GitHub Pages
-      - name: Upload GitHub Pages artifact
-        uses: actions/upload-pages-artifact@v3
-        if: ${{ !cancelled() }}
-        with:
-          path: gh-pages-deploy/
-
-  # Deploy job
-  deploy:
-    name: Deploy to GitHub Pages
-    needs: test
-    if: ${{ !cancelled() && github.ref == 'refs/heads/gergo_test_branch' }}
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
-
-      - name: Add deployment info to summary
-        run: |
-          echo "## 🚀 Deployment Complete" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "📊 **Allure Report URL:** ${{ steps.deployment.outputs.page_url }}" >> $GITHUB_STEP_SUMMARY
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./gh-pages-deploy
+          publish_branch: gh-pages
+          keep_files: true
+          user_name: 'github-actions[bot]'
+          user_email: 'github-actions[bot]@users.noreply.github.com'
+          commit_message: 'Deploy Allure report from ${{ github.ref_name }}'
