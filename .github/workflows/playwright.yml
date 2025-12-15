@@ -133,8 +133,17 @@ jobs:
           echo "" >> $GITHUB_STEP_SUMMARY
 
           if [ -f test-results.json ]; then
-            TOTAL=$(jq '.suites[].specs | length' test-results.json | awk '{s+=$1} END {print s}')
+            TOTAL=$(jq -r '[.suites[].specs[]] | length' test-results.json)
+            PASSED=$(jq -r '[.suites[].specs[].tests[] | select(.status == "passed")] | length' test-results.json)
+            FAILED=$(jq -r '[.suites[].specs[].tests[] | select(.status == "failed")] | length' test-results.json)
+            SKIPPED=$(jq -r '[.suites[].specs[].tests[] | select(.status == "skipped")] | length' test-results.json)
+            
             echo "- **Total Tests:** $TOTAL" >> $GITHUB_STEP_SUMMARY
+            echo "- **Passed:** ✅ $PASSED" >> $GITHUB_STEP_SUMMARY
+            echo "- **Failed:** ❌ $FAILED" >> $GITHUB_STEP_SUMMARY
+            echo "- **Skipped:** ⏭️ $SKIPPED" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "⚠️ test-results.json not found" >> $GITHUB_STEP_SUMMARY
           fi
 
           echo "" >> $GITHUB_STEP_SUMMARY
@@ -174,6 +183,9 @@ jobs:
     needs: test
     if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
+    environment:
+      name: allure-report-${{ github.ref_name }}
+      url: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/${{ github.ref_name }}-allure-report/
     steps:
       # Download deployment package from test job
       - name: Download deployment package

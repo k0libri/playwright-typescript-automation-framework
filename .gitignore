@@ -140,12 +140,12 @@ vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 
 # Playwright
+test-results.json
 /test-results/
 /playwright-report/
 /blob-report/
 /playwright/.cache/
 /playwright/.auth/
-test-results.json
 
 # Allure
 allure-results/
