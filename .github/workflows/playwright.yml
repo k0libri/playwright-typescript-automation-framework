@@ -146,6 +146,9 @@ jobs:
           rm -rf pages-dist
           mkdir -p pages-dist
           cp -R allure-report/* pages-dist/
+          touch pages-dist/.nojekyll
+          echo "Allure Report Contents:"
+          ls -la pages-dist/
 
       - name: Upload Allure report to Pages
         uses: actions/upload-pages-artifact@v3
