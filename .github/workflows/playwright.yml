@@ -46,10 +46,10 @@ jobs:
         uses: dawidd6/action-download-artifact@v3
         continue-on-error: true
         with:
-          name: allure-history
+          name: allure-history-${{ github.ref_name }}
           path: .allure
           workflow: playwright.yml
-          branch: gergo_test_branch
+          branch: ${{ github.ref_name }}
 
       # Step 6: Clear history on Sunday
       - name: Clear Allure history (Sunday cleanup)
@@ -142,7 +142,7 @@ jobs:
         uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
         with:
-          name: playwright-report
+          name: playwright-report-${{ github.ref_name }}
           path: playwright-report/
           retention-days: 30
 
@@ -151,7 +151,7 @@ jobs:
         uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
         with:
-          name: allure-report
+          name: allure-report-${{ github.ref_name }}
           path: allure-report/
           retention-days: 30
 
@@ -160,7 +160,7 @@ jobs:
         uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
         with:
-          name: allure-history
+          name: allure-history-${{ github.ref_name }}
           path: .allure/
           retention-days: 30
 
