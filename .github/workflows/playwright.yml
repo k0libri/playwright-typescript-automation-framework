@@ -1,9 +1,12 @@
 name: Playwright Tests
+
 on:
   push:
     branches: [main, master, gergo_test_branch]
   pull_request:
     branches: [main, master]
+  schedule:
+    - cron: '0 3 * * 0'
 
 permissions:
   contents: read
@@ -17,32 +20,84 @@ jobs:
     timeout-minutes: 60
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Checkout gh-pages for previous Allure history
+        uses: actions/checkout@v4
+        continue-on-error: true
+        with:
+          ref: gh-pages
+          path: gh-pages
+          fetch-depth: 1
+
+      - name: Restore previous history.jsonl
+        run: |
+          mkdir -p .allure
+          if [ -f gh-pages/.allure/history.jsonl ]; then
+            echo "Restoring history.jsonl from gh-pages"
+            cp gh-pages/.allure/history.jsonl .allure/history.jsonl
+          else
+            echo "No previous history.jsonl found, starting fresh."
+          fi
+
+      - name: Remove gh-pages checkout (cleanup)
+        if: ${{ always() }}
+        run: rm -rf gh-pages
+
+      - name: Clear history on scheduled run (Sunday clean)
+        if: ${{ github.event_name == 'schedule' }}
+        run: |
+          echo "Scheduled run detected -> clearing Allure history."
+          rm -rf .allure allure-results
+          mkdir -p .allure
+
       - uses: actions/setup-node@v4
         with:
           node-version: lts/*
+
       - name: Install dependencies
         run: npm ci
+
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
+
       - name: Lint code
         run: npx eslint .
+
       - name: Format check
         run: npx prettier --check .
+
       - name: Run Playwright tests
         run: npx playwright test
+
+      - name: Merge previous history into new results
+        if: ${{ !cancelled() && github.event_name != 'schedule' }}
+        run: |
+          if [ -f .allure/history.jsonl ]; then
+            echo "Copying history.jsonl into current allure-results..."
+            mkdir -p allure-results/history
+            cp .allure/history.jsonl allure-results/history/history.jsonl
+          else
+            echo "No previous history.jsonl to merge."
+          fi
+
       - name: Generate Allure report
         if: ${{ !cancelled() }}
-        run: |
-          npx allure@latest generate allure-results -o allure-report
-      - name: Restore Allure history for trends
+        run: npm run allure:generate
+
+      - name: Refresh stored history.jsonl
         if: ${{ !cancelled() }}
-        uses: actions/cache@v4
-        with:
-          path: allure-report/history
-          key: allure-history-${{ github.ref }}
-          restore-keys: |
-            allure-history-
+        run: |
+          mkdir -p .allure
+          rm -f .allure/history.jsonl
+          if [ -f allure-report/history/history.jsonl ]; then
+            echo "Updating .allure/history.jsonl from freshly generated report..."
+            cp allure-report/history/history.jsonl .allure/history.jsonl
+          else
+            echo "Warning: no history.jsonl generated."
+          fi
+
       - name: Verify Allure report generated
         if: ${{ !cancelled() }}
         run: |
@@ -57,6 +112,10 @@ jobs:
             echo "Checking for allure-results:"
             ls -la allure-results/ 2>/dev/null || echo "No allure-results directory"
           fi
+          echo ""
+          echo ".allure directory contents:"
+          ls -la .allure/ || echo ".allure directory missing"
+
       - name: Upload Playwright HTML report
         uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
@@ -64,6 +123,7 @@ jobs:
           name: playwright-report
           path: playwright-report/
           retention-days: 30
+
       - name: Upload Allure report artifact
         uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
@@ -71,11 +131,31 @@ jobs:
           name: allure-report
           path: allure-report/
           retention-days: 30
+
+      - name: Upload Allure history artifact
+        uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() && hashFiles('.allure/history.jsonl') != '' }}
+        with:
+          name: allure-history
+          path: .allure/history.jsonl
+          retention-days: 30
+
+      - name: Prepare Pages artifact structure
+        if: ${{ !cancelled() }}
+        run: |
+          rm -rf pages-dist
+          mkdir -p pages-dist
+          cp -R allure-report pages-dist/
+          if [ -f .allure/history.jsonl ]; then
+            mkdir -p pages-dist/.allure
+            cp .allure/history.jsonl pages-dist/.allure/history.jsonl
+          fi
+
       - name: Upload Allure report to Pages
         uses: actions/upload-pages-artifact@v3
         if: ${{ !cancelled() }}
         with:
-          path: allure-report/
+          path: pages-dist/
 
   deploy:
     name: Deploy to GitHub Pages
