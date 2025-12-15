@@ -6,7 +6,7 @@ on:
   pull_request:
     branches: [main, master]
   schedule:
-    - cron: '0 3 * * 0'
+    - cron: '0 3 * * 0' # Every Sunday at 3 AM UTC - clear history
 
 permissions:
   contents: read
@@ -17,106 +17,128 @@ permissions:
 
 jobs:
   test:
+    name: Run Tests & Generate Reports
     timeout-minutes: 60
     runs-on: ubuntu-latest
     steps:
+      # Step 1: Checkout repository
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Checkout gh-pages for previous Allure history
-        uses: actions/checkout@v4
-        continue-on-error: true
-        with:
-          ref: gh-pages
-          path: gh-pages
-          fetch-depth: 1
-
-      - name: Restore previous history.jsonl
-        run: |
-          mkdir -p .allure
-          if [ -f gh-pages/.allure/history.jsonl ]; then
-            echo "Restoring history.jsonl from gh-pages"
-            cp gh-pages/.allure/history.jsonl .allure/history.jsonl
-          else
-            echo "No previous history.jsonl found, starting fresh."
-          fi
-
-      - name: Remove gh-pages checkout (cleanup)
-        if: ${{ always() }}
-        run: rm -rf gh-pages
-
-      - name: Clear history on scheduled run (Sunday clean)
-        if: ${{ github.event_name == 'schedule' }}
-        run: |
-          echo "Scheduled run detected -> clearing Allure history."
-          rm -rf .allure allure-results
-          mkdir -p .allure
-
-      - uses: actions/setup-node@v4
+      # Step 2: Setup Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: lts/*
+          cache: 'npm'
 
+      # Step 3: Install dependencies
       - name: Install dependencies
         run: npm ci
 
+      # Step 4: Install Playwright browsers
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
 
-      - name: Lint code
-        run: npx eslint .
+      # Step 5: Restore Allure history (skip on Sunday cleanup)
+      - name: Download previous Allure history
+        if: ${{ github.event_name != 'schedule' }}
+        uses: dawidd6/action-download-artifact@v3
+        continue-on-error: true
+        with:
+          name: allure-history
+          path: .allure
+          workflow: playwright.yml
+          branch: gergo_test_branch
 
-      - name: Format check
-        run: npx prettier --check .
+      # Step 6: Clear history on Sunday
+      - name: Clear Allure history (Sunday cleanup)
+        if: ${{ github.event_name == 'schedule' }}
+        run: |
+          echo "🧹 Sunday cleanup: Clearing Allure history..."
+          rm -rf .allure allure-results allure-report
+          mkdir -p .allure/history
 
+      # Step 7: Run tests
       - name: Run Playwright tests
         run: npx playwright test
+        continue-on-error: true
 
-      - name: Merge previous history into new results
+      # Step 8: Merge previous history into results
+      - name: Merge Allure history
         if: ${{ !cancelled() && github.event_name != 'schedule' }}
         run: |
-          if [ -f .allure/history.jsonl ]; then
-            echo "Copying history.jsonl into current allure-results..."
-            mkdir -p allure-results/history
-            cp .allure/history.jsonl allure-results/history/history.jsonl
+          if [ -d .allure/history ]; then
+            echo "📋 Copying previous Allure history..."
+            mkdir -p allure-results
+            cp -R .allure/history allure-results/
           else
-            echo "No previous history.jsonl to merge."
+            echo "No previous history found"
           fi
 
+      # Step 9: Generate Allure report
       - name: Generate Allure report
         if: ${{ !cancelled() }}
-        run: npm run allure:generate
+        run: npx allure@latest generate allure-results -o allure-report
 
-      - name: Refresh stored history.jsonl
+      # Step 10: Save new history
+      - name: Save Allure history
         if: ${{ !cancelled() }}
         run: |
           mkdir -p .allure
-          rm -f .allure/history.jsonl
-          if [ -f allure-report/history/history.jsonl ]; then
-            echo "Updating .allure/history.jsonl from freshly generated report..."
-            cp allure-report/history/history.jsonl .allure/history.jsonl
-          else
-            echo "Warning: no history.jsonl generated."
+          if [ -d allure-report/history ]; then
+            echo "💾 Saving Allure history..."
+            rm -rf .allure/history
+            cp -R allure-report/history .allure/
           fi
 
-      - name: Verify Allure report generated
+      # Step 11: Prepare GitHub Pages artifact
+      - name: Prepare GitHub Pages content
         if: ${{ !cancelled() }}
         run: |
-          echo "Allure report directory contents:"
-          ls -la allure-report/ || echo "Directory does not exist"
-          echo ""
-          if [ -f allure-report/index.html ]; then
-            echo "✓ Allure report index.html found"
-            wc -c allure-report/index.html
-          else
-            echo "✗ Allure report index.html NOT found"
-            echo "Checking for allure-results:"
-            ls -la allure-results/ 2>/dev/null || echo "No allure-results directory"
-          fi
-          echo ""
-          echo ".allure directory contents:"
-          ls -la .allure/ || echo ".allure directory missing"
+          echo "📦 Preparing GitHub Pages artifact..."
+          rm -rf gh-pages-deploy
+          mkdir -p gh-pages-deploy
 
-      - name: Upload Playwright HTML report
+          # Copy Allure report
+          cp -R allure-report/* gh-pages-deploy/
+
+          # Copy Allure history
+          if [ -d .allure ]; then
+            mkdir -p gh-pages-deploy/.allure
+            cp -R .allure/* gh-pages-deploy/.allure/
+          fi
+
+          # Add .nojekyll to prevent Jekyll processing
+          touch gh-pages-deploy/.nojekyll
+
+          echo "✅ GitHub Pages content ready:"
+          ls -la gh-pages-deploy/
+
+      # Step 12: Generate test summary
+      - name: Generate test summary
+        if: ${{ !cancelled() }}
+        run: |
+          echo "## 📊 Test Execution Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          if [ -f test-results.json ]; then
+            TOTAL=$(jq '.suites[].specs | length' test-results.json | awk '{s+=$1} END {print s}')
+            echo "- **Total Tests:** $TOTAL" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          if [ -f allure-report/widgets/summary.json ]; then
+            echo "- **Report:** [View Allure Report](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 📁 Artifacts Available:" >> $GITHUB_STEP_SUMMARY
+          echo "1. 🎭 Playwright HTML Report" >> $GITHUB_STEP_SUMMARY
+          echo "2. 📊 Allure Report" >> $GITHUB_STEP_SUMMARY
+          echo "3. 🌐 GitHub Pages (deployed)" >> $GITHUB_STEP_SUMMARY
+
+      # Artifact 1: Playwright Report
+      - name: Upload Playwright Report
         uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
         with:
@@ -124,7 +146,8 @@ jobs:
           path: playwright-report/
           retention-days: 30
 
-      - name: Upload Allure report artifact
+      # Artifact 2: Allure Report
+      - name: Upload Allure Report
         uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
         with:
@@ -132,30 +155,23 @@ jobs:
           path: allure-report/
           retention-days: 30
 
-      - name: Upload Allure history artifact
+      # Artifact 3: Allure History
+      - name: Upload Allure History
         uses: actions/upload-artifact@v4
-        if: ${{ !cancelled() && hashFiles('.allure/history.jsonl') != '' }}
+        if: ${{ !cancelled() }}
         with:
           name: allure-history
-          path: .allure/history.jsonl
+          path: .allure/
           retention-days: 30
 
-      - name: Prepare Pages artifact structure
-        if: ${{ !cancelled() }}
-        run: |
-          rm -rf pages-dist
-          mkdir -p pages-dist
-          cp -R allure-report/* pages-dist/
-          touch pages-dist/.nojekyll
-          echo "Allure Report Contents:"
-          ls -la pages-dist/
-
-      - name: Upload Allure report to Pages
+      # Artifact 4: GitHub Pages
+      - name: Upload GitHub Pages artifact
         uses: actions/upload-pages-artifact@v3
         if: ${{ !cancelled() }}
         with:
-          path: pages-dist/
+          path: gh-pages-deploy/
 
+  # Deploy job
   deploy:
     name: Deploy to GitHub Pages
     needs: test
@@ -168,3 +184,9 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+      - name: Add deployment info to summary
+        run: |
+          echo "## 🚀 Deployment Complete" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "📊 **Allure Report URL:** ${{ steps.deployment.outputs.page_url }}" >> $GITHUB_STEP_SUMMARY

@@ -1,7 +1,7 @@
 {
   "config": {
-    "configFile": "C:\\Users\\GergoDobrosi\\Desktop\\playwright-typescript-automation-framework\\playwright.config.ts",
-    "rootDir": "C:/Users/GergoDobrosi/Desktop/playwright-typescript-automation-framework/src",
+    "configFile": "C:\\Users\\GergoDobrosi\\Documents\\Course\\code\\playwright-typescript-automation-framework\\playwright.config.ts",
+    "rootDir": "C:/Users/GergoDobrosi/Documents/Course/code/playwright-typescript-automation-framework/src",
     "forbidOnly": false,
     "fullyParallel": true,
     "globalSetup": null,
@@ -29,7 +29,7 @@
         }
       ],
       [
-        "C:\\Users\\GergoDobrosi\\Desktop\\playwright-typescript-automation-framework\\node_modules\\allure-playwright\\dist\\cjs\\index.js",
+        "C:\\Users\\GergoDobrosi\\Documents\\Course\\code\\playwright-typescript-automation-framework\\node_modules\\allure-playwright\\dist\\cjs\\index.js",
         {
           "outputFolder": "allure-results",
           "suiteTitle": "Playwright Automation Exercise Tests"
@@ -47,7 +47,7 @@
     "quiet": false,
     "projects": [
       {
-        "outputDir": "C:/Users/GergoDobrosi/Desktop/playwright-typescript-automation-framework/test-results",
+        "outputDir": "C:/Users/GergoDobrosi/Documents/Course/code/playwright-typescript-automation-framework/test-results",
         "repeatEach": 1,
         "retries": 0,
         "metadata": {
@@ -55,7 +55,7 @@
         },
         "id": "chromium",
         "name": "chromium",
-        "testDir": "C:/Users/GergoDobrosi/Desktop/playwright-typescript-automation-framework/src",
+        "testDir": "C:/Users/GergoDobrosi/Documents/Course/code/playwright-typescript-automation-framework/src",
         "testIgnore": [],
         "testMatch": [
           "**/*.@(spec|test).?(c|m)[jt]s?(x)"
@@ -104,7 +104,7 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 2391,
+                      "duration": 1607,
                       "errors": [],
                       "stdout": [
                         {
@@ -116,18 +116,18 @@
                       "steps": [
                         {
                           "title": "Create user account via API",
-                          "duration": 1322
+                          "duration": 659
                         },
                         {
                           "title": "Verify user creation by fetching user details",
-                          "duration": 239
+                          "duration": 311
                         },
                         {
                           "title": "Cleanup: Delete test user",
-                          "duration": 344
+                          "duration": 363
                         }
                       ],
-                      "startTime": "2025-12-12T15:17:43.082Z",
+                      "startTime": "2025-12-15T11:28:53.644Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -159,7 +159,7 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 1565,
+                      "duration": 1459,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
@@ -167,18 +167,18 @@
                       "steps": [
                         {
                           "title": "Create user for login test",
-                          "duration": 560
+                          "duration": 629
                         },
                         {
                           "title": "Verify login with valid credentials",
-                          "duration": 274
+                          "duration": 217
                         },
                         {
                           "title": "Cleanup: Delete test user",
-                          "duration": 336
+                          "duration": 395
                         }
                       ],
-                      "startTime": "2025-12-12T15:17:45.658Z",
+                      "startTime": "2025-12-15T11:28:55.396Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -210,7 +210,7 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 444,
+                      "duration": 477,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
@@ -218,10 +218,10 @@
                       "steps": [
                         {
                           "title": "Attempt login with invalid credentials",
-                          "duration": 432
+                          "duration": 471
                         }
                       ],
-                      "startTime": "2025-12-12T15:17:47.239Z",
+                      "startTime": "2025-12-15T11:28:56.864Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -253,7 +253,7 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 1543,
+                      "duration": 1429,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
@@ -261,18 +261,18 @@
                       "steps": [
                         {
                           "title": "Create user for details test",
-                          "duration": 666
+                          "duration": 626
                         },
                         {
                           "title": "Get user details by email",
-                          "duration": 220
+                          "duration": 305
                         },
                         {
                           "title": "Cleanup: Delete test user",
                           "duration": 283
                         }
                       ],
-                      "startTime": "2025-12-12T15:17:47.698Z",
+                      "startTime": "2025-12-15T11:28:57.350Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -304,7 +304,7 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 263,
+                      "duration": 282,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
@@ -312,10 +312,10 @@
                       "steps": [
                         {
                           "title": "Get details for non-existent user",
-                          "duration": 256
+                          "duration": 279
                         }
                       ],
-                      "startTime": "2025-12-12T15:17:49.256Z",
+                      "startTime": "2025-12-15T11:28:58.786Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -371,7 +371,7 @@
                           "workerIndex": 0,
                           "parallelIndex": 0,
                           "status": "passed",
-                          "duration": 10500,
+                          "duration": 8770,
                           "errors": [],
                           "stdout": [
                             {
@@ -381,7 +381,7 @@
                               "text": "Cookie consent accepted successfully\n"
                             },
                             {
-                              "text": "User registration verified:  TestFirst153 TestLast153\n"
+                              "text": "User registration verified:  TestFirst987 TestLast987\n"
                             },
                             {
                               "text": "Note: User account created will remain due to API CSRF protection - this is expected for automation exercise\n"
@@ -392,30 +392,30 @@
                           "steps": [
                             {
                               "title": "Navigate to signup/login page",
-                              "duration": 7393
+                              "duration": 6180
                             },
                             {
                               "title": "Initiate signup with name and email",
-                              "duration": 468
+                              "duration": 881
                             },
                             {
                               "title": "Complete registration form",
-                              "duration": 1304
+                              "duration": 1099
                             },
                             {
                               "title": "Continue after account creation",
-                              "duration": 1014
+                              "duration": 378
                             },
                             {
                               "title": "Verify user account was created successfully",
-                              "duration": 40
+                              "duration": 27
                             },
                             {
                               "title": "Note: User cleanup not performed",
                               "duration": 0
                             }
                           ],
-                          "startTime": "2025-12-12T15:17:49.559Z",
+                          "startTime": "2025-12-15T11:28:59.089Z",
                           "annotations": [],
                           "attachments": []
                         }
@@ -447,14 +447,11 @@
                           "workerIndex": 0,
                           "parallelIndex": 0,
                           "status": "passed",
-                          "duration": 24851,
+                          "duration": 13845,
                           "errors": [],
                           "stdout": [
                             {
                               "text": "Cookie consent accepted successfully\n"
-                            },
-                            {
-                              "text": "Network idle timeout, continuing with DOM ready state\n"
                             },
                             {
                               "text": "No cookie consent dialog detected or already handled\n"
@@ -465,14 +462,14 @@
                           "steps": [
                             {
                               "title": "Create initial user",
-                              "duration": 8244
+                              "duration": 5815
                             },
                             {
                               "title": "Attempt duplicate email registration",
-                              "duration": 16345
+                              "duration": 7884
                             }
                           ],
-                          "startTime": "2025-12-12T15:18:00.086Z",
+                          "startTime": "2025-12-15T11:29:07.874Z",
                           "annotations": [],
                           "attachments": []
                         }
@@ -512,7 +509,7 @@
                           "workerIndex": 0,
                           "parallelIndex": 0,
                           "status": "passed",
-                          "duration": 4426,
+                          "duration": 3717,
                           "errors": [],
                           "stdout": [
                             {
@@ -527,10 +524,10 @@
                           "steps": [
                             {
                               "title": "Attempt login with invalid credentials",
-                              "duration": 4124
+                              "duration": 3552
                             }
                           ],
-                          "startTime": "2025-12-12T15:18:24.949Z",
+                          "startTime": "2025-12-15T11:29:21.728Z",
                           "annotations": [],
                           "attachments": []
                         }
@@ -562,7 +559,7 @@
                           "workerIndex": 0,
                           "parallelIndex": 0,
                           "status": "passed",
-                          "duration": 5,
+                          "duration": 2,
                           "errors": [],
                           "stdout": [],
                           "stderr": [],
@@ -570,10 +567,10 @@
                           "steps": [
                             {
                               "title": "Verify login error via API using beforeAll response",
-                              "duration": 4
+                              "duration": 2
                             }
                           ],
-                          "startTime": "2025-12-12T15:18:30.581Z",
+                          "startTime": "2025-12-15T11:29:26.784Z",
                           "annotations": [],
                           "attachments": []
                         }
@@ -605,7 +602,7 @@
                           "workerIndex": 0,
                           "parallelIndex": 0,
                           "status": "passed",
-                          "duration": 3664,
+                          "duration": 3472,
                           "errors": [],
                           "stdout": [
                             {
@@ -617,10 +614,10 @@
                           "steps": [
                             {
                               "title": "Attempt registration with invalid email format",
-                              "duration": 3379
+                              "duration": 3289
                             }
                           ],
-                          "startTime": "2025-12-12T15:18:30.601Z",
+                          "startTime": "2025-12-15T11:29:26.794Z",
                           "annotations": [],
                           "attachments": []
                         }
@@ -652,7 +649,7 @@
                           "workerIndex": 0,
                           "parallelIndex": 0,
                           "status": "passed",
-                          "duration": 20708,
+                          "duration": 19368,
                           "errors": [],
                           "stdout": [
                             {
@@ -670,14 +667,14 @@
                           "steps": [
                             {
                               "title": "Verify browser prevents empty name submission",
-                              "duration": 4402
+                              "duration": 3237
                             },
                             {
                               "title": "Verify browser prevents empty email submission",
-                              "duration": 16038
+                              "duration": 15969
                             }
                           ],
-                          "startTime": "2025-12-12T15:18:34.284Z",
+                          "startTime": "2025-12-15T11:29:30.273Z",
                           "annotations": [],
                           "attachments": []
                         }
@@ -709,7 +706,7 @@
                           "workerIndex": 0,
                           "parallelIndex": 0,
                           "status": "passed",
-                          "duration": 2,
+                          "duration": 1,
                           "errors": [],
                           "stdout": [],
                           "stderr": [],
@@ -717,10 +714,10 @@
                           "steps": [
                             {
                               "title": "Verify non-existent user login error via API using beforeAll response",
-                              "duration": 2
+                              "duration": 1
                             }
                           ],
-                          "startTime": "2025-12-12T15:18:55.003Z",
+                          "startTime": "2025-12-15T11:29:49.649Z",
                           "annotations": [],
                           "attachments": []
                         }
@@ -752,7 +749,7 @@
                           "workerIndex": 0,
                           "parallelIndex": 0,
                           "status": "passed",
-                          "duration": 1,
+                          "duration": 0,
                           "errors": [],
                           "stdout": [],
                           "stderr": [],
@@ -760,10 +757,10 @@
                           "steps": [
                             {
                               "title": "Verify invalid registration data error via API using beforeAll response",
-                              "duration": 1
+                              "duration": 0
                             }
                           ],
-                          "startTime": "2025-12-12T15:18:55.012Z",
+                          "startTime": "2025-12-15T11:29:49.655Z",
                           "annotations": [],
                           "attachments": []
                         }
@@ -795,7 +792,7 @@
                           "workerIndex": 0,
                           "parallelIndex": 0,
                           "status": "passed",
-                          "duration": 2,
+                          "duration": 1,
                           "errors": [],
                           "stdout": [
                             {
@@ -807,10 +804,10 @@
                           "steps": [
                             {
                               "title": "Verify API error handling for malformed requests using beforeAll response",
-                              "duration": 2
+                              "duration": 1
                             }
                           ],
-                          "startTime": "2025-12-12T15:18:55.019Z",
+                          "startTime": "2025-12-15T11:29:49.660Z",
                           "annotations": [],
                           "attachments": []
                         }
@@ -861,7 +858,7 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 24473,
+                      "duration": 23929,
                       "errors": [],
                       "stdout": [
                         {
@@ -888,22 +885,22 @@
                       "steps": [
                         {
                           "title": "Create user account via UI",
-                          "duration": 5833
+                          "duration": 5028
                         },
                         {
                           "title": "Add products to cart via UI",
-                          "duration": 8109
+                          "duration": 8586
                         },
                         {
                           "title": "Verify cart contents via UI",
-                          "duration": 8116
+                          "duration": 8039
                         },
                         {
                           "title": "Verify cart contents and session maintained",
-                          "duration": 2074
+                          "duration": 2039
                         }
                       ],
-                      "startTime": "2025-12-12T15:18:55.042Z",
+                      "startTime": "2025-12-15T11:29:49.696Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -935,7 +932,7 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 21736,
+                      "duration": 21911,
                       "errors": [],
                       "stdout": [
                         {
@@ -959,30 +956,30 @@
                       "steps": [
                         {
                           "title": "Navigate to home page",
-                          "duration": 3906
+                          "duration": 3536
                         },
                         {
                           "title": "Navigate to products page",
-                          "duration": 5476
+                          "duration": 5960
                         },
                         {
                           "title": "Add product to cart",
-                          "duration": 2165
+                          "duration": 2196
                         },
                         {
                           "title": "Verify cart contents",
-                          "duration": 2149
+                          "duration": 2091
                         },
                         {
                           "title": "Remove item from cart",
-                          "duration": 7772
+                          "duration": 7951
                         },
                         {
                           "title": "Test completed successfully",
-                          "duration": 0
+                          "duration": 1
                         }
                       ],
-                      "startTime": "2025-12-12T15:19:19.536Z",
+                      "startTime": "2025-12-15T11:30:13.639Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1014,7 +1011,7 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 14884,
+                      "duration": 11407,
                       "errors": [],
                       "stdout": [
                         {
@@ -1032,18 +1029,18 @@
                       "steps": [
                         {
                           "title": "Navigate to home page",
-                          "duration": 5925
+                          "duration": 3479
                         },
                         {
                           "title": "Add product to cart without login",
-                          "duration": 8619
+                          "duration": 7689
                         },
                         {
                           "title": "Verify checkout requires login",
-                          "duration": 91
+                          "duration": 73
                         }
                       ],
-                      "startTime": "2025-12-12T15:19:41.285Z",
+                      "startTime": "2025-12-15T11:30:35.559Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1092,7 +1089,7 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 31041,
+                      "duration": 27989,
                       "errors": [],
                       "stdout": [
                         {
@@ -1119,42 +1116,42 @@
                       "steps": [
                         {
                           "title": "Create user account via UI",
-                          "duration": 8453
+                          "duration": 6259
                         },
                         {
                           "title": "Add products to cart",
-                          "duration": 8406
+                          "duration": 7438
                         },
                         {
                           "title": "Review cart and proceed to checkout",
-                          "duration": 5836
+                          "duration": 7003
                         },
                         {
                           "title": "Review order details on checkout page",
-                          "duration": 2170
+                          "duration": 2117
                         },
                         {
                           "title": "Place order",
-                          "duration": 2073
+                          "duration": 1051
                         },
                         {
                           "title": "Complete payment process",
-                          "duration": 1965
+                          "duration": 2038
                         },
                         {
                           "title": "Verify order history via API (if available)",
-                          "duration": 736
+                          "duration": 745
                         },
                         {
                           "title": "Continue after order confirmation",
-                          "duration": 430
+                          "duration": 501
                         },
                         {
                           "title": "Cleanup: Delete test user",
-                          "duration": 647
+                          "duration": 602
                         }
                       ],
-                      "startTime": "2025-12-12T15:19:56.191Z",
+                      "startTime": "2025-12-15T11:30:46.980Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1186,7 +1183,7 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 21758,
+                      "duration": 19311,
                       "errors": [],
                       "stdout": [
                         {
@@ -1201,18 +1198,18 @@
                       "steps": [
                         {
                           "title": "Setup: Create user and add single product",
-                          "duration": 14559
+                          "duration": 12715
                         },
                         {
                           "title": "Complete checkout with single product",
-                          "duration": 5689
+                          "duration": 5862
                         },
                         {
                           "title": "Cleanup: Delete test user",
-                          "duration": 1262
+                          "duration": 463
                         }
                       ],
-                      "startTime": "2025-12-12T15:20:27.251Z",
+                      "startTime": "2025-12-15T11:31:14.989Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1244,7 +1241,7 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 35826,
+                      "duration": 23981,
                       "errors": [],
                       "stdout": [
                         {
@@ -1252,9 +1249,6 @@
                         },
                         {
                           "text": "No cookie consent dialog detected or already handled\n"
-                        },
-                        {
-                          "text": "Network idle timeout, continuing with DOM ready state\n"
                         },
                         {
                           "text": "No cookie consent dialog detected or already handled\n"
@@ -1265,22 +1259,22 @@
                       "steps": [
                         {
                           "title": "Setup: Create user and add products",
-                          "duration": 16356
+                          "duration": 12520
                         },
                         {
                           "title": "Get cart item details",
-                          "duration": 15511
+                          "duration": 7377
                         },
                         {
                           "title": "Verify order details match cart contents",
-                          "duration": 3103
+                          "duration": 2931
                         },
                         {
                           "title": "Cleanup: Delete test user",
-                          "duration": 559
+                          "duration": 947
                         }
                       ],
-                      "startTime": "2025-12-12T15:20:49.021Z",
+                      "startTime": "2025-12-15T11:31:34.309Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1336,17 +1330,11 @@
                           "workerIndex": 0,
                           "parallelIndex": 0,
                           "status": "passed",
-                          "duration": 38022,
+                          "duration": 19368,
                           "errors": [],
                           "stdout": [
                             {
                               "text": "Cookie consent accepted successfully\n"
-                            },
-                            {
-                              "text": "Network idle timeout, continuing with DOM ready state\n"
-                            },
-                            {
-                              "text": "Network idle timeout, continuing with DOM ready state\n"
                             }
                           ],
                           "stderr": [],
@@ -1354,14 +1342,14 @@
                           "steps": [
                             {
                               "title": "Search for non-existent products",
-                              "duration": 21301
+                              "duration": 10204
                             },
                             {
                               "title": "Search with special characters",
-                              "duration": 16035
+                              "duration": 8867
                             }
                           ],
-                          "startTime": "2025-12-12T15:21:24.876Z",
+                          "startTime": "2025-12-15T11:31:58.299Z",
                           "annotations": [],
                           "attachments": []
                         }
@@ -1383,8 +1371,8 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2025-12-12T15:17:41.766Z",
-    "duration": 262076.902,
+    "startTime": "2025-12-15T11:28:52.990Z",
+    "duration": 204922.16100000002,
     "expected": 21,
     "skipped": 0,
     "unexpected": 0,
