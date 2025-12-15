@@ -138,10 +138,25 @@ jobs:
             FAILED=$(jq -r '[.suites[].specs[].tests[] | select(.status == "failed")] | length' test-results.json)
             SKIPPED=$(jq -r '[.suites[].specs[].tests[] | select(.status == "skipped")] | length' test-results.json)
             
+            echo "### 📈 Test Results" >> $GITHUB_STEP_SUMMARY
             echo "- **Total Tests:** $TOTAL" >> $GITHUB_STEP_SUMMARY
             echo "- **Passed:** ✅ $PASSED" >> $GITHUB_STEP_SUMMARY
             echo "- **Failed:** ❌ $FAILED" >> $GITHUB_STEP_SUMMARY
             echo "- **Skipped:** ⏭️ $SKIPPED" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            
+            # Show test details
+            if [ $FAILED -gt 0 ]; then
+              echo "### ❌ Failed Tests" >> $GITHUB_STEP_SUMMARY
+              jq -r '.suites[].specs[] | select(.tests[].status == "failed") | "- **" + (.title // .file) + "**"' test-results.json >> $GITHUB_STEP_SUMMARY
+              echo "" >> $GITHUB_STEP_SUMMARY
+            fi
+            
+            if [ $PASSED -gt 0 ]; then
+              echo "### ✅ Passed Tests" >> $GITHUB_STEP_SUMMARY
+              jq -r '.suites[].specs[] | select(.tests[].status == "passed") | "- " + (.title // .file)' test-results.json >> $GITHUB_STEP_SUMMARY
+              echo "" >> $GITHUB_STEP_SUMMARY
+            fi
           else
             echo "⚠️ test-results.json not found" >> $GITHUB_STEP_SUMMARY
           fi
