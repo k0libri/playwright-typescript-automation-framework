@@ -123,7 +123,44 @@ jobs:
 
           echo "✅ GitHub Pages content ready"
 
-      # Step 12: Deploy to gh-pages branch
+      # Step 12: Generate test summary
+      - name: Generate test summary
+        if: ${{ !cancelled() }}
+        run: |
+          echo "## 📊 Test Execution Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Branch:** ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          if [ -f test-results.json ]; then
+            TOTAL=$(jq '.suites[].specs | length' test-results.json | awk '{s+=$1} END {print s}')
+            echo "- **Total Tests:** $TOTAL" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 📁 Artifacts Available:" >> $GITHUB_STEP_SUMMARY
+          echo "- 🎭 Playwright HTML Report" >> $GITHUB_STEP_SUMMARY
+          echo "- 📊 Allure Report" >> $GITHUB_STEP_SUMMARY
+
+      # Artifact 1: Playwright Report
+      - name: Upload Playwright Report
+        uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: playwright-report-${{ github.ref_name }}
+          path: playwright-report/
+          retention-days: 30
+
+      # Artifact 2: Allure Report
+      - name: Upload Allure Report
+        uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: allure-report-${{ github.ref_name }}
+          path: allure-report/
+          retention-days: 30
+
+      # Step 13: Deploy to gh-pages branch
       - name: Deploy to gh-pages branch
         if: ${{ !cancelled() }}
         uses: peaceiris/actions-gh-pages@v3
@@ -133,3 +170,16 @@ jobs:
           publish_branch: gh-pages
           keep_files: true
           destination_dir: .
+          user_name: 'github-actions[bot]'
+          user_email: 'github-actions[bot]@users.noreply.github.com'
+          commit_message: 'Deploy Allure report from ${{ github.ref_name }}'
+
+      # Step 14: Add deployment info to summary
+      - name: Add deployment info to summary
+        if: ${{ !cancelled() }}
+        run: |
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## 🚀 Deployment Complete" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          REPO_NAME=$(echo "${{ github.repository }}" | cut -d'/' -f2)
+          echo "📊 **Allure Report URL:** https://${{ github.repository_owner }}.github.io/$REPO_NAME/${{ github.ref_name }}-allure-report/" >> $GITHUB_STEP_SUMMARY
