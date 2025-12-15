@@ -50,11 +50,11 @@ jobs:
       - name: Restore branch-specific history
         if: ${{ github.event_name != 'schedule' }}
         run: |
-          mkdir -p .allure
-          HISTORY_PATH="gh-pages-checkout/_history/${{ github.ref_name }}"
-          if [ -d "$HISTORY_PATH" ]; then
+          BRANCH_FOLDER="gh-pages-checkout/${{ github.ref_name }}-allure-report/.allure"
+          if [ -d "$BRANCH_FOLDER" ]; then
             echo "📋 Restoring history for branch: ${{ github.ref_name }}"
-            cp -R "$HISTORY_PATH"/* .allure/
+            mkdir -p .allure
+            cp -R "$BRANCH_FOLDER"/* .allure/
           else
             echo "No previous history found for this branch"
             mkdir -p .allure/history
@@ -108,14 +108,14 @@ jobs:
         run: |
           echo "📦 Preparing GitHub Pages deployment..."
           rm -rf gh-pages-deploy
-          mkdir -p gh-pages-deploy
+          mkdir -p gh-pages-deploy/${{ github.ref_name }}-allure-report
 
-          # Copy Allure report to root
-          cp -R allure-report/* gh-pages-deploy/
+          # Copy Allure report to branch-specific folder
+          cp -R allure-report/* gh-pages-deploy/${{ github.ref_name }}-allure-report/
 
-          # Store branch-specific history in _history folder
-          mkdir -p gh-pages-deploy/_history/${{ github.ref_name }}
-          cp -R .allure/* gh-pages-deploy/_history/${{ github.ref_name }}/
+          # Copy .allure history into branch folder
+          mkdir -p gh-pages-deploy/${{ github.ref_name }}-allure-report/.allure
+          cp -R .allure/* gh-pages-deploy/${{ github.ref_name }}-allure-report/.allure/
           echo "💾 History saved for branch: ${{ github.ref_name }}"
 
           # Add .nojekyll to prevent Jekyll processing
@@ -132,6 +132,4 @@ jobs:
           publish_dir: ./gh-pages-deploy
           publish_branch: gh-pages
           keep_files: true
-          user_name: 'github-actions[bot]'
-          user_email: 'github-actions[bot]@users.noreply.github.com'
-          commit_message: 'Deploy Allure report from ${{ github.ref_name }}'
+          destination_dir: .
