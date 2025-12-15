@@ -160,9 +160,30 @@ jobs:
           path: allure-report/
           retention-days: 30
 
-      # Step 13: Deploy to gh-pages branch
-      - name: Deploy to gh-pages branch
+      # Upload deployment package for deploy job
+      - name: Upload deployment package
+        uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
+        with:
+          name: gh-pages-deploy-${{ github.ref_name }}
+          path: gh-pages-deploy/
+          retention-days: 1
+
+  deploy:
+    name: 📊 Deploy Allure Report
+    needs: test
+    if: ${{ !cancelled() }}
+    runs-on: ubuntu-latest
+    steps:
+      # Download deployment package from test job
+      - name: Download deployment package
+        uses: actions/download-artifact@v4
+        with:
+          name: gh-pages-deploy-${{ github.ref_name }}
+          path: gh-pages-deploy
+
+      # Deploy to gh-pages branch
+      - name: Deploy to gh-pages branch
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -174,14 +195,12 @@ jobs:
           user_email: 'github-actions[bot]@users.noreply.github.com'
           commit_message: 'Deploy Allure report from ${{ github.ref_name }}'
 
-      # Step 14: Add Allure Report link to summary
-      - name: Add Allure Report link
-        if: ${{ !cancelled() }}
+      # Display Allure Report link
+      - name: 📊 Allure Report Link
         run: |
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "## 📊 Allure Report" >> $GITHUB_STEP_SUMMARY
+          echo "## 📊 Allure Report Deployed" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           REPO_NAME=$(echo "${{ github.repository }}" | cut -d'/' -f2)
           echo "🔗 **View Report:** [https://${{ github.repository_owner }}.github.io/$REPO_NAME/${{ github.ref_name }}-allure-report/](https://${{ github.repository_owner }}.github.io/$REPO_NAME/${{ github.ref_name }}-allure-report/)" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "✅ Allure report deployed to GitHub Pages for branch: **${{ github.ref_name }}**" >> $GITHUB_STEP_SUMMARY
+          echo "✅ Report deployed successfully for branch: **${{ github.ref_name }}**" >> $GITHUB_STEP_SUMMARY
