@@ -123,13 +123,36 @@ jobs:
 
           echo "✅ GitHub Pages content ready"
 
-      # Add simple test summary
-      - name: Add test summary
+      # Add test summary from JUnit XML
+      - name: Generate test summary
         if: ${{ !cancelled() }}
         run: |
           echo "## 🧪 Test Summary" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "View detailed results in the Playwright HTML Report artifact" >> $GITHUB_STEP_SUMMARY
+
+          if [ -f test-results/junit.xml ]; then
+            # Extract stats from JUnit XML
+            TOTAL=$(xmllint --xpath "sum(//testsuite/@tests)" test-results/junit.xml)
+            FAILURES=$(xmllint --xpath "sum(//testsuite/@failures)" test-results/junit.xml)
+            SKIPPED=$(xmllint --xpath "sum(//testsuite/@skipped)" test-results/junit.xml)
+            PASSED=$((TOTAL - FAILURES - SKIPPED))
+            
+            echo "### 📊 Results" >> $GITHUB_STEP_SUMMARY
+            echo "- **Total:** $TOTAL" >> $GITHUB_STEP_SUMMARY
+            echo "- **Passed:** ✅ $PASSED" >> $GITHUB_STEP_SUMMARY
+            echo "- **Failed:** ❌ $FAILURES" >> $GITHUB_STEP_SUMMARY
+            echo "- **Skipped:** ⏭️ $SKIPPED" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            
+            # Show failed tests if any
+            if [ "$FAILURES" -gt 0 ]; then
+              echo "### ❌ Failed Tests" >> $GITHUB_STEP_SUMMARY
+              xmllint --xpath "//testcase[failure]/@name" test-results/junit.xml | sed 's/ name="/\n- /g' | sed 's/"//g' | tail -n +2 >> $GITHUB_STEP_SUMMARY
+              echo "" >> $GITHUB_STEP_SUMMARY
+            fi
+          else
+            echo "⚠️ JUnit XML not found" >> $GITHUB_STEP_SUMMARY
+          fi
           echo "" >> $GITHUB_STEP_SUMMARY
 
       # Artifact 1: Playwright Report
