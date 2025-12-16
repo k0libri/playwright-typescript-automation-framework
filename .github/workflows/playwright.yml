@@ -133,8 +133,14 @@ jobs:
           echo "" >> $GITHUB_STEP_SUMMARY
 
           if [ -f test-results.json ]; then
-            # Debug: show file exists
+            # Debug: show file structure
             echo "✅ test-results.json found" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "**Debug - File structure:**" >> $GITHUB_STEP_SUMMARY
+            echo '```json' >> $GITHUB_STEP_SUMMARY
+            jq '.' test-results.json | head -50 >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
             
             # Count tests properly from Playwright JSON reporter format
             TOTAL=$(jq '[.suites[].specs[].tests[]] | length' test-results.json)
@@ -142,7 +148,6 @@ jobs:
             FAILED=$(jq '[.suites[].specs[].tests[] | select(.results[0].status == "failed")] | length' test-results.json)
             SKIPPED=$(jq '[.suites[].specs[].tests[] | select(.results[0].status == "skipped")] | length' test-results.json)
             
-            echo "" >> $GITHUB_STEP_SUMMARY
             echo "### 📈 Test Results" >> $GITHUB_STEP_SUMMARY
             echo "- **Total Tests:** $TOTAL" >> $GITHUB_STEP_SUMMARY
             echo "- **Passed:** ✅ $PASSED" >> $GITHUB_STEP_SUMMARY
