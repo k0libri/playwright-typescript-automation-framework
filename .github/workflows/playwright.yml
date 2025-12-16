@@ -123,44 +123,13 @@ jobs:
 
           echo "✅ GitHub Pages content ready"
 
-      # Add test summary from JUnit XML
-      - name: Generate test summary
+      # Publish test results from JUnit XML
+      - name: Publish test results
+        uses: EnricoMi/publish-unit-test-result-action@v2
         if: ${{ !cancelled() }}
-        run: |
-          echo "## 🧪 Test Summary" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-
-          if [ -f test-results/junit.xml ]; then
-            python3 << 'EOF' >> $GITHUB_STEP_SUMMARY
-import xml.etree.ElementTree as ET
-
-tree = ET.parse('test-results/junit.xml')
-root = tree.getroot()
-
-# Get stats
-total = sum(int(ts.get('tests', 0)) for ts in root.findall('.//testsuite'))
-failures = sum(int(ts.get('failures', 0)) for ts in root.findall('.//testsuite'))
-skipped = sum(int(ts.get('skipped', 0)) for ts in root.findall('.//testsuite'))
-passed = total - failures - skipped
-
-print("### 📊 Results")
-print(f"- **Total:** {total}")
-print(f"- **Passed:** ✅ {passed}")
-print(f"- **Failed:** ❌ {failures}")
-print(f"- **Skipped:** ⏭️ {skipped}")
-print("")
-
-# Show failed tests
-if failures > 0:
-    print("### ❌ Failed Tests")
-    for testcase in root.findall('.//testcase[failure]'):
-        print(f"- **{testcase.get('name')}**")
-    print("")
-EOF
-          else
-            echo "⚠️ JUnit XML not found" >> $GITHUB_STEP_SUMMARY
-          fi
-          echo "" >> $GITHUB_STEP_SUMMARY
+        with:
+          files: test-results/junit.xml
+          check_name: Playwright Test Results
 
       # Artifact 1: Playwright Report
       - name: Upload Playwright Report
