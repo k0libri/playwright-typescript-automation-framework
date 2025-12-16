@@ -10,9 +10,7 @@
     "grep": {},
     "grepInvert": null,
     "maxFailures": 0,
-    "metadata": {
-      "actualWorkers": 1
-    },
+    "metadata": {},
     "preserveOutput": "always",
     "reporter": [
       [
@@ -60,9 +58,7 @@
         "outputDir": "C:/Users/GergoDobrosi/Documents/Course/code/playwright-typescript-automation-framework/test-results",
         "repeatEach": 1,
         "retries": 0,
-        "metadata": {
-          "actualWorkers": 1
-        },
+        "metadata": {},
         "id": "api",
         "name": "api",
         "testDir": "C:/Users/GergoDobrosi/Documents/Course/code/playwright-typescript-automation-framework/src/api/tests",
@@ -76,9 +72,7 @@
         "outputDir": "C:/Users/GergoDobrosi/Documents/Course/code/playwright-typescript-automation-framework/test-results",
         "repeatEach": 1,
         "retries": 0,
-        "metadata": {
-          "actualWorkers": 1
-        },
+        "metadata": {},
         "id": "ui",
         "name": "ui",
         "testDir": "C:/Users/GergoDobrosi/Documents/Course/code/playwright-typescript-automation-framework/src/ui/tests",
@@ -98,6 +92,138 @@
     "webServer": null
   },
   "suites": [
+    {
+      "title": "src\\api\\tests\\user\\user.spec.ts",
+      "file": "src/api/tests/user/user.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "User API @api @critical",
+          "file": "src/api/tests/user/user.spec.ts",
+          "line": 8,
+          "column": 6,
+          "specs": [
+            {
+              "title": "should create user account via API",
+              "ok": true,
+              "tags": [
+                "api",
+                "critical"
+              ],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "api",
+                  "projectName": "api",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "cc4a700773f11b2ece03-4b3d0b5f15897164775d",
+              "file": "src/api/tests/user/user.spec.ts",
+              "line": 9,
+              "column": 7
+            },
+            {
+              "title": "should verify login with valid credentials",
+              "ok": true,
+              "tags": [
+                "api",
+                "critical"
+              ],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "api",
+                  "projectName": "api",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "cc4a700773f11b2ece03-a78877c567290ca5972c",
+              "file": "src/api/tests/user/user.spec.ts",
+              "line": 39,
+              "column": 7
+            },
+            {
+              "title": "should return error for invalid login credentials",
+              "ok": true,
+              "tags": [
+                "api",
+                "critical"
+              ],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "api",
+                  "projectName": "api",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "cc4a700773f11b2ece03-aafb092947059273148e",
+              "file": "src/api/tests/user/user.spec.ts",
+              "line": 69,
+              "column": 7
+            },
+            {
+              "title": "should get user details by email",
+              "ok": true,
+              "tags": [
+                "api",
+                "critical"
+              ],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "api",
+                  "projectName": "api",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "cc4a700773f11b2ece03-0ea9b46fd73b7ac451c4",
+              "file": "src/api/tests/user/user.spec.ts",
+              "line": 80,
+              "column": 7
+            },
+            {
+              "title": "should return error for non-existent user email",
+              "ok": true,
+              "tags": [
+                "api",
+                "critical"
+              ],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "api",
+                  "projectName": "api",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "cc4a700773f11b2ece03-d8031d90b53665daaa96",
+              "file": "src/api/tests/user/user.spec.ts",
+              "line": 110,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    },
     {
       "title": "src\\ui\\tests\\authentication\\authentication.spec.ts",
       "file": "src/ui/tests/authentication/authentication.spec.ts",
@@ -132,61 +258,8 @@
                       "expectedStatus": "passed",
                       "projectId": "ui",
                       "projectName": "ui",
-                      "results": [
-                        {
-                          "workerIndex": 0,
-                          "parallelIndex": 0,
-                          "status": "passed",
-                          "duration": 14659,
-                          "errors": [],
-                          "stdout": [
-                            {
-                              "text": "Starting User Registration test suite\n"
-                            },
-                            {
-                              "text": "No cookie consent dialog detected or already handled\n"
-                            },
-                            {
-                              "text": "User registration verified:  TestFirst213 TestLast213\n"
-                            },
-                            {
-                              "text": "Note: User account created will remain due to API CSRF protection - this is expected for automation exercise\n"
-                            }
-                          ],
-                          "stderr": [],
-                          "retry": 0,
-                          "steps": [
-                            {
-                              "title": "Navigate to signup/login page",
-                              "duration": 10576
-                            },
-                            {
-                              "title": "Initiate signup with name and email",
-                              "duration": 1041
-                            },
-                            {
-                              "title": "Complete registration form",
-                              "duration": 1940
-                            },
-                            {
-                              "title": "Continue after account creation",
-                              "duration": 744
-                            },
-                            {
-                              "title": "Verify user account was created successfully",
-                              "duration": 41
-                            },
-                            {
-                              "title": "Note: User cleanup not performed",
-                              "duration": 0
-                            }
-                          ],
-                          "startTime": "2025-12-16T11:17:47.046Z",
-                          "annotations": [],
-                          "attachments": []
-                        }
-                      ],
-                      "status": "expected"
+                      "results": [],
+                      "status": "skipped"
                     }
                   ],
                   "id": "a80de8cf7db3da3066d1-d921fb1f94c5384270ac",
@@ -208,39 +281,8 @@
                       "expectedStatus": "passed",
                       "projectId": "ui",
                       "projectName": "ui",
-                      "results": [
-                        {
-                          "workerIndex": 0,
-                          "parallelIndex": 0,
-                          "status": "passed",
-                          "duration": 15853,
-                          "errors": [],
-                          "stdout": [
-                            {
-                              "text": "Cookie consent accepted successfully\n"
-                            },
-                            {
-                              "text": "No cookie consent dialog detected or already handled\n"
-                            }
-                          ],
-                          "stderr": [],
-                          "retry": 0,
-                          "steps": [
-                            {
-                              "title": "Create initial user",
-                              "duration": 7212
-                            },
-                            {
-                              "title": "Attempt duplicate email registration",
-                              "duration": 8386
-                            }
-                          ],
-                          "startTime": "2025-12-16T11:18:01.906Z",
-                          "annotations": [],
-                          "attachments": []
-                        }
-                      ],
-                      "status": "expected"
+                      "results": [],
+                      "status": "skipped"
                     }
                   ],
                   "id": "a80de8cf7db3da3066d1-858eada4a625f045376f",
@@ -270,35 +312,8 @@
                       "expectedStatus": "passed",
                       "projectId": "ui",
                       "projectName": "ui",
-                      "results": [
-                        {
-                          "workerIndex": 0,
-                          "parallelIndex": 0,
-                          "status": "passed",
-                          "duration": 4790,
-                          "errors": [],
-                          "stdout": [
-                            {
-                              "text": "Starting Authentication Negative Tests\n"
-                            },
-                            {
-                              "text": "Cookie consent accepted successfully\n"
-                            }
-                          ],
-                          "stderr": [],
-                          "retry": 0,
-                          "steps": [
-                            {
-                              "title": "Attempt login with invalid credentials",
-                              "duration": 4464
-                            }
-                          ],
-                          "startTime": "2025-12-16T11:18:17.771Z",
-                          "annotations": [],
-                          "attachments": []
-                        }
-                      ],
-                      "status": "expected"
+                      "results": [],
+                      "status": "skipped"
                     }
                   ],
                   "id": "a80de8cf7db3da3066d1-31d7a3053ce5dad7b8ea",
@@ -320,28 +335,8 @@
                       "expectedStatus": "passed",
                       "projectId": "ui",
                       "projectName": "ui",
-                      "results": [
-                        {
-                          "workerIndex": 0,
-                          "parallelIndex": 0,
-                          "status": "passed",
-                          "duration": 4,
-                          "errors": [],
-                          "stdout": [],
-                          "stderr": [],
-                          "retry": 0,
-                          "steps": [
-                            {
-                              "title": "Verify login error via API using beforeAll response",
-                              "duration": 3
-                            }
-                          ],
-                          "startTime": "2025-12-16T11:18:24.470Z",
-                          "annotations": [],
-                          "attachments": []
-                        }
-                      ],
-                      "status": "expected"
+                      "results": [],
+                      "status": "skipped"
                     }
                   ],
                   "id": "a80de8cf7db3da3066d1-f94d83c2b42f51bfb0c3",
@@ -363,32 +358,8 @@
                       "expectedStatus": "passed",
                       "projectId": "ui",
                       "projectName": "ui",
-                      "results": [
-                        {
-                          "workerIndex": 0,
-                          "parallelIndex": 0,
-                          "status": "passed",
-                          "duration": 4206,
-                          "errors": [],
-                          "stdout": [
-                            {
-                              "text": "Cookie consent accepted successfully\n"
-                            }
-                          ],
-                          "stderr": [],
-                          "retry": 0,
-                          "steps": [
-                            {
-                              "title": "Attempt registration with invalid email format",
-                              "duration": 3934
-                            }
-                          ],
-                          "startTime": "2025-12-16T11:18:24.483Z",
-                          "annotations": [],
-                          "attachments": []
-                        }
-                      ],
-                      "status": "expected"
+                      "results": [],
+                      "status": "skipped"
                     }
                   ],
                   "id": "a80de8cf7db3da3066d1-8b60bb4290352908744f",
@@ -410,39 +381,8 @@
                       "expectedStatus": "passed",
                       "projectId": "ui",
                       "projectName": "ui",
-                      "results": [
-                        {
-                          "workerIndex": 0,
-                          "parallelIndex": 0,
-                          "status": "passed",
-                          "duration": 12054,
-                          "errors": [],
-                          "stdout": [
-                            {
-                              "text": "Cookie consent accepted successfully\n"
-                            },
-                            {
-                              "text": "No cookie consent dialog detected or already handled\n"
-                            }
-                          ],
-                          "stderr": [],
-                          "retry": 0,
-                          "steps": [
-                            {
-                              "title": "Verify browser prevents empty name submission",
-                              "duration": 3519
-                            },
-                            {
-                              "title": "Verify browser prevents empty email submission",
-                              "duration": 8131
-                            }
-                          ],
-                          "startTime": "2025-12-16T11:18:28.700Z",
-                          "annotations": [],
-                          "attachments": []
-                        }
-                      ],
-                      "status": "expected"
+                      "results": [],
+                      "status": "skipped"
                     }
                   ],
                   "id": "a80de8cf7db3da3066d1-966d69d872246a341c4e",
@@ -464,28 +404,8 @@
                       "expectedStatus": "passed",
                       "projectId": "ui",
                       "projectName": "ui",
-                      "results": [
-                        {
-                          "workerIndex": 0,
-                          "parallelIndex": 0,
-                          "status": "passed",
-                          "duration": 3,
-                          "errors": [],
-                          "stdout": [],
-                          "stderr": [],
-                          "retry": 0,
-                          "steps": [
-                            {
-                              "title": "Verify non-existent user login error via API using beforeAll response",
-                              "duration": 3
-                            }
-                          ],
-                          "startTime": "2025-12-16T11:18:40.764Z",
-                          "annotations": [],
-                          "attachments": []
-                        }
-                      ],
-                      "status": "expected"
+                      "results": [],
+                      "status": "skipped"
                     }
                   ],
                   "id": "a80de8cf7db3da3066d1-b8d7f855e0ce9ec588a9",
@@ -507,28 +427,8 @@
                       "expectedStatus": "passed",
                       "projectId": "ui",
                       "projectName": "ui",
-                      "results": [
-                        {
-                          "workerIndex": 0,
-                          "parallelIndex": 0,
-                          "status": "passed",
-                          "duration": 1,
-                          "errors": [],
-                          "stdout": [],
-                          "stderr": [],
-                          "retry": 0,
-                          "steps": [
-                            {
-                              "title": "Verify invalid registration data error via API using beforeAll response",
-                              "duration": 1
-                            }
-                          ],
-                          "startTime": "2025-12-16T11:18:40.777Z",
-                          "annotations": [],
-                          "attachments": []
-                        }
-                      ],
-                      "status": "expected"
+                      "results": [],
+                      "status": "skipped"
                     }
                   ],
                   "id": "a80de8cf7db3da3066d1-545e83749266ed5f930f",
@@ -550,32 +450,8 @@
                       "expectedStatus": "passed",
                       "projectId": "ui",
                       "projectName": "ui",
-                      "results": [
-                        {
-                          "workerIndex": 0,
-                          "parallelIndex": 0,
-                          "status": "passed",
-                          "duration": 3,
-                          "errors": [],
-                          "stdout": [
-                            {
-                              "text": "API error handled with status: \u001b[33m200\u001b[39m\n"
-                            }
-                          ],
-                          "stderr": [],
-                          "retry": 0,
-                          "steps": [
-                            {
-                              "title": "Verify API error handling for malformed requests using beforeAll response",
-                              "duration": 2
-                            }
-                          ],
-                          "startTime": "2025-12-16T11:18:40.789Z",
-                          "annotations": [],
-                          "attachments": []
-                        }
-                      ],
-                      "status": "expected"
+                      "results": [],
+                      "status": "skipped"
                     }
                   ],
                   "id": "a80de8cf7db3da3066d1-d5edacd19f3e7805f919",
@@ -616,59 +492,8 @@
                   "expectedStatus": "passed",
                   "projectId": "ui",
                   "projectName": "ui",
-                  "results": [
-                    {
-                      "workerIndex": 0,
-                      "parallelIndex": 0,
-                      "status": "passed",
-                      "duration": 82716,
-                      "errors": [],
-                      "stdout": [
-                        {
-                          "text": "Starting Cart Management test suite\n"
-                        },
-                        {
-                          "text": "Cookie consent accepted successfully\n"
-                        },
-                        {
-                          "text": "User created and logged in successfully\n"
-                        },
-                        {
-                          "text": "No cookie consent dialog detected or already handled\n"
-                        },
-                        {
-                          "text": "No cookie consent dialog detected or already handled\n"
-                        },
-                        {
-                          "text": "Cart contents verified and user session maintained\n"
-                        }
-                      ],
-                      "stderr": [],
-                      "retry": 0,
-                      "steps": [
-                        {
-                          "title": "Create user account via UI",
-                          "duration": 5837
-                        },
-                        {
-                          "title": "Add products to cart via UI",
-                          "duration": 8432
-                        },
-                        {
-                          "title": "Verify cart contents via UI",
-                          "duration": 35611
-                        },
-                        {
-                          "title": "Verify cart contents and session maintained",
-                          "duration": 30105
-                        }
-                      ],
-                      "startTime": "2025-12-16T11:18:40.823Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
+                  "results": [],
+                  "status": "skipped"
                 }
               ],
               "id": "15e0a340eb49224c76d6-dc4928035e22b4653a0d",
@@ -690,67 +515,8 @@
                   "expectedStatus": "passed",
                   "projectId": "ui",
                   "projectName": "ui",
-                  "results": [
-                    {
-                      "workerIndex": 0,
-                      "parallelIndex": 0,
-                      "status": "passed",
-                      "duration": 88696,
-                      "errors": [],
-                      "stdout": [
-                        {
-                          "text": "Cookie consent accepted successfully\n"
-                        },
-                        {
-                          "text": "No cookie consent dialog detected or already handled\n"
-                        },
-                        {
-                          "text": "No cookie consent dialog detected or already handled\n"
-                        },
-                        {
-                          "text": "Network idle timeout, continuing with DOM ready state\n"
-                        },
-                        {
-                          "text": "Cart items after removal attempt: 0\n"
-                        },
-                        {
-                          "text": "Cart operations test completed without user creation\n"
-                        }
-                      ],
-                      "stderr": [],
-                      "retry": 0,
-                      "steps": [
-                        {
-                          "title": "Navigate to home page",
-                          "duration": 3915
-                        },
-                        {
-                          "title": "Navigate to products page",
-                          "duration": 6016
-                        },
-                        {
-                          "title": "Add product to cart",
-                          "duration": 2694
-                        },
-                        {
-                          "title": "Verify cart contents",
-                          "duration": 30208
-                        },
-                        {
-                          "title": "Remove item from cart",
-                          "duration": 45221
-                        },
-                        {
-                          "title": "Test completed successfully",
-                          "duration": 0
-                        }
-                      ],
-                      "startTime": "2025-12-16T11:20:03.571Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
+                  "results": [],
+                  "status": "skipped"
                 }
               ],
               "id": "15e0a340eb49224c76d6-08839f71fd76c66dc850",
@@ -772,46 +538,8 @@
                   "expectedStatus": "passed",
                   "projectId": "ui",
                   "projectName": "ui",
-                  "results": [
-                    {
-                      "workerIndex": 0,
-                      "parallelIndex": 0,
-                      "status": "passed",
-                      "duration": 26914,
-                      "errors": [],
-                      "stdout": [
-                        {
-                          "text": "Cookie consent accepted successfully\n"
-                        },
-                        {
-                          "text": "No cookie consent dialog detected or already handled\n"
-                        },
-                        {
-                          "text": "Checkout correctly requires login\n"
-                        }
-                      ],
-                      "stderr": [],
-                      "retry": 0,
-                      "steps": [
-                        {
-                          "title": "Navigate to home page",
-                          "duration": 11224
-                        },
-                        {
-                          "title": "Add product to cart without login",
-                          "duration": 15290
-                        },
-                        {
-                          "title": "Verify checkout requires login",
-                          "duration": 102
-                        }
-                      ],
-                      "startTime": "2025-12-16T11:21:32.274Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
+                  "results": [],
+                  "status": "skipped"
                 }
               ],
               "id": "15e0a340eb49224c76d6-30631b9194d5e8041f68",
@@ -850,79 +578,8 @@
                   "expectedStatus": "passed",
                   "projectId": "ui",
                   "projectName": "ui",
-                  "results": [
-                    {
-                      "workerIndex": 0,
-                      "parallelIndex": 0,
-                      "status": "passed",
-                      "duration": 61955,
-                      "errors": [],
-                      "stdout": [
-                        {
-                          "text": "Starting Order Completion test suite\n"
-                        },
-                        {
-                          "text": "Cookie consent accepted successfully\n"
-                        },
-                        {
-                          "text": "User created and logged in successfully\n"
-                        },
-                        {
-                          "text": "No cookie consent dialog detected or already handled\n"
-                        },
-                        {
-                          "text": "No cookie consent dialog detected or already handled\n"
-                        },
-                        {
-                          "text": "Order history API verification would go here when endpoint is available\n"
-                        }
-                      ],
-                      "stderr": [],
-                      "retry": 0,
-                      "steps": [
-                        {
-                          "title": "Create user account via UI",
-                          "duration": 9778
-                        },
-                        {
-                          "title": "Add products to cart",
-                          "duration": 8476
-                        },
-                        {
-                          "title": "Review cart and proceed to checkout",
-                          "duration": 6535
-                        },
-                        {
-                          "title": "Review order details on checkout page",
-                          "duration": 30218
-                        },
-                        {
-                          "title": "Place order",
-                          "duration": 1780
-                        },
-                        {
-                          "title": "Complete payment process",
-                          "duration": 2626
-                        },
-                        {
-                          "title": "Verify order history via API (if available)",
-                          "duration": 864
-                        },
-                        {
-                          "title": "Continue after order confirmation",
-                          "duration": 558
-                        },
-                        {
-                          "title": "Cleanup: Delete test user",
-                          "duration": 726
-                        }
-                      ],
-                      "startTime": "2025-12-16T11:21:59.220Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
+                  "results": [],
+                  "status": "skipped"
                 }
               ],
               "id": "a704d7ddb343df3f518f-682a676bdb5a47935f20",
@@ -944,43 +601,8 @@
                   "expectedStatus": "passed",
                   "projectId": "ui",
                   "projectName": "ui",
-                  "results": [
-                    {
-                      "workerIndex": 0,
-                      "parallelIndex": 0,
-                      "status": "passed",
-                      "duration": 49969,
-                      "errors": [],
-                      "stdout": [
-                        {
-                          "text": "Cookie consent accepted successfully\n"
-                        },
-                        {
-                          "text": "No cookie consent dialog detected or already handled\n"
-                        }
-                      ],
-                      "stderr": [],
-                      "retry": 0,
-                      "steps": [
-                        {
-                          "title": "Setup: Create user and add single product",
-                          "duration": 14532
-                        },
-                        {
-                          "title": "Complete checkout with single product",
-                          "duration": 33962
-                        },
-                        {
-                          "title": "Cleanup: Delete test user",
-                          "duration": 1033
-                        }
-                      ],
-                      "startTime": "2025-12-16T11:23:01.200Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
+                  "results": [],
+                  "status": "skipped"
                 }
               ],
               "id": "a704d7ddb343df3f518f-4c99e8d891962f402593",
@@ -1002,53 +624,8 @@
                   "expectedStatus": "passed",
                   "projectId": "ui",
                   "projectName": "ui",
-                  "results": [
-                    {
-                      "workerIndex": 0,
-                      "parallelIndex": 0,
-                      "status": "passed",
-                      "duration": 63201,
-                      "errors": [],
-                      "stdout": [
-                        {
-                          "text": "Cookie consent accepted successfully\n"
-                        },
-                        {
-                          "text": "No cookie consent dialog detected or already handled\n"
-                        },
-                        {
-                          "text": "Network idle timeout, continuing with DOM ready state\n"
-                        },
-                        {
-                          "text": "No cookie consent dialog detected or already handled\n"
-                        }
-                      ],
-                      "stderr": [],
-                      "retry": 0,
-                      "steps": [
-                        {
-                          "title": "Setup: Create user and add products",
-                          "duration": 14148
-                        },
-                        {
-                          "title": "Get cart item details",
-                          "duration": 15616
-                        },
-                        {
-                          "title": "Verify order details match cart contents",
-                          "duration": 31374
-                        },
-                        {
-                          "title": "Cleanup: Delete test user",
-                          "duration": 517
-                        }
-                      ],
-                      "startTime": "2025-12-16T11:23:51.189Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
+                  "results": [],
+                  "status": "skipped"
                 }
               ],
               "id": "a704d7ddb343df3f518f-964780e038600adcb0f2",
@@ -1082,80 +659,20 @@
               "specs": [
                 {
                   "title": "should validate product search with invalid terms",
-                  "ok": false,
+                  "ok": true,
                   "tags": [
                     "regression",
                     "negative"
                   ],
                   "tests": [
                     {
-                      "timeout": 60000,
+                      "timeout": 90000,
                       "annotations": [],
                       "expectedStatus": "passed",
                       "projectId": "ui",
                       "projectName": "ui",
-                      "results": [
-                        {
-                          "workerIndex": 0,
-                          "parallelIndex": 0,
-                          "status": "timedOut",
-                          "duration": 61758,
-                          "error": {
-                            "message": "\u001b[31mTest timeout of 60000ms exceeded.\u001b[39m",
-                            "stack": "\u001b[31mTest timeout of 60000ms exceeded.\u001b[39m"
-                          },
-                          "errors": [
-                            {
-                              "message": "\u001b[31mTest timeout of 60000ms exceeded.\u001b[39m"
-                            }
-                          ],
-                          "stdout": [
-                            {
-                              "text": "Cookie consent accepted successfully\n"
-                            },
-                            {
-                              "text": "Network idle timeout, continuing with DOM ready state\n"
-                            }
-                          ],
-                          "stderr": [],
-                          "retry": 0,
-                          "steps": [
-                            {
-                              "title": "Search for non-existent products",
-                              "duration": 45709
-                            },
-                            {
-                              "title": "Search with special characters",
-                              "duration": 15834
-                            }
-                          ],
-                          "startTime": "2025-12-16T11:24:54.416Z",
-                          "annotations": [],
-                          "attachments": [
-                            {
-                              "name": "screenshot",
-                              "contentType": "image/png",
-                              "path": "C:\\Users\\GergoDobrosi\\Documents\\Course\\code\\playwright-typescript-automation-framework\\test-results\\products-products-Products-5b3d5-t-search-with-invalid-terms-ui\\test-failed-1.png"
-                            },
-                            {
-                              "name": "video",
-                              "contentType": "video/webm",
-                              "path": "C:\\Users\\GergoDobrosi\\Documents\\Course\\code\\playwright-typescript-automation-framework\\test-results\\products-products-Products-5b3d5-t-search-with-invalid-terms-ui\\video.webm"
-                            },
-                            {
-                              "name": "error-context",
-                              "contentType": "text/markdown",
-                              "path": "C:\\Users\\GergoDobrosi\\Documents\\Course\\code\\playwright-typescript-automation-framework\\test-results\\products-products-Products-5b3d5-t-search-with-invalid-terms-ui\\error-context.md"
-                            },
-                            {
-                              "name": "trace",
-                              "contentType": "application/zip",
-                              "path": "C:\\Users\\GergoDobrosi\\Documents\\Course\\code\\playwright-typescript-automation-framework\\test-results\\products-products-Products-5b3d5-t-search-with-invalid-terms-ui\\trace.zip"
-                            }
-                          ]
-                        }
-                      ],
-                      "status": "unexpected"
+                      "results": [],
+                      "status": "skipped"
                     }
                   ],
                   "id": "05639c743d7c8d7016af-d0c8b965ee0fd42e473f",
@@ -1172,11 +689,11 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2025-12-16T11:17:45.716Z",
-    "duration": 493803.101,
-    "expected": 15,
-    "skipped": 0,
-    "unexpected": 1,
+    "startTime": "2025-12-16T15:25:24.726Z",
+    "duration": 38.97700000000009,
+    "expected": 0,
+    "skipped": 21,
+    "unexpected": 0,
     "flaky": 0
   }
 }
