@@ -49,7 +49,7 @@ test.describe('Authentication @critical', () => {
 
       await test.step('Note: User cleanup not performed', async () => {
         console.log(
-          'Note: User account created will remain due to API CSRF protection - this is expected for automation exercise'
+          'Note: User account created will remain due to API CSRF protection - this is expected for automation exercise',
         );
       });
     });
@@ -104,7 +104,7 @@ test.describe('Authentication @critical', () => {
 
       const invalidLoginResponse = await userService.verifyLogin(
         'invalid@email.com',
-        'wrongpassword'
+        'wrongpassword',
       );
       invalidLoginData = {
         status: invalidLoginResponse.status(),
@@ -113,7 +113,7 @@ test.describe('Authentication @critical', () => {
 
       const nonExistentUserResponse = await userService.verifyLogin(
         'nonexistent@user.com',
-        'password123'
+        'password123',
       );
       nonExistentUserData = {
         status: nonExistentUserResponse.status(),
@@ -179,7 +179,7 @@ test.describe('Authentication @critical', () => {
         const currentUrl = page.url();
         expect(currentUrl).toContain('/login');
         const nameInputValidity = await authenticationPage.signupNameInput.evaluate(
-          (el: any) => el.validity.valid
+          (el: any) => el.validity.valid,
         );
         expect(nameInputValidity).toBe(false);
       });
@@ -191,7 +191,7 @@ test.describe('Authentication @critical', () => {
         const currentUrl = page.url();
         expect(currentUrl).toContain('/login');
         const emailInputValidity = await authenticationPage.signupEmailInput.evaluate(
-          (el: any) => el.validity.valid
+          (el: any) => el.validity.valid,
         );
         expect(emailInputValidity).toBe(false);
       });

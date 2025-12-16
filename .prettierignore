@@ -12,6 +12,33 @@ node_modules/
 # Build outputs
 dist/
 build/
+*.tsbuildinfo
 
 # Package manager files
 package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Coverage
+coverage/
+.nyc_output/
+
+# Logs
+*.log
+logs/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Auth state
+.auth/
