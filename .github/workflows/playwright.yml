@@ -131,25 +131,32 @@ jobs:
           echo "" >> $GITHUB_STEP_SUMMARY
 
           if [ -f test-results/junit.xml ]; then
-            # Extract stats from JUnit XML
-            TOTAL=$(xmllint --xpath "sum(//testsuite/@tests)" test-results/junit.xml)
-            FAILURES=$(xmllint --xpath "sum(//testsuite/@failures)" test-results/junit.xml)
-            SKIPPED=$(xmllint --xpath "sum(//testsuite/@skipped)" test-results/junit.xml)
-            PASSED=$((TOTAL - FAILURES - SKIPPED))
-            
-            echo "### 📊 Results" >> $GITHUB_STEP_SUMMARY
-            echo "- **Total:** $TOTAL" >> $GITHUB_STEP_SUMMARY
-            echo "- **Passed:** ✅ $PASSED" >> $GITHUB_STEP_SUMMARY
-            echo "- **Failed:** ❌ $FAILURES" >> $GITHUB_STEP_SUMMARY
-            echo "- **Skipped:** ⏭️ $SKIPPED" >> $GITHUB_STEP_SUMMARY
-            echo "" >> $GITHUB_STEP_SUMMARY
-            
-            # Show failed tests if any
-            if [ "$FAILURES" -gt 0 ]; then
-              echo "### ❌ Failed Tests" >> $GITHUB_STEP_SUMMARY
-              xmllint --xpath "//testcase[failure]/@name" test-results/junit.xml | sed 's/ name="/\n- /g' | sed 's/"//g' | tail -n +2 >> $GITHUB_STEP_SUMMARY
-              echo "" >> $GITHUB_STEP_SUMMARY
-            fi
+            python3 << 'EOF' >> $GITHUB_STEP_SUMMARY
+import xml.etree.ElementTree as ET
+
+tree = ET.parse('test-results/junit.xml')
+root = tree.getroot()
+
+# Get stats
+total = sum(int(ts.get('tests', 0)) for ts in root.findall('.//testsuite'))
+failures = sum(int(ts.get('failures', 0)) for ts in root.findall('.//testsuite'))
+skipped = sum(int(ts.get('skipped', 0)) for ts in root.findall('.//testsuite'))
+passed = total - failures - skipped
+
+print("### 📊 Results")
+print(f"- **Total:** {total}")
+print(f"- **Passed:** ✅ {passed}")
+print(f"- **Failed:** ❌ {failures}")
+print(f"- **Skipped:** ⏭️ {skipped}")
+print("")
+
+# Show failed tests
+if failures > 0:
+    print("### ❌ Failed Tests")
+    for testcase in root.findall('.//testcase[failure]'):
+        print(f"- **{testcase.get('name')}**")
+    print("")
+EOF
           else
             echo "⚠️ JUnit XML not found" >> $GITHUB_STEP_SUMMARY
           fi
