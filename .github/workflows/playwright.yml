@@ -123,6 +123,15 @@ jobs:
 
           echo "✅ GitHub Pages content ready"
 
+      # Add simple test summary
+      - name: Add test summary
+        if: ${{ !cancelled() }}
+        run: |
+          echo "## 🧪 Test Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "View detailed results in the Playwright HTML Report artifact" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
       # Artifact 1: Playwright Report
       - name: Upload Playwright Report
         uses: actions/upload-artifact@v4
