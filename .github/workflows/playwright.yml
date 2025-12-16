@@ -133,22 +133,24 @@ jobs:
           echo "" >> $GITHUB_STEP_SUMMARY
 
           if [ -f test-results.json ]; then
-            # Debug: show suites structure
+            # Debug: show nested suites structure
             echo "✅ test-results.json found" >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY
-            echo "**Debug - Suites info:**" >> $GITHUB_STEP_SUMMARY
+            echo "**Debug - Nested Suites:**" >> $GITHUB_STEP_SUMMARY
             echo '```' >> $GITHUB_STEP_SUMMARY
-            echo "Suites count: $(jq '.suites | length' test-results.json)" >> $GITHUB_STEP_SUMMARY
-            echo "First suite keys: $(jq '.suites[0] | keys' test-results.json)" >> $GITHUB_STEP_SUMMARY
-            jq -r '.suites[] | "Suite: \(.title // "no title"), Specs: \(.specs | length)"' test-results.json >> $GITHUB_STEP_SUMMARY
+            echo "Top-level suites: $(jq '.suites | length' test-results.json)" >> $GITHUB_STEP_SUMMARY
+            jq -r '.suites[] | "Suite: \(.title), Nested suites: \(.suites | length), Direct specs: \(.specs | length)"' test-results.json >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "Looking deeper - nested suites specs:" >> $GITHUB_STEP_SUMMARY
+            jq -r '.suites[].suites[] | "  Nested: \(.title), Specs: \(.specs | length)"' test-results.json >> $GITHUB_STEP_SUMMARY
             echo '```' >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY
             
-            # Count tests properly from Playwright JSON reporter format
-            TOTAL=$(jq '[.suites[].specs[].tests[]] | length' test-results.json)
-            PASSED=$(jq '[.suites[].specs[].tests[] | select(.results[0].status == "passed")] | length' test-results.json)
-            FAILED=$(jq '[.suites[].specs[].tests[] | select(.results[0].status == "failed")] | length' test-results.json)
-            SKIPPED=$(jq '[.suites[].specs[].tests[] | select(.results[0].status == "skipped")] | length' test-results.json)
+            # Count tests from nested suites (recursive structure)
+            TOTAL=$(jq '[.. | .tests? // empty | .[]] | length' test-results.json)
+            PASSED=$(jq '[.. | .tests? // empty | .[] | select(.results[0].status == "passed")] | length' test-results.json)
+            FAILED=$(jq '[.. | .tests? // empty | .[] | select(.results[0].status == "failed")] | length' test-results.json)
+            SKIPPED=$(jq '[.. | .tests? // empty | .[] | select(.results[0].status == "skipped")] | length' test-results.json)
             
             echo "### 📈 Test Results" >> $GITHUB_STEP_SUMMARY
             echo "- **Total Tests:** $TOTAL" >> $GITHUB_STEP_SUMMARY
