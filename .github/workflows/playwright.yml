@@ -133,19 +133,6 @@ jobs:
           echo "" >> $GITHUB_STEP_SUMMARY
 
           if [ -f test-results.json ]; then
-            # Debug: show nested suites structure
-            echo "✅ test-results.json found" >> $GITHUB_STEP_SUMMARY
-            echo "" >> $GITHUB_STEP_SUMMARY
-            echo "**Debug - Nested Suites:**" >> $GITHUB_STEP_SUMMARY
-            echo '```' >> $GITHUB_STEP_SUMMARY
-            echo "Top-level suites: $(jq '.suites | length' test-results.json)" >> $GITHUB_STEP_SUMMARY
-            jq -r '.suites[] | "Suite: \(.title), Nested suites: \(.suites | length), Direct specs: \(.specs | length)"' test-results.json >> $GITHUB_STEP_SUMMARY
-            echo "" >> $GITHUB_STEP_SUMMARY
-            echo "Looking deeper - nested suites specs:" >> $GITHUB_STEP_SUMMARY
-            jq -r '.suites[].suites[] | "  Nested: \(.title), Specs: \(.specs | length)"' test-results.json >> $GITHUB_STEP_SUMMARY
-            echo '```' >> $GITHUB_STEP_SUMMARY
-            echo "" >> $GITHUB_STEP_SUMMARY
-            
             # Count tests from nested suites (recursive structure)
             TOTAL=$(jq '[.. | .tests? // empty | .[]] | length' test-results.json)
             PASSED=$(jq '[.. | .tests? // empty | .[] | select(.results[0].status == "passed")] | length' test-results.json)
@@ -162,12 +149,19 @@ jobs:
             # Show failed tests if any
             if [ "$FAILED" != "0" ] && [ "$FAILED" != "null" ]; then
               echo "### ❌ Failed Tests" >> $GITHUB_STEP_SUMMARY
-              jq -r '.suites[].specs[] | select(.tests[].results[0].status == "failed") | "- **" + .title + "**"' test-results.json >> $GITHUB_STEP_SUMMARY
+              jq -r '.. | .tests? // empty | .[] | select(.results[0].status == "failed") | "- **" + .title + "**"' test-results.json >> $GITHUB_STEP_SUMMARY
               echo "" >> $GITHUB_STEP_SUMMARY
             fi
             
-            # Show passed tests if any
+            # Show passed tests (limit to 20)
             if [ "$PASSED" != "0" ] && [ "$PASSED" != "null" ]; then
+              echo "### ✅ Passed Tests" >> $GITHUB_STEP_SUMMARY
+              jq -r '.. | .tests? // empty | .[] | select(.results[0].status == "passed") | "- " + .title' test-results.json | head -20 >> $GITHUB_STEP_SUMMARY
+              if [ "$PASSED" -gt 20 ]; then
+                echo "- ... and $((PASSED - 20)) more" >> $GITHUB_STEP_SUMMARY
+              fi
+              echo "" >> $GITHUB_STEP_SUMMARY
+            fi
               echo "### ✅ Passed Tests" >> $GITHUB_STEP_SUMMARY
               jq -r '.suites[].specs[] | select(.tests[].results[0].status == "passed") | "- " + .title' test-results.json | head -20 >> $GITHUB_STEP_SUMMARY
               echo "" >> $GITHUB_STEP_SUMMARY
