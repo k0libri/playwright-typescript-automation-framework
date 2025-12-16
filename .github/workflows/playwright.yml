@@ -123,58 +123,6 @@ jobs:
 
           echo "✅ GitHub Pages content ready"
 
-      # Step 12: Generate test summary
-      - name: Generate test summary
-        if: ${{ !cancelled() }}
-        run: |
-          echo "## 📊 Test Execution Summary" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "**Branch:** ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-
-          if [ -f test-results.json ]; then
-            # Count tests from nested suites (recursive structure)
-            TOTAL=$(jq '[.. | .tests? // empty | .[]] | length' test-results.json)
-            PASSED=$(jq '[.. | .tests? // empty | .[] | select(.results[0].status == "passed")] | length' test-results.json)
-            FAILED=$(jq '[.. | .tests? // empty | .[] | select(.results[0].status == "failed")] | length' test-results.json)
-            SKIPPED=$(jq '[.. | .tests? // empty | .[] | select(.results[0].status == "skipped")] | length' test-results.json)
-            
-            echo "### 📈 Test Results" >> $GITHUB_STEP_SUMMARY
-            echo "- **Total Tests:** $TOTAL" >> $GITHUB_STEP_SUMMARY
-            echo "- **Passed:** ✅ $PASSED" >> $GITHUB_STEP_SUMMARY
-            echo "- **Failed:** ❌ $FAILED" >> $GITHUB_STEP_SUMMARY
-            echo "- **Skipped:** ⏭️ $SKIPPED" >> $GITHUB_STEP_SUMMARY
-            echo "" >> $GITHUB_STEP_SUMMARY
-            
-            # Show failed tests if any
-            if [ "$FAILED" != "0" ] && [ "$FAILED" != "null" ]; then
-              echo "### ❌ Failed Tests" >> $GITHUB_STEP_SUMMARY
-              jq -r '.. | .tests? // empty | .[] | select(.results[0].status == "failed") | "- **" + .title + "**"' test-results.json >> $GITHUB_STEP_SUMMARY
-              echo "" >> $GITHUB_STEP_SUMMARY
-            fi
-            
-            # Show passed tests (limit to 20)
-            if [ "$PASSED" != "0" ] && [ "$PASSED" != "null" ]; then
-              echo "### ✅ Passed Tests" >> $GITHUB_STEP_SUMMARY
-              jq -r '.. | .tests? // empty | .[] | select(.results[0].status == "passed") | "- " + .title' test-results.json | head -20 >> $GITHUB_STEP_SUMMARY
-              if [ "$PASSED" -gt 20 ]; then
-                echo "- ... and $((PASSED - 20)) more" >> $GITHUB_STEP_SUMMARY
-              fi
-              echo "" >> $GITHUB_STEP_SUMMARY
-            fi
-              echo "### ✅ Passed Tests" >> $GITHUB_STEP_SUMMARY
-              jq -r '.suites[].specs[] | select(.tests[].results[0].status == "passed") | "- " + .title' test-results.json | head -20 >> $GITHUB_STEP_SUMMARY
-              echo "" >> $GITHUB_STEP_SUMMARY
-            fi
-          else
-            echo "⚠️ test-results.json not found" >> $GITHUB_STEP_SUMMARY
-          fi
-
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "### 📁 Artifacts Available:" >> $GITHUB_STEP_SUMMARY
-          echo "- 🎭 Playwright HTML Report" >> $GITHUB_STEP_SUMMARY
-          echo "- 📊 Allure Report" >> $GITHUB_STEP_SUMMARY
-
       # Artifact 1: Playwright Report
       - name: Upload Playwright Report
         uses: actions/upload-artifact@v4
