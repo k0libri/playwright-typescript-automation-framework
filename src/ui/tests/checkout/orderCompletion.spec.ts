@@ -1,6 +1,7 @@
 import { test, expect } from '../../fixtures/uiFixtures';
 import { PaymentDataFactory } from '../../../shared/utils/paymentDataFactory';
 import { UserService } from '../../../api/services/user.service';
+import { HttpStatus } from '../../../api/base/httpStatus';
 
 test.describe('Order Completion - Purchase + Order History @critical @e2e', () => {
   test.beforeAll(async () => {
@@ -87,7 +88,7 @@ test.describe('Order Completion - Purchase + Order History @critical @e2e', () =
       const userService = new UserService(request);
 
       const userResponse = await userService.getUserByEmail(uniqueUserData.email);
-      expect(userResponse.status()).toBe(200);
+      expect(userResponse.status()).toBe(HttpStatus.OK);
     });
 
     await test.step('Continue after order confirmation', async () => {

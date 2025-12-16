@@ -9,12 +9,28 @@ import { defineConfig, devices } from '@playwright/test';
 // dotenv.config({ path: path.resolve(__dirname, '.env') });
 
 /**
+ * Centralized configuration for test execution
+ */
+const config = {
+  api: {
+    baseUrl: process.env.API_BASE_URL || 'https://automationexercise.com/api',
+  },
+  ui: {
+    baseUrl: process.env.UI_BASE_URL || 'https://automationexercise.com',
+  },
+  timeouts: {
+    apiTest: 60000, // 60 seconds for API tests
+    e2eTest: 90000, // 90 seconds for E2E tests
+    action: 30000, // 30 seconds for actions
+    navigation: 30000, // 30 seconds for navigation
+  },
+  storageStatePath: '.auth/state.json',
+};
+
+/**
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
-  testDir: './src',
-  /* Run tests in files in parallel */
-  fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env['CI'],
   /* Retry on CI only */
@@ -38,24 +54,37 @@ export default defineConfig({
   ],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
-    /* Base URL to use in actions like `await page.goto('')`. */
-    baseURL: 'https://automationexercise.com',
     /* Collect trace when retrying the failed test. */
     trace: 'retain-on-failure',
     /* Take screenshot only on failures */
     screenshot: 'only-on-failure',
     /* Record video on first retry */
     video: 'retain-on-failure',
-    /* Global timeout for each test */
-    actionTimeout: 30000,
-    /* Navigation timeout */
-    navigationTimeout: 30000,
   },
-  /* Configure projects for major browsers */
+  /* Configure projects for API and UI tests */
   projects: [
     {
-      name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      name: 'api',
+      testDir: './src/api/tests',
+      testMatch: '**/*.spec.ts',
+      timeout: config.timeouts.apiTest,
+      fullyParallel: true,
+      use: {
+        baseURL: config.api.baseUrl,
+      },
+    },
+    {
+      name: 'ui',
+      testDir: './src/ui/tests',
+      testMatch: '**/*.spec.ts',
+      timeout: config.timeouts.e2eTest,
+      fullyParallel: false,
+      use: {
+        ...devices['Desktop Chrome'],
+        baseURL: config.ui.baseUrl,
+        actionTimeout: config.timeouts.action,
+        navigationTimeout: config.timeouts.navigation,
+      },
     },
   ],
 });

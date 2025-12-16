@@ -60,9 +60,8 @@ export class CheckoutPage extends BasePage {
 
     for (let i = 0; i < itemCount; i++) {
       const item = this.orderItems.nth(i);
-      // Wait for item to be visible before extracting text
       try {
-        await item.waitFor({ state: 'visible', timeout: 10000 });
+        await item.waitFor({ state: 'visible' });
       } catch {
         continue; // Skip rows that aren't visible (e.g., header rows)
       }
@@ -70,17 +69,13 @@ export class CheckoutPage extends BasePage {
       // Try multiple selector patterns for product name
       let name = '';
       try {
-        // Try finding h4 a first (most specific)
-        name = (await item.locator('h4 a').textContent({ timeout: 2000 })) ?? '';
+        name = (await item.locator('h4 a').textContent()) ?? '';
       } catch {
         try {
-          // Try finding just h4
-          name = (await item.locator('h4').textContent({ timeout: 2000 })) ?? '';
+          name = (await item.locator('h4').textContent()) ?? '';
         } catch {
           try {
-            // Try with cart_description class prefix
-            name =
-              (await item.locator('.cart_description h4').textContent({ timeout: 2000 })) ?? '';
+            name = (await item.locator('.cart_description h4').textContent()) ?? '';
           } catch {
             // Last resort: get all text from the description cell
             const cells = await item.locator('td').all();
@@ -106,7 +101,7 @@ export class CheckoutPage extends BasePage {
       let total = '';
 
       try {
-        price = (await item.locator('.cart_price p').textContent({ timeout: 3000 })) ?? '';
+        price = (await item.locator('.cart_price p').textContent()) ?? '';
       } catch {
         // Try alternative selector without class prefix
         try {
@@ -120,8 +115,7 @@ export class CheckoutPage extends BasePage {
       }
 
       try {
-        quantity =
-          (await item.locator('.cart_quantity button').textContent({ timeout: 3000 })) ?? '';
+        quantity = (await item.locator('.cart_quantity button').textContent()) ?? '';
       } catch {
         // Try alternative selector
         try {
@@ -135,7 +129,7 @@ export class CheckoutPage extends BasePage {
       }
 
       try {
-        total = (await item.locator('.cart_total p').textContent({ timeout: 3000 })) ?? '';
+        total = (await item.locator('.cart_total p').textContent()) ?? '';
       } catch {
         // Try alternative selector
         try {
@@ -172,7 +166,7 @@ export class CheckoutPage extends BasePage {
   async placeOrder(): Promise<void> {
     await this.placeOrderButton.click();
     // Wait for navigation to payment page
-    await this.page.waitForURL('**/payment', { timeout: 10000 });
+    await this.page.waitForURL('**/payment');
     await this.page.waitForLoadState('domcontentloaded');
   }
 
@@ -200,7 +194,7 @@ export class CheckoutPage extends BasePage {
    */
   async isOrderConfirmed(): Promise<boolean> {
     try {
-      await this.orderConfirmationMessage.waitFor({ timeout: 10000 });
+      await this.orderConfirmationMessage.waitFor();
       return true;
     } catch {
       return false;

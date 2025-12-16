@@ -49,7 +49,7 @@ export class CartPage extends BasePage {
       // Check for empty cart message
       try {
         const emptyMessage = this.page.getByText('Cart is empty!');
-        await emptyMessage.waitFor({ timeout: 2000 });
+        await emptyMessage.waitFor();
         return true;
       } catch {
         // No empty message found
@@ -114,10 +114,7 @@ export class CartPage extends BasePage {
   async removeItemFromCart(itemIndex: number): Promise<void> {
     await this.handleCookieConsentIfPresent();
     await this.removeItemButtons.nth(itemIndex).click({ force: true });
-    // Wait for page to reload and process the removal
     await this.page.waitForLoadState('domcontentloaded');
-    // Give it a moment for the item to be removed from DOM
-    await this.page.waitForTimeout(500);
     await this.waitForPageReady();
   }
 

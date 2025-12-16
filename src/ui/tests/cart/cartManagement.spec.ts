@@ -31,20 +31,20 @@ test.describe('Cart Management - Login + Cart Verification @critical @regression
 
       if (productNames[0]) {
         await productsPage.addProductToCartAndContinue(productNames[0]);
-        await expect(productsPage.continueShoppingButton).toBeHidden({ timeout: 10000 });
+        await expect(productsPage.continueShoppingButton).toBeHidden();
         await expect(productsPage.productsContainer).toBeVisible();
       }
 
       if (productNames.length > 1 && productNames[1]) {
         await productsPage.addProductToCartAndContinue(productNames[1]);
-        await expect(productsPage.continueShoppingButton).toBeHidden({ timeout: 10000 });
+        await expect(productsPage.continueShoppingButton).toBeHidden();
         await expect(productsPage.productsContainer).toBeVisible();
       }
     });
 
     await test.step('Verify cart contents via UI', async () => {
       await navbar.goToCart();
-      await expect(cartPage.cartTable).toBeVisible({ timeout: 15000 });
+      await expect(cartPage.cartTable).toBeVisible();
 
       const cartItems = await cartPage.getCartItems();
       expect(cartItems.length).toBeGreaterThanOrEqual(1);
