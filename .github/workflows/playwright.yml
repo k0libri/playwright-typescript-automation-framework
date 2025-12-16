@@ -133,12 +133,14 @@ jobs:
           echo "" >> $GITHUB_STEP_SUMMARY
 
           if [ -f test-results.json ]; then
-            # Debug: show file structure
+            # Debug: show suites structure
             echo "✅ test-results.json found" >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY
-            echo "**Debug - File structure:**" >> $GITHUB_STEP_SUMMARY
-            echo '```json' >> $GITHUB_STEP_SUMMARY
-            jq '.' test-results.json | head -50 >> $GITHUB_STEP_SUMMARY
+            echo "**Debug - Suites info:**" >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            echo "Suites count: $(jq '.suites | length' test-results.json)" >> $GITHUB_STEP_SUMMARY
+            echo "First suite keys: $(jq '.suites[0] | keys' test-results.json)" >> $GITHUB_STEP_SUMMARY
+            jq -r '.suites[] | "Suite: \(.title // "no title"), Specs: \(.specs | length)"' test-results.json >> $GITHUB_STEP_SUMMARY
             echo '```' >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY
             
