@@ -1,29 +1,23 @@
 import { test, expect } from '../fixtures';
-import { LoginPage } from '../../pages/LoginPage';
-import { HomePage } from '../../pages/HomePage';
-import { CartPage } from '../../pages/CartPage';
-import { CheckoutPage } from '../../pages/CheckoutPage';
-import { UserFactory, User } from '../../utils/UserFactory';
+import { UserFactory, User } from '../test-data/UserFactory';
+import { TEST_DATA } from '../test-data/testData';
 import { BASE_URL } from '../../config/constants';
 
 test.describe('Purchase Flow Tests', () => {
-  let loginPage: LoginPage;
-  let homePage: HomePage;
-  let cartPage: CartPage;
-  let checkoutPage: CheckoutPage;
   let validUser: User;
 
   test.beforeEach(async ({ page }) => {
-    loginPage = new LoginPage(page);
-    homePage = new HomePage(page);
-    cartPage = new CartPage(page);
-    checkoutPage = new CheckoutPage(page);
     validUser = UserFactory.createRandomUser();
-
     await page.goto(BASE_URL);
   });
 
-  test('TC009: Should complete purchase flow - Register during checkout', async ({ page }) => {
+  test('TC009: Should complete purchase flow - Register during checkout', async ({
+    page,
+    homePage,
+    loginPage,
+    cartPage,
+    checkoutPage,
+  }) => {
     await test.step('Add products to cart', async () => {
       await homePage.navigateToProducts();
       await homePage.addFirstProductToCart();
@@ -56,13 +50,13 @@ test.describe('Purchase Flow Tests', () => {
       // Fill payment details
       const cardDetails = {
         nameOnCard: validUser.name,
-        cardNumber: '4242424242424242',
-        cvc: '123',
-        expiryMonth: '12',
-        expiryYear: String(new Date().getFullYear() + 1),
+        cardNumber: TEST_DATA.PAYMENT.VALID.CARD_NUMBER,
+        cvc: TEST_DATA.PAYMENT.VALID.CVC,
+        expiryMonth: TEST_DATA.PAYMENT.VALID.EXPIRY_MONTH,
+        expiryYear: TEST_DATA.PAYMENT.VALID.EXPIRY_YEAR,
       };
 
-      await checkoutPage.completeOrder(cardDetails, 'Test order comment');
+      await checkoutPage.completeOrder(cardDetails, TEST_DATA.ORDER.DEFAULT_COMMENT);
 
       // Verify order confirmation
       const isConfirmed = await checkoutPage.isOrderConfirmed();
@@ -70,7 +64,13 @@ test.describe('Purchase Flow Tests', () => {
     });
   });
 
-  test('TC010: Should complete purchase flow - Login before checkout', async ({ page }) => {
+  test('TC010: Should complete purchase flow - Login before checkout', async ({
+    page,
+    homePage,
+    loginPage,
+    cartPage,
+    checkoutPage,
+  }) => {
     await test.step('Register user first', async () => {
       await homePage.navigateToSignupLogin();
       await loginPage.signup(validUser.name, validUser.email);
@@ -95,10 +95,10 @@ test.describe('Purchase Flow Tests', () => {
       // Complete the order
       const cardDetails = {
         nameOnCard: validUser.name,
-        cardNumber: '4242424242424242',
-        cvc: '123',
-        expiryMonth: '12',
-        expiryYear: String(new Date().getFullYear() + 1),
+        cardNumber: TEST_DATA.PAYMENT.VALID.CARD_NUMBER,
+        cvc: TEST_DATA.PAYMENT.VALID.CVC,
+        expiryMonth: TEST_DATA.PAYMENT.VALID.EXPIRY_MONTH,
+        expiryYear: TEST_DATA.PAYMENT.VALID.EXPIRY_YEAR,
       };
 
       await checkoutPage.completeOrder(cardDetails);
@@ -109,7 +109,13 @@ test.describe('Purchase Flow Tests', () => {
     });
   });
 
-  test('TC011: Should verify address details in checkout', async ({ page }) => {
+  test('TC011: Should verify address details in checkout', async ({
+    page,
+    homePage,
+    loginPage,
+    cartPage,
+    checkoutPage,
+  }) => {
     await test.step('Register user with specific address', async () => {
       await homePage.navigateToSignupLogin();
       await loginPage.signup(validUser.name, validUser.email);
@@ -134,7 +140,13 @@ test.describe('Purchase Flow Tests', () => {
     });
   });
 
-  test('TC012: Should handle order confirmation and invoice download', async ({ page }) => {
+  test('TC012: Should handle order confirmation and invoice download', async ({
+    page,
+    homePage,
+    loginPage,
+    cartPage,
+    checkoutPage,
+  }) => {
     await test.step('Complete a purchase', async () => {
       // Register user
       await homePage.navigateToSignupLogin();
@@ -152,10 +164,10 @@ test.describe('Purchase Flow Tests', () => {
       // Complete order
       const cardDetails = {
         nameOnCard: validUser.name,
-        cardNumber: '4242424242424242',
-        cvc: '123',
-        expiryMonth: '12',
-        expiryYear: String(new Date().getFullYear() + 1),
+        cardNumber: TEST_DATA.PAYMENT.VALID.CARD_NUMBER,
+        cvc: TEST_DATA.PAYMENT.VALID.CVC,
+        expiryMonth: TEST_DATA.PAYMENT.VALID.EXPIRY_MONTH,
+        expiryYear: TEST_DATA.PAYMENT.VALID.EXPIRY_YEAR,
       };
 
       await checkoutPage.completeOrder(cardDetails);

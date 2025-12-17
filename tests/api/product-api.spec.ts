@@ -1,5 +1,6 @@
 import { test, expect } from '../fixtures';
 import { ProductService, Product } from '../../services/ProductService';
+import { TEST_DATA } from '../test-data/testData';
 
 test.describe('Product API Tests', () => {
   let productService: ProductService;
@@ -31,7 +32,7 @@ test.describe('Product API Tests', () => {
 
   test('API-012: Should search products by name', async () => {
     await test.step('Search for specific product', async () => {
-      const searchTerm = 'blue';
+      const searchTerm = TEST_DATA.SEARCH_TERMS.BLUE;
       const response = await productService.searchProduct(searchTerm);
 
       expect(response).toHaveProperty('responseCode');
@@ -51,7 +52,7 @@ test.describe('Product API Tests', () => {
 
   test('API-013: Should handle search with no results', async () => {
     await test.step('Search for non-existent product', async () => {
-      const searchTerm = 'nonexistentproduct12345';
+      const searchTerm = TEST_DATA.SEARCH_TERMS.NON_EXISTENT;
       const response = await productService.searchProduct(searchTerm);
 
       expect(response).toHaveProperty('responseCode');
@@ -85,7 +86,7 @@ test.describe('Product API Tests', () => {
 
   test('API-015: Should get product by ID', async () => {
     await test.step('Get specific product by ID', async () => {
-      const productId = 1; // Blue Top
+      const productId = TEST_DATA.PRODUCTS.BLUE_TOP.ID; // Blue Top
       const product = await productService.getProductById(productId);
 
       expect(product).not.toBeNull();
@@ -97,7 +98,7 @@ test.describe('Product API Tests', () => {
 
   test('API-016: Should get products by category', async () => {
     await test.step('Get products by category', async () => {
-      const category = 'women';
+      const category = TEST_DATA.CATEGORIES.WOMEN;
       const products = await productService.getProductsByCategory(category);
 
       expect(Array.isArray(products)).toBeTruthy();
@@ -113,7 +114,7 @@ test.describe('Product API Tests', () => {
 
   test('API-017: Should get products by brand', async () => {
     await test.step('Get products by brand', async () => {
-      const brand = 'polo';
+      const brand = TEST_DATA.BRANDS.POLO;
       const products = await productService.getProductsByBrand(brand);
 
       expect(Array.isArray(products)).toBeTruthy();

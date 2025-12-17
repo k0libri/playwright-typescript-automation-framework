@@ -4,7 +4,8 @@ import { ProductService } from '../../services/ProductService';
 import { LoginPage } from '../../pages/LoginPage';
 import { HomePage } from '../../pages/HomePage';
 import { CartPage } from '../../pages/CartPage';
-import { UserFactory } from '../../utils/UserFactory';
+import { UserFactory } from '../test-data/UserFactory';
+import { TEST_DATA } from '../test-data/testData';
 import { BASE_URL } from '../../config/constants';
 
 test.describe('Integration Tests - UI + API', () => {
@@ -128,7 +129,7 @@ test.describe('Integration Tests - UI + API', () => {
   });
 
   test('INT-005: Search products via UI and verify via API', async ({ page }) => {
-    const searchTerm = 'blue';
+    const searchTerm = TEST_DATA.SEARCH_TERMS.BLUE;
 
     await test.step('Search products via API', async () => {
       const apiSearchResults = await productService.searchProduct(searchTerm);
@@ -228,8 +229,8 @@ test.describe('Integration Tests - UI + API', () => {
     await test.step('Update user data', async () => {
       const updatedUser = {
         ...user,
-        name: 'Updated Name',
-        company: 'Updated Company',
+        name: TEST_DATA.USER_UPDATES.NAME,
+        company: TEST_DATA.USER_UPDATES.COMPANY,
       };
 
       const updateResponse = await userService.updateUser(updatedUser);

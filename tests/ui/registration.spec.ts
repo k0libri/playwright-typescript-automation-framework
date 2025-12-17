@@ -1,20 +1,14 @@
 import { test, expect } from '../fixtures';
-import { LoginPage } from '../../pages/LoginPage';
-import { HomePage } from '../../pages/HomePage';
-import { UserFactory } from '../../utils/UserFactory';
+import { UserFactory } from '../test-data/UserFactory';
+import { TEST_DATA } from '../test-data/testData';
 import { BASE_URL } from '../../config/constants';
 
 test.describe('User Registration Tests', () => {
-  let loginPage: LoginPage;
-  let homePage: HomePage;
-
   test.beforeEach(async ({ page }) => {
-    loginPage = new LoginPage(page);
-    homePage = new HomePage(page);
     await page.goto(BASE_URL);
   });
 
-  test('TC001: Should register a new user successfully', async ({ page }) => {
+  test('TC001: Should register a new user successfully', async ({ page, homePage, loginPage }) => {
     const newUser = UserFactory.createRandomUser();
 
     await test.step('Navigate to signup/login page', async () => {
@@ -49,14 +43,17 @@ test.describe('User Registration Tests', () => {
     });
   });
 
-  test('TC002: Should show error when registering with existing email', async ({ page }) => {
+  test('TC002: Should show error when registering with existing email', async ({
+    homePage,
+    loginPage,
+  }) => {
     await test.step('Navigate to signup/login page', async () => {
       await homePage.navigateToSignupLogin();
     });
 
     await test.step('Try to signup with existing email', async () => {
       // Use a common email that might already exist
-      await loginPage.signup('Test User', 'test@example.com');
+      await loginPage.signup(TEST_DATA.VALID_USER.NAME, TEST_DATA.AUTH.EXISTING_EMAIL);
 
       // Check if error message appears
       const errorVisible = await loginPage.isSignupErrorVisible();
@@ -66,7 +63,11 @@ test.describe('User Registration Tests', () => {
     });
   });
 
-  test('TC003: Should handle cookie consent popup during registration', async ({ page }) => {
+  test('TC003: Should handle cookie consent popup during registration', async ({
+    page,
+    homePage,
+    loginPage,
+  }) => {
     await test.step('Navigate to signup/login and verify cookie popup is handled', async () => {
       await homePage.navigateToSignupLogin();
 

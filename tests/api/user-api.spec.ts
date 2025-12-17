@@ -1,6 +1,7 @@
 import { test, expect } from '../fixtures';
 import { UserService } from '../../services/UserService';
-import { UserFactory } from '../../utils/UserFactory';
+import { UserFactory } from '../test-data/UserFactory';
+import { TEST_DATA } from '../test-data/testData';
 
 test.describe('User API Tests', () => {
   let userService: UserService;
@@ -40,7 +41,10 @@ test.describe('User API Tests', () => {
   test('API-003: Should reject login with invalid credentials', async () => {
     await test.step('Attempt login with non-existent user', async () => {
       const invalidUser = UserFactory.createRandomUser();
-      const response = await userService.verifyLogin(invalidUser.email, 'wrongpassword');
+      const response = await userService.verifyLogin(
+        invalidUser.email,
+        TEST_DATA.AUTH.INVALID_PASSWORD,
+      );
 
       expect(response).toHaveProperty('responseCode');
       expect(response.responseCode).toBe(404);
@@ -73,8 +77,8 @@ test.describe('User API Tests', () => {
       // Update user information
       const updatedUser = {
         ...newUser,
-        name: 'Updated Name',
-        company: 'Updated Company',
+        name: TEST_DATA.USER_UPDATES.NAME,
+        company: TEST_DATA.USER_UPDATES.COMPANY,
       };
 
       const response = await userService.updateUser(updatedUser);
@@ -131,7 +135,10 @@ test.describe('User API Tests', () => {
   test('API-009: Should verify login fails without email parameter', async () => {
     await test.step('Attempt login without email', async () => {
       // This test verifies API validation
-      const response = await userService.verifyLogin('', 'password123');
+      const response = await userService.verifyLogin(
+        TEST_DATA.AUTH.EMPTY_EMAIL,
+        TEST_DATA.VALID_USER.PASSWORD,
+      );
 
       expect(response).toHaveProperty('responseCode');
       expect(response.responseCode).toBe(404);
@@ -145,7 +152,10 @@ test.describe('User API Tests', () => {
       await userService.createUser(newUser);
 
       // Attempt delete with wrong password
-      const response = await userService.deleteUser(newUser.email, 'wrongpassword');
+      const response = await userService.deleteUser(
+        newUser.email,
+        TEST_DATA.AUTH.INVALID_PASSWORD,
+      );
 
       expect(response).toHaveProperty('responseCode');
       expect(response.responseCode).toBe(404);

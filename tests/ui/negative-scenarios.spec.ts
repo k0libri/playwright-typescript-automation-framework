@@ -1,34 +1,25 @@
 import { test, expect } from '../fixtures';
-import { LoginPage } from '../../pages/LoginPage';
-import { HomePage } from '../../pages/HomePage';
-import { CartPage } from '../../pages/CartPage';
-import { CheckoutPage } from '../../pages/CheckoutPage';
-import { UserFactory } from '../../utils/UserFactory';
+import { UserFactory } from '../test-data/UserFactory';
+import { TEST_DATA } from '../test-data/testData';
 import { BASE_URL } from '../../config/constants';
 
 test.describe('Negative Scenario Tests', () => {
-  let loginPage: LoginPage;
-  let homePage: HomePage;
-  let cartPage: CartPage;
-  let checkoutPage: CheckoutPage;
-
   test.beforeEach(async ({ page }) => {
-    loginPage = new LoginPage(page);
-    homePage = new HomePage(page);
-    cartPage = new CartPage(page);
-    checkoutPage = new CheckoutPage(page);
-
     await page.goto(BASE_URL);
   });
 
-  test('TC013: Should reject login with invalid email format', async ({ page }) => {
+  test('TC013: Should reject login with invalid email format', async ({
+    page,
+    homePage,
+    loginPage,
+  }) => {
     await test.step('Navigate to login page', async () => {
       await homePage.navigateToSignupLogin();
       await expect(page).toHaveURL(/.*\/login/);
     });
 
     await test.step('Attempt login with invalid email format', async () => {
-      await loginPage.login('not-an-email', 'password123');
+      await loginPage.login(TEST_DATA.AUTH.INVALID_EMAIL, TEST_DATA.VALID_USER.PASSWORD);
 
       // Should remain on login page or show error message
       const isOnLoginPage = page.url().includes('/login');
@@ -37,27 +28,35 @@ test.describe('Negative Scenario Tests', () => {
     });
   });
 
-  test('TC014: Should reject login with empty credentials', async ({ page }) => {
+  test('TC014: Should reject login with empty credentials', async ({
+    page,
+    homePage,
+    loginPage,
+  }) => {
     await test.step('Navigate to login page', async () => {
       await homePage.navigateToSignupLogin();
       await expect(page).toHaveURL(/.*\/login/);
     });
 
     await test.step('Attempt login with empty fields', async () => {
-      await loginPage.login('', '');
+      await loginPage.login(TEST_DATA.AUTH.EMPTY_EMAIL, TEST_DATA.AUTH.EMPTY_PASSWORD);
 
       // Should remain on login page with empty fields
       await expect(page).toHaveURL(/.*\/login/);
     });
   });
 
-  test('TC015: Should reject login with incorrect password', async ({ page }) => {
+  test('TC015: Should reject login with incorrect password', async ({
+    page,
+    homePage,
+    loginPage,
+  }) => {
     await test.step('Navigate to login page', async () => {
       await homePage.navigateToSignupLogin();
     });
 
     await test.step('Attempt login with valid email but wrong password', async () => {
-      await loginPage.login('test@example.com', 'wrongpassword');
+      await loginPage.login(TEST_DATA.AUTH.EXISTING_EMAIL, TEST_DATA.AUTH.INVALID_PASSWORD);
 
       // Check for error message or remaining on login page
       const isErrorVisible = await loginPage.isLoginErrorVisible();
@@ -67,35 +66,43 @@ test.describe('Negative Scenario Tests', () => {
     });
   });
 
-  test('TC016: Should handle SQL injection attempts in login', async ({ page }) => {
+  test('TC016: Should handle SQL injection attempts in login', async ({
+    page,
+    homePage,
+    loginPage,
+  }) => {
     await test.step('Navigate to login page', async () => {
       await homePage.navigateToSignupLogin();
     });
 
     await test.step('Attempt SQL injection in email field', async () => {
-      const sqlInjectionPayload = "' OR '1'='1' --";
-      await loginPage.login(sqlInjectionPayload, 'password');
+      const sqlInjectionPayload = TEST_DATA.AUTH.SQL_INJECTION_PAYLOAD;
+      await loginPage.login(sqlInjectionPayload, TEST_DATA.VALID_USER.PASSWORD);
 
       // Should reject the login attempt and stay on login page
       await expect(page.url()).toContain('/login');
     });
 
     await test.step('Attempt SQL injection in password field', async () => {
-      const sqlInjectionPayload = "' OR '1'='1' --";
-      await loginPage.login('test@example.com', sqlInjectionPayload);
+      const sqlInjectionPayload = TEST_DATA.AUTH.SQL_INJECTION_PAYLOAD;
+      await loginPage.login(TEST_DATA.AUTH.EXISTING_EMAIL, sqlInjectionPayload);
 
       // Should reject the login attempt
       await expect(page.url()).toContain('/login');
     });
   });
 
-  test('TC017: Should handle XSS attempts in registration', async ({ page }) => {
+  test('TC017: Should handle XSS attempts in registration', async ({
+    page,
+    homePage,
+    loginPage,
+  }) => {
     await test.step('Navigate to signup page', async () => {
       await homePage.navigateToSignupLogin();
     });
 
     await test.step('Attempt XSS in name field', async () => {
-      const xssPayload = '<script>alert("XSS")</script>';
+      const xssPayload = TEST_DATA.AUTH.XSS_PAYLOAD;
       const user = UserFactory.createRandomUser();
 
       await loginPage.signup(xssPayload, user.email);
@@ -111,7 +118,11 @@ test.describe('Negative Scenario Tests', () => {
     });
   });
 
-  test('TC018: Should prevent duplicate user registration', async ({ page }) => {
+  test('TC018: Should prevent duplicate user registration', async ({
+    page,
+    homePage,
+    loginPage,
+  }) => {
     const timestamp = Date.now();
     const user = UserFactory.createUserWithEmail(`duplicate${timestamp}@test.com`);
 
@@ -144,7 +155,7 @@ test.describe('Negative Scenario Tests', () => {
     });
   });
 
-  test('TC019: Should handle checkout with empty cart', async ({ page }) => {
+  test('TC019: Should handle checkout with empty cart', async ({ homePage, cartPage }) => {
     await test.step('Navigate to empty cart', async () => {
       await homePage.navigateToCart();
     });
@@ -173,7 +184,13 @@ test.describe('Negative Scenario Tests', () => {
     });
   });
 
-  test('TC020: Should handle invalid payment details', async ({ page }) => {
+  test('TC020: Should handle invalid payment details', async ({
+    page,
+    homePage,
+    loginPage,
+    cartPage,
+    checkoutPage,
+  }) => {
     await test.step('Setup: Create user and add product to cart', async () => {
       const user = UserFactory.createRandomUser();
 
@@ -194,11 +211,11 @@ test.describe('Negative Scenario Tests', () => {
     await test.step('Attempt payment with invalid card details', async () => {
       // Using intentionally invalid values to test validation
       const invalidCardDetails = {
-        nameOnCard: '', // Intentionally blank for negative testing
-        cardNumber: '1234', // Invalid card number - too short
-        cvc: '1', // Invalid CVC - too short
-        expiryMonth: '13', // Invalid month (should be 1-12)
-        expiryYear: '2020', // Past year - intentionally expired
+        nameOnCard: TEST_DATA.PAYMENT.INVALID.NAME_ON_CARD,
+        cardNumber: TEST_DATA.PAYMENT.INVALID.CARD_NUMBER,
+        cvc: TEST_DATA.PAYMENT.INVALID.CVC,
+        expiryMonth: TEST_DATA.PAYMENT.INVALID.EXPIRY_MONTH,
+        expiryYear: TEST_DATA.PAYMENT.INVALID.EXPIRY_YEAR,
       };
 
       await checkoutPage.placeOrder();
