@@ -1,5 +1,5 @@
 import { APIRequestContext } from '@playwright/test';
-import { User } from '../utils/UserFactory';
+import { User } from '../tests/test-data/UserFactory';
 import { UserResponse, LoginResponse } from './ApiResponse';
 import { API_BASE_URL, API_ENDPOINTS } from '../config/constants';
 

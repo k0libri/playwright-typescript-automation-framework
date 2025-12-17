@@ -1,29 +1,20 @@
 import { test, expect } from '../fixtures';
-import { LoginPage } from '../../pages/LoginPage';
-import { HomePage } from '../../pages/HomePage';
-import { CartPage } from '../../pages/CartPage';
-import { ProductPage } from '../../pages/ProductPage';
-import { UserFactory, User } from '../../utils/UserFactory';
+import { UserFactory, User } from '../test-data/UserFactory';
 import { BASE_URL } from '../../config/constants';
 
 test.describe('Login and Cart Management Tests', () => {
-  let loginPage: LoginPage;
-  let homePage: HomePage;
-  let cartPage: CartPage;
-  let productPage: ProductPage;
   let validUser: User;
 
   test.beforeEach(async ({ page }) => {
-    loginPage = new LoginPage(page);
-    homePage = new HomePage(page);
-    cartPage = new CartPage(page);
-    productPage = new ProductPage(page);
     validUser = UserFactory.createValidUser();
-
     await page.goto(BASE_URL);
   });
 
-  test('TC004: Should login successfully with valid credentials', async ({ page }) => {
+  test('TC004: Should login successfully with valid credentials', async ({
+    page,
+    homePage,
+    loginPage,
+  }) => {
     await test.step('Register user before login', async () => {
       await homePage.navigateToSignupLogin();
       await loginPage.signup(validUser.name, validUser.email);
@@ -51,7 +42,12 @@ test.describe('Login and Cart Management Tests', () => {
     });
   });
 
-  test('TC005: Should add products to cart and verify cart contents', async ({ page }) => {
+  test('TC005: Should add products to cart and verify cart contents', async ({
+    page,
+    homePage,
+    productPage,
+    cartPage,
+  }) => {
     await test.step('Navigate to products page', async () => {
       await homePage.navigateToProducts();
       await expect(page).toHaveURL(/.*\/products/);
@@ -92,7 +88,12 @@ test.describe('Login and Cart Management Tests', () => {
     });
   });
 
-  test('TC006: Should verify cart state after adding product', async ({ page }) => {
+  test('TC006: Should verify cart state after adding product', async ({
+    page,
+    homePage,
+    productPage,
+    cartPage,
+  }) => {
     await test.step('Add a product to cart first', async () => {
       await homePage.navigateToProducts();
       await homePage.viewFirstProduct();
@@ -110,7 +111,7 @@ test.describe('Login and Cart Management Tests', () => {
     });
   });
 
-  test('TC007: Should remove products from cart', async ({ page }) => {
+  test('TC007: Should remove products from cart', async ({ page, homePage, cartPage }) => {
     await test.step('Add products to cart', async () => {
       await homePage.navigateToProducts();
       await homePage.addFirstProductToCart();
@@ -133,7 +134,12 @@ test.describe('Login and Cart Management Tests', () => {
     });
   });
 
-  test('TC008: Should verify cart persistence after login', async ({ page }) => {
+  test('TC008: Should verify cart persistence after login', async ({
+    page,
+    homePage,
+    loginPage,
+    cartPage,
+  }) => {
     await test.step('Register user before testing cart persistence', async () => {
       await homePage.navigateToSignupLogin();
       await loginPage.signup(validUser.name, validUser.email);

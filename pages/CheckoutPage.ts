@@ -1,5 +1,5 @@
 import { Page, Locator } from '@playwright/test';
-import { User } from '../utils/UserFactory';
+import { User } from '../tests/test-data/UserFactory';
 
 export class CheckoutPage {
   readonly page: Page;

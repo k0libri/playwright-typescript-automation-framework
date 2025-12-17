@@ -17,26 +17,6 @@ export const API_ENDPOINTS = {
   GET_ALL_BRANDS: '/brandsList',
 };
 
-export const TEST_DATA = {
-  VALID_USER: {
-    NAME: 'Test User',
-    EMAIL: 'testuser@example.com',
-    PASSWORD: 'password123',
-  },
-  PRODUCTS: {
-    BLUE_TOP: {
-      ID: 1,
-      NAME: 'Blue Top',
-      PRICE: 'Rs. 500',
-    },
-    MEN_TSHIRT: {
-      ID: 2,
-      NAME: 'Men Tshirt',
-      PRICE: 'Rs. 400',
-    },
-  },
-};
-
 export const TIMEOUT = {
   SHORT: 5000,
   MEDIUM: 10000,
