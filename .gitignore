@@ -146,5 +146,7 @@ vite.config.ts.timestamp-*
 /playwright/.cache/
 /playwright/.auth/
 
+# Allure
+.allure/
 allure-results/
-
+allure-report/
