@@ -1,5 +1,7 @@
 # Playwright TypeScript Automation Framework
 
+![Playwright Tests](https://github.com/DobrosiGergo/playwright-typescript-automation-framework/actions/workflows/playwright.yml/badge.svg?branch=gergo_test_branch)
+
 A comprehensive test automation framework built with **Playwright** and **TypeScript** for testing the [Automation Exercise](https://automationexercise.com/) e-commerce demo site. This framework provides robust UI and API testing capabilities following industry best practices and design patterns.
 
 ## 🎯 Project Overview
@@ -11,12 +13,15 @@ A full-featured e-commerce demo site with complete UI and backend API, specifica
 
 - ✅ **UI Testing** - Complete page object model with component-based architecture
 - ✅ **API Testing** - Service layer pattern with base client abstraction
-- ✅ **Cross-Browser Support** - Chromium, Firefox, and WebKit
+- ✅ **Separate API/UI Projects** - Dedicated configurations for API (60s) and UI (90s) test timeouts
+- ✅ **Centralized Status Codes** - Shared HTTP and response code constants
+- ✅ **Cross-Browser Support** - Chromium (default), Firefox, and WebKit
 - ✅ **TypeScript** - Type-safe test development with full IntelliSense
 - ✅ **Design Patterns** - POM, Component Pattern, Service Pattern, Factory Pattern
-- ✅ **Code Quality** - ESLint, Prettier, Husky pre-commit hooks
-- ✅ **Reporting** - HTML reports, Allure integration, screenshots on failure
-- ✅ **CI/CD Ready** - GitHub Actions workflow included
+- ✅ **Code Quality** - ESLint, Prettier (with TypeScript best practices), Husky pre-commit hooks
+- ✅ **Auto-Wait** - No explicit timeouts, leveraging Playwright's built-in waiting mechanisms
+- ✅ **Reporting** - HTML reports, Allure integration with history, screenshots on failure
+- ✅ **CI/CD Ready** - GitHub Actions workflow with branch-specific deployments
 
 ## 🏗️ Architecture & Design Patterns
 
