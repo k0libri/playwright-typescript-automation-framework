@@ -152,10 +152,7 @@ test.describe('User API Tests', () => {
       await userService.createUser(newUser);
 
       // Attempt delete with wrong password
-      const response = await userService.deleteUser(
-        newUser.email,
-        TEST_DATA.AUTH.INVALID_PASSWORD,
-      );
+      const response = await userService.deleteUser(newUser.email, TEST_DATA.AUTH.INVALID_PASSWORD);
 
       expect(response).toHaveProperty('responseCode');
       expect(response.responseCode).toBe(404);

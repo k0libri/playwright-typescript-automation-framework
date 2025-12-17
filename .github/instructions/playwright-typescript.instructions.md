@@ -5,6 +5,24 @@ applyTo: '**'
 
 ## Test Writing Guidelines
 
+### Custom Fixtures and Helpers
+
+- **Page Object Fixtures**: Page objects are automatically instantiated and injected via custom fixtures
+  - Define fixtures in `tests/fixtures/index.ts`
+  - Import via `import { test, expect } from '../fixtures';`
+  - Access page objects in test signature: `async ({ homePage, loginPage, cartPage }) => {}`
+- **Fixture Helpers**: Reusable functions for common test setup tasks
+  - Place in `tests/fixtureHelpers/` directory
+  - Example: `cookieHelper.ts` handles cookie consent popups automatically
+  - Called automatically by fixture setup (e.g., page fixture override)
+- **Test Data Factories**: Generate test data using Factory and Builder patterns
+  - `UserFactory.createRandomUser()`: Generate unique user with random data
+  - `UserFactory.createValidUser()`: Generate user with valid test credentials
+  - `AddressBuilder`: Build address objects with fluent API
+- **Cookie Consent**: Automatically handled on first page navigation via custom page fixture
+  - No manual cookie handling needed in tests
+  - Implementation in `tests/fixtureHelpers/cookieHelper.ts`
+
 ### Code Quality Standards
 
 - **Locators**: Prioritize user-facing, role-based locators (`getByRole`, `getByLabel`, `getByText`, etc.) for resilience and accessibility. Use `test.step()` to group interactions and improve test readability and reporting.
@@ -14,10 +32,16 @@ applyTo: '**'
 
 ### Test Structure
 
-- **Imports**: Start with `import { test, expect } from '@playwright/test';`.
+- **Imports**: Import from custom fixtures instead of Playwright directly:
+  - `import { test, expect } from '../fixtures';` (for UI tests)
+  - `import { test, expect } from '@playwright/test';` (for API-only tests)
+- **Page Object Fixtures**: Use injected page objects in test signatures:
+  - Available fixtures: `homePage`, `loginPage`, `cartPage`, `productPage`, `checkoutPage`
+  - Example: `async ({ page, homePage, loginPage }) => {}`
 - **Organization**: Group related tests for a feature under a `test.describe()` block.
 - **Hooks**: Use `beforeEach` for setup actions common to all tests in a `describe` block (e.g., navigating to a page).
-- **Titles**: Follow a clear naming convention, such as `Feature - Specific action or scenario`.
+- **Test Steps**: Use `test.step()` to group logical actions and improve readability.
+- **Titles**: Follow a clear naming convention, such as `TC###: Feature - Specific action or scenario`.
 
 ### File Organization
 
@@ -34,37 +58,59 @@ applyTo: '**'
 
 ## Example Test Structure
 
+### Example 1: UI Test with Custom Fixtures
+
+```typescript
+import { test, expect } from '../fixtures';
+import { UserFactory } from '../test-data/UserFactory';
+import { BASE_URL } from '../../config/constants';
+
+test.describe('User Registration Tests', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto(BASE_URL);
+  });
+
+  test('TC001: Should register a new user successfully', async ({ page, homePage, loginPage }) => {
+    const newUser = UserFactory.createRandomUser();
+
+    await test.step('Navigate to signup/login page', async () => {
+      await homePage.navigateToSignupLogin();
+      await expect(page).toHaveURL(/.*\/login/);
+    });
+
+    await test.step('Enter signup details', async () => {
+      await loginPage.signup(newUser.name, newUser.email);
+      await expect(page).toHaveURL(/.*\/signup/);
+    });
+
+    await test.step('Fill account information and create account', async () => {
+      await loginPage.fillSignupForm(newUser);
+      await expect(page.getByText('Account Created!')).toBeVisible();
+    });
+
+    await test.step('Continue and verify user is logged in', async () => {
+      await page.getByRole('link', { name: 'Continue' }).click();
+      await expect(homePage.logoutLink).toBeVisible();
+    });
+
+    await test.step('Cleanup: Delete created user', async () => {
+      await homePage.deleteAccount();
+    });
+  });
+});
+```
+
+### Example 2: API-Only Test
+
 ```typescript
 import { test, expect } from '@playwright/test';
 
-test.describe('Movie Search Feature', () => {
-  test.beforeEach(async ({ page }) => {
-    // Navigate to the application before each test
-    await page.goto('https://debs-obrien.github.io/playwright-movies-app');
-  });
-
-  test('Search for a movie by title', async ({ page }) => {
-    await test.step('Activate and perform search', async () => {
-      await page.getByRole('search').click();
-      const searchInput = page.getByRole('textbox', { name: 'Search Input' });
-      await searchInput.fill('Garfield');
-      await searchInput.press('Enter');
-    });
-
-    await test.step('Verify search results', async () => {
-      // Verify the accessibility tree of the search results
-      await expect(page.getByRole('main')).toMatchAriaSnapshot(`
-        - main:
-          - heading "Garfield" [level=1]
-          - heading "search results" [level=2]
-          - list "movies":
-            - listitem "movie":
-              - link "poster of The Garfield Movie The Garfield Movie rating":
-                - /url: /playwright-movies-app/movie?id=tt5779228&page=1
-                - img "poster of The Garfield Movie"
-                - heading "The Garfield Movie" [level=2]
-      `);
-    });
+test.describe('Movie Search API', () => {
+  test('Search for a movie by title', async ({ request }) => {
+    const response = await request.get('/api/search?q=Garfield');
+    expect(response.ok()).toBeTruthy();
+    const data = await response.json();
+    expect(data.results).toHaveLength(1);
   });
 });
 ```

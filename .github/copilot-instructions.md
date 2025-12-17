@@ -8,8 +8,11 @@ This repository contains Playwright-based TypeScript automation frameworks for U
 
 - **Layered Structure**:
   - `tests/`: Test specs (API, UI, or combined)
+    - `tests/fixtures/`: Custom Playwright fixtures extending page objects and base test context
+    - `tests/fixtureHelpers/`: Reusable helper functions for fixtures (e.g., cookie handling)
+    - `tests/test-data/`: Test data factories and builders (UserFactory, AddressBuilder, etc.)
   - `services/` or `api/`: Service layer for API calls (e.g., booking, auth)
-  - `pages/`: Page Object Model for UI automation (for e-commerce UI tests)
+  - `pages/`: Page Object Model for UI automation (HomePage, LoginPage, CartPage, etc.)
   - `utils/`: Utility functions (data builders, factories, helpers)
   - `config/`: Centralized configuration (endpoints, credentials, test data)
 - **`playwright.config.ts`**: Main Playwright config (testDir, projects, retries, reporting, env vars)
@@ -33,8 +36,14 @@ This repository contains Playwright-based TypeScript automation frameworks for U
 ## Project-Specific Patterns
 
 - **Layered Architecture**: Separate test, service/api, page object, utils, and config layers for maintainability and reuse.
-- **Design Patterns**: Use Dependency Inversion for service/page layers, Builder/Factory for test data, Page Object Model for UI.
-- **Test Structure**: Use Playwright's `test` API. For API, use service classes; for UI, use page objects and API calls.
+- **Design Patterns**: Use Dependency Inversion for service/page layers, Builder/Factory for test data, Page Object Model for UI, Fixture pattern for test setup.
+- **Custom Fixtures**: Extend Playwright's base test with custom fixtures in `tests/fixtures/index.ts`:
+  - Page object fixtures (homePage, loginPage, cartPage, productPage, checkoutPage) auto-instantiated per test
+  - Cookie consent handling automatically applied on first navigation via page fixture override
+  - Import tests using `import { test, expect } from '../fixtures';` instead of `@playwright/test`
+- **Test Structure**: Use custom `test` from fixtures. For API, use service classes; for UI, use injected page object fixtures and `test.step()` for logical grouping.
+- **Cookie Handling**: Cookie consent popups handled automatically via `cookieHelper.ts` in `tests/fixtureHelpers/`
+- **Test Data**: Use Factory and Builder patterns (UserFactory, AddressBuilder) in `tests/test-data/` for dynamic test data generation
 - **Authentication**: Use `/auth` endpoint for token-based API tests. Store/reuse token in service layer.
 - **Reporting**: Allure and HTML reporters enabled. Allure results uploaded in CI.
 - **Code Quality**: ESLint, Prettier, Husky required. Pre-commit hooks block bad code.
@@ -62,11 +71,15 @@ This repository contains Playwright-based TypeScript automation frameworks for U
 ## Conventions
 
 - Place API tests in `tests/api/`, UI tests in `tests/ui/`
-- Use service classes for API, page objects for UI
-- Use factories/builders for test data
+- Import from custom fixtures: `import { test, expect } from '../fixtures';`
+- Use injected page object fixtures in test signatures: `async ({ page, homePage, loginPage }) => {}`
+- Use service classes for API, page object fixtures for UI
+- Use factories/builders for test data (UserFactory.createRandomUser(), UserFactory.createValidUser())
+- Group test steps with `test.step()` for clarity and better reporting
+- Place reusable helpers in `tests/fixtureHelpers/` (e.g., cookie handling, authentication)
 - Allure results must be generated and uploaded in CI
 - Code must pass linting and formatting before commit/merge
-- Update config and service/page layers for new endpoints/features
+- Update config, service/page layers, and fixtures for new endpoints/features
 
 ---
 
