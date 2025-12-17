@@ -6,7 +6,6 @@ import { HomePage } from '../../pages/HomePage';
 import { CartPage } from '../../pages/CartPage';
 import { UserFactory } from '../test-data/UserFactory';
 import { TEST_DATA } from '../test-data/testData';
-import { BASE_URL } from '../../config/constants';
 
 test.describe('Integration Tests - UI + API', () => {
   let userService: UserService;
@@ -22,7 +21,7 @@ test.describe('Integration Tests - UI + API', () => {
     homePage = new HomePage(page);
     cartPage = new CartPage(page);
 
-    await page.goto(BASE_URL);
+    await page.goto('/');
   });
 
   test('INT-001: Register user via UI and verify via API', async ({ page }) => {

@@ -1,6 +1,6 @@
 import { APIRequestContext } from '@playwright/test';
 import { ProductResponse, BrandResponse, SearchProductResponse } from './ApiResponse';
-import { API_BASE_URL, API_ENDPOINTS } from '../config/constants';
+import { API_ENDPOINTS } from '../config/constants';
 
 export interface Product {
   id: number;
@@ -28,12 +28,12 @@ export class ProductService {
   }
 
   async getAllProducts(): Promise<ProductResponse> {
-    const response = await this.request.get(`${API_BASE_URL}${API_ENDPOINTS.GET_ALL_PRODUCTS}`);
+    const response = await this.request.get(API_ENDPOINTS.GET_ALL_PRODUCTS);
     return response.json();
   }
 
   async searchProduct(searchTerm: string): Promise<SearchProductResponse> {
-    const response = await this.request.post(`${API_BASE_URL}${API_ENDPOINTS.SEARCH_PRODUCT}`, {
+    const response = await this.request.post(API_ENDPOINTS.SEARCH_PRODUCT, {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
@@ -44,7 +44,7 @@ export class ProductService {
   }
 
   async getAllBrands(): Promise<BrandResponse> {
-    const response = await this.request.get(`${API_BASE_URL}${API_ENDPOINTS.GET_ALL_BRANDS}`);
+    const response = await this.request.get(API_ENDPOINTS.GET_ALL_BRANDS);
     return response.json();
   }
 

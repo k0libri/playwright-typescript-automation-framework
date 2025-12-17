@@ -6,6 +6,7 @@
   "scripts": {
     "test": "npx playwright test",
     "test:ui": "npx playwright test --project=ui",
+    "test:hybrid": "npx playwright test --project=hybrid",
     "test:api": "npx playwright test --project=api",
     "test:report": "npx playwright show-report",
     "lint": "npx eslint .",

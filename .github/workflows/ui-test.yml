@@ -68,7 +68,7 @@ jobs:
       - name: Allure report artifact
         uses: actions/upload-artifact@v4
         with:
-          name: allure-report
+          name: allure-report-ui
           path: allure-report/
 
       - name: Deploy to GitHub Pages
@@ -122,7 +122,7 @@ jobs:
       - name: Allure report artifact
         uses: actions/upload-artifact@v4
         with:
-          name: allure-report
+          name: allure-report-api
           path: allure-report/
 
       - name: Deploy to GitHub Pages

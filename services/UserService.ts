@@ -1,7 +1,7 @@
 import { APIRequestContext } from '@playwright/test';
 import { User } from '../tests/test-data/UserFactory';
 import { UserResponse, LoginResponse } from './ApiResponse';
-import { API_BASE_URL, API_ENDPOINTS } from '../config/constants';
+import { API_ENDPOINTS } from '../config/constants';
 
 export class UserService {
   private request: APIRequestContext;
@@ -41,7 +41,7 @@ export class UserService {
       mobile_number: user.mobile_number,
     });
 
-    const response = await this.request.post(`${API_BASE_URL}${API_ENDPOINTS.CREATE_ACCOUNT}`, {
+    const response = await this.request.post(API_ENDPOINTS.CREATE_ACCOUNT, {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
@@ -54,7 +54,7 @@ export class UserService {
   async verifyLogin(email: string, password: string): Promise<LoginResponse> {
     const data = this.buildFormData({ email, password });
 
-    const response = await this.request.post(`${API_BASE_URL}${API_ENDPOINTS.VERIFY_LOGIN}`, {
+    const response = await this.request.post(API_ENDPOINTS.VERIFY_LOGIN, {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
@@ -67,7 +67,7 @@ export class UserService {
   async deleteUser(email: string, password: string): Promise<UserResponse> {
     const data = this.buildFormData({ email, password });
 
-    const response = await this.request.delete(`${API_BASE_URL}${API_ENDPOINTS.DELETE_ACCOUNT}`, {
+    const response = await this.request.delete(API_ENDPOINTS.DELETE_ACCOUNT, {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
@@ -78,7 +78,7 @@ export class UserService {
   }
 
   async getUserByEmail(email: string): Promise<UserResponse> {
-    const response = await this.request.get(`${API_BASE_URL}${API_ENDPOINTS.GET_USER_BY_EMAIL}`, {
+    const response = await this.request.get(API_ENDPOINTS.GET_USER_BY_EMAIL, {
       params: { email },
     });
 
@@ -106,7 +106,7 @@ export class UserService {
       mobile_number: user.mobile_number,
     });
 
-    const response = await this.request.put(`${API_BASE_URL}${API_ENDPOINTS.UPDATE_ACCOUNT}`, {
+    const response = await this.request.put(API_ENDPOINTS.UPDATE_ACCOUNT, {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
       },

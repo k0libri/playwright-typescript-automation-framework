@@ -38,6 +38,17 @@ export default defineConfig({
       },
     },
     {
+      name: 'hybrid',
+      testMatch: 'hybrid/**/*.spec.ts',
+      use: {
+        ...devices['Desktop Chrome'],
+        baseURL: 'https://automationexercise.com',
+        trace: 'on-first-retry',
+        screenshot: 'only-on-failure',
+        video: 'retain-on-failure',
+      },
+    },
+    {
       name: 'api',
       testMatch: 'api/**/*.spec.ts',
       use: {

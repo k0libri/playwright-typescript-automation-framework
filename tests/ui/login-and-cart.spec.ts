@@ -1,13 +1,12 @@
 import { test, expect } from '../fixtures';
 import { UserFactory, User } from '../test-data/UserFactory';
-import { BASE_URL } from '../../config/constants';
 
 test.describe('Login and Cart Management Tests', () => {
   let validUser: User;
 
   test.beforeEach(async ({ page }) => {
     validUser = UserFactory.createValidUser();
-    await page.goto(BASE_URL);
+    await page.goto('/');
   });
 
   test('TC004: Should login successfully with valid credentials', async ({

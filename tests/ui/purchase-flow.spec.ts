@@ -1,14 +1,13 @@
 import { test, expect } from '../fixtures';
 import { UserFactory, User } from '../test-data/UserFactory';
 import { TEST_DATA } from '../test-data/testData';
-import { BASE_URL } from '../../config/constants';
 
 test.describe('Purchase Flow Tests', () => {
   let validUser: User;
 
   test.beforeEach(async ({ page }) => {
     validUser = UserFactory.createRandomUser();
-    await page.goto(BASE_URL);
+    await page.goto('/');
   });
 
   test('TC009: Should complete purchase flow - Register during checkout', async ({
@@ -186,7 +185,7 @@ test.describe('Purchase Flow Tests', () => {
         await checkoutPage.continueAfterOrder();
 
         // Should be redirected to home page (root path)
-        await expect(page).toHaveURL(BASE_URL);
+        await expect(page).toHaveURL('https://automationexercise.com/');
       }
     });
   });

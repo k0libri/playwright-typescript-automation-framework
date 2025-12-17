@@ -1,11 +1,10 @@
 import { test, expect } from '../fixtures';
 import { UserFactory } from '../test-data/UserFactory';
 import { TEST_DATA } from '../test-data/testData';
-import { BASE_URL } from '../../config/constants';
 
 test.describe('Negative Scenario Tests', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto(BASE_URL);
+    await page.goto('/');
   });
 
   test('TC013: Should reject login with invalid email format', async ({
