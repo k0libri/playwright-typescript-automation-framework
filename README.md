@@ -4,6 +4,14 @@
 
 A comprehensive test automation framework built with **Playwright** and **TypeScript** for testing the [Automation Exercise](https://automationexercise.com/) e-commerce demo site. This framework provides robust UI and API testing capabilities following industry best practices and design patterns.
 
+## 📊 Test Reports
+
+- **Latest Allure Report**: [View Report](https://dobrosigergo.github.io/playwright-typescript-automation-framework/gergo_test_branch-allure-report/)
+- **GitHub Actions**: [View Pipeline](https://github.com/DobrosiGergo/playwright-typescript-automation-framework/actions)
+- **Test History**: Available in Allure report with trend analytics
+
+---
+
 ## 🎯 Project Overview
 
 **Target Application:** [Automation Exercise](https://automationexercise.com/)  
