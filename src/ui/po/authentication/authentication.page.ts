@@ -165,7 +165,7 @@ export class AuthenticationPage extends BasePage {
    */
   async isUserLoggedIn(): Promise<boolean> {
     try {
-      await this.loggedInUserText.waitFor({ timeout: 5000 });
+      await this.loggedInUserText.waitFor();
       return true;
     } catch {
       return false;

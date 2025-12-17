@@ -1,84 +1,296 @@
-# Playwright TypeScript Automation Framework
+# 🎭 Playwright TypeScript Automation Framework
 
-A comprehensive test automation framework built with **Playwright** and **TypeScript** for testing the [Automation Exercise](https://automationexercise.com/) e-commerce demo site. This framework provides robust UI and API testing capabilities following industry best practices and design patterns.
+[![Playwright Tests](https://github.com/DobrosiGergo/playwright-typescript-automation-framework/actions/workflows/playwright.yml/badge.svg?branch=gergo_test_branch)](https://github.com/DobrosiGergo/playwright-typescript-automation-framework/actions)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.6.3-blue.svg)](https://www.typescriptlang.org/)
+[![Playwright](https://img.shields.io/badge/Playwright-1.57.0-green.svg)](https://playwright.dev/)
+[![License](https://img.shields.io/badge/license-ISC-blue.svg)](LICENSE)
 
-## 🎯 Project Overview
+Enterprise-grade test automation framework built with **Playwright** and **TypeScript**, featuring separate API/UI testing architectures, centralized configuration management, and comprehensive CI/CD integration.
 
-**Target Application:** [Automation Exercise](https://automationexercise.com/)  
-A full-featured e-commerce demo site with complete UI and backend API, specifically designed for automation testing practice. The site includes user registration, product catalog, shopping cart, checkout process, and various interactive elements.
+## 📊 Quick Links
 
-**Framework Features:**
+| Resource                  | Link                                                                                                                        | Description                           |
+| ------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ------------------------------------- |
+| 📈 **Live Test Report**   | [Allure Report](https://dobrosigergo.github.io/playwright-typescript-automation-framework/gergo_test_branch-allure-report/) | Interactive test results with history |
+| 🔄 **CI/CD Pipeline**     | [GitHub Actions](https://github.com/DobrosiGergo/playwright-typescript-automation-framework/actions)                        | Automated test execution              |
+| 🎯 **Target Application** | [Automation Exercise](https://automationexercise.com/)                                                                      | Demo e-commerce platform              |
 
-- ✅ **UI Testing** - Complete page object model with component-based architecture
-- ✅ **API Testing** - Service layer pattern with base client abstraction
-- ✅ **Cross-Browser Support** - Chromium, Firefox, and WebKit
-- ✅ **TypeScript** - Type-safe test development with full IntelliSense
-- ✅ **Design Patterns** - POM, Component Pattern, Service Pattern, Factory Pattern
-- ✅ **Code Quality** - ESLint, Prettier, Husky pre-commit hooks
-- ✅ **Reporting** - HTML reports, Allure integration, screenshots on failure
-- ✅ **CI/CD Ready** - GitHub Actions workflow included
+---
 
-## 🏗️ Architecture & Design Patterns
+## 📋 Table of Contents
 
-This framework follows established automation testing patterns and principles:
+- [Overview](#-overview)
+- [Architecture](#-architecture)
+- [Project Structure](#-project-structure)
+- [Technical Stack](#-technical-stack)
+- [Getting Started](#-getting-started)
+- [Running Tests](#-running-tests)
+- [Configuration](#-configuration)
+- [Reporting](#-reporting)
+- [CI/CD Pipeline](#-cicd-pipeline)
+- [Development Guidelines](#-development-guidelines)
 
-### Page Object Model (POM)
+---
 
-- **BasePage** - Abstract base class for all page objects
-- **Feature Pages** - Specific page implementations (e.g., `HomePage`, `ProductPage`)
-- **No Direct Playwright Calls** - All interactions through page objects
+## 🎯 Overview
 
-### Component Pattern
+### Framework Capabilities
 
-- **BaseComponent** - Abstract base class for reusable UI components
-- **Feature Components** - Modular UI fragments (e.g., `NavigationComponent`, `CartComponent`)
-- **Common Components** - Shared components following Singleton pattern
+This framework provides enterprise-level test automation with:
 
-### Service Pattern (API)
+**✅ Dual-Layer Testing Architecture**
 
-- **BaseApiClient** - Abstract HTTP client with common methods
-- **Feature Services** - API endpoint abstractions (e.g., `UserService`, `ProductService`)
-- **No Direct API Calls** - All interactions through service layer
+- **UI Testing Layer**: Page Object Model with component-based design
+- **API Testing Layer**: Service pattern with base client abstraction
+- **Separate Project Configs**: Independent timeout and execution settings
 
-### Key Principles
+**✅ Advanced Configuration Management**
 
-- **DRY (Don't Repeat Yourself)** - Centralized selectors, data, and logic
-- **KISS (Keep It Simple, Stupid)** - Simple, maintainable solutions
-- **SOLID** - Single responsibility, dependency injection via fixtures
+- Centralized HTTP status codes (`httpStatus.ts`)
+- Environment-specific configurations
+- BaseURL management through Playwright config
+- No hardcoded values in test code
+
+**✅ Quality Assurance Tools**
+
+- **ESLint 9.39**: Strict TypeScript linting rules
+- **Prettier 3.7**: Automated code formatting with best practices
+- **Husky 9.1**: Pre-commit hooks for quality gates
+- **TypeScript 5.6**: Full type safety and IntelliSense
+
+**✅ Production-Ready CI/CD**
+
+- GitHub Actions workflow with matrix execution
+- Allure report generation with historical data
+- Branch-specific report deployment to GitHub Pages
+- Automatic artifact retention and cleanup
+
+### Test Coverage
+
+| Category      | Tests  | Description                              |
+| ------------- | ------ | ---------------------------------------- |
+| **API Tests** | 5      | User management endpoints                |
+| **UI Tests**  | 16     | Authentication, Cart, Checkout, Products |
+| **Total**     | **21** | Full e2e and integration coverage        |
+
+**Test Execution Time**: ~7-8 minutes (full suite)
+
+## 🏗️ Architecture
+
+### Design Principles
+
+The framework follows **SOLID principles** and industry-standard design patterns:
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                     Test Layer (Specs)                      │
+│  • UI Tests (authentication, cart, checkout, products)     │
+│  • API Tests (user management endpoints)                   │
+└────────────────┬────────────────────────────────────────────┘
+                 │
+    ┌────────────┴────────────┐
+    │                         │
+┌───▼─────────────┐  ┌────────▼──────────┐
+│   UI Layer      │  │    API Layer      │
+│                 │  │                   │
+│ • Page Objects  │  │ • Service Classes │
+│ • Components    │  │ • Base Client     │
+│ • BasePage      │  │ • HTTP Methods    │
+└───┬─────────────┘  └────────┬──────────┘
+    │                         │
+    └────────────┬────────────┘
+                 │
+        ┌────────▼─────────┐
+        │  Shared Layer    │
+        │                  │
+        │ • Fixtures       │
+        │ • Config         │
+        │ • Utilities      │
+        │ • Status Codes   │
+        └──────────────────┘
+```
+
+### Key Patterns Implemented
+
+#### 1. **Page Object Model (POM)**
+
+```typescript
+// Base abstraction
+export abstract class BasePage {
+  protected readonly page: Page;
+  constructor(page: Page) {
+    this.page = page;
+  }
+
+  async navigateTo(path: string): Promise<void> {
+    await this.page.goto(path);
+  }
+}
+
+// Feature implementation
+export class AuthenticationPage extends BasePage {
+  readonly loginButton: Locator;
+
+  constructor(page: Page) {
+    super(page);
+    this.loginButton = page.getByRole('button', { name: 'Login' });
+  }
+
+  async login(email: string, password: string): Promise<void> {
+    // Implementation
+  }
+}
+```
+
+#### 2. **Component Pattern**
+
+```typescript
+export class CookieConsentComponent extends BaseComponent {
+  readonly acceptAllButton: Locator;
+
+  async handleCookieConsent(): Promise<void> {
+    // Reusable component logic
+  }
+}
+```
+
+#### 3. **Service Layer Pattern (API)**
+
+```typescript
+export class UserService extends BaseApiClient {
+  async createUser(userData: UserData): Promise<APIResponse> {
+    return await this.post('/createAccount', { data: userData });
+  }
+
+  async verifyLogin(email: string, password: string): Promise<APIResponse> {
+    return await this.post('/verifyLogin', {
+      data: { email, password },
+    });
+  }
+}
+```
+
+#### 4. **Factory Pattern**
+
+```typescript
+export class UserDataFactory {
+  static generateUniqueUserData(): UserData {
+    const timestamp = Date.now();
+    return {
+      name: `TestUser${timestamp}`,
+      email: `testuser_${timestamp}@automation.test`,
+      password: `SecurePass${timestamp}!`,
+      // ...
+    };
+  }
+}
+```
+
+#### 5. **Dependency Injection (Fixtures)**
+
+```typescript
+export const uiFixtures = test.extend<{
+  authenticationPage: AuthenticationPage;
+  uniqueUserData: UserData;
+}>({
+  authenticationPage: async ({ page }, use) => {
+    await use(new AuthenticationPage(page));
+  },
+  uniqueUserData: async ({}, use) => {
+    await use(UserDataFactory.generateUniqueUserData());
+  },
+});
+```
+
+---
 
 ## 📁 Project Structure
 
 ```
-src/
-├── ui/                          # UI Testing Layer
-│   ├── po/                      # Page Objects
-│   │   ├── base/               # Base Classes
-│   │   │   ├── basePage.page.ts           # Base page abstraction
-│   │   │   └── baseComponent.component.ts # Base component abstraction
-│   │   ├── components/         # Reusable UI Components
-│   │   │   └── common/        # Shared components (Navbar, Footer, etc.)
-│   │   └── <feature>/         # Feature-specific page objects
-│   ├── tests/                  # UI Test Specifications
-│   │   └── <feature>/         # Feature-grouped test files
-│   ├── fixtures/              # Playwright fixtures for DI
-│   ├── utils/                 # UI testing utilities
-│   └── data/                  # UI test data and builders
-├── api/                        # API Testing Layer
-│   ├── base/                  # Base Classes
-│   │   └── baseApiClient.service.ts  # Base API client
-│   ├── services/              # API Service Layer
-│   │   └── <feature>.service.ts      # Feature-specific API clients
-│   ├── tests/                 # API Test Specifications
-│   │   └── <feature>/        # Feature-grouped API tests
-│   ├── fixtures/             # API fixtures and context setup
-│   ├── utils/                # API testing utilities
-│   └── data/                 # API test data and builders
-├── shared/                    # Shared Resources
-│   ├── config/               # Environment configurations
-│   ├── fixtures/            # Cross-domain fixtures
-│   └── utils/               # Shared utilities (logging, env resolution)
-└── reports/                  # Test Reports & Artifacts
+playwright-typescript-automation-framework/
+│
+├── .github/
+│   ├── workflows/
+│   │   └── playwright.yml              # CI/CD pipeline configuration
+│   ├── instructions/                   # Development guidelines and patterns
+│   └── agents/                         # AI agent configurations
+│
+├── src/
+│   ├── api/                           # API Testing Layer
+│   │   ├── base/
+│   │   │   ├── baseApiClient.service.ts   # Abstract HTTP client with CSRF handling
+│   │   │   └── httpStatus.ts              # Centralized status codes (HttpStatus, ResponseCode)
+│   │   ├── services/
+│   │   │   ├── user.service.ts            # User API endpoints
+│   │   │   └── product.service.ts         # Product API endpoints
+│   │   ├── tests/
+│   │   │   └── user/
+│   │   │       └── user.spec.ts           # User API test suite (5 tests)
+│   │   ├── fixtures/
+│   │   │   └── apiFixtures.ts             # API test fixtures
+│   │   ├── utils/                         # API-specific utilities
+│   │   └── data/                          # API test data builders
+│   │
+│   ├── ui/                            # UI Testing Layer
+│   │   ├── po/                        # Page Objects
+│   │   │   ├── base/
+│   │   │   │   ├── basePage.page.ts       # Abstract base page
+│   │   │   │   └── baseComponent.component.ts  # Abstract base component
+│   │   │   ├── components/
+│   │   │   │   ├── common/
+│   │   │   │   │   └── navbar.component.ts     # Navbar (singleton)
+│   │   │   │   └── cookieConsent.component.ts  # Cookie consent handler
+│   │   │   ├── authentication/
+│   │   │   │   └── authentication.page.ts      # Login/signup page
+│   │   │   ├── cart/
+│   │   │   │   └── cart.page.ts               # Shopping cart page
+│   │   │   ├── checkout/
+│   │   │   │   └── checkout.page.ts           # Checkout page
+│   │   │   └── products/
+│   │   │       └── products.page.ts           # Product listing page
+│   │   ├── tests/
+│   │   │   ├── authentication/
+│   │   │   │   └── authentication.spec.ts     # Auth tests (9 tests)
+│   │   │   ├── cart/
+│   │   │   │   └── cartManagement.spec.ts     # Cart tests (3 tests)
+│   │   │   ├── checkout/
+│   │   │   │   └── orderCompletion.spec.ts    # Checkout tests (3 tests)
+│   │   │   └── products/
+│   │   │       └── products.spec.ts           # Product tests (1 test)
+│   │   ├── fixtures/
+│   │   │   └── uiFixtures.ts          # UI test fixtures
+│   │   ├── utils/                     # UI-specific utilities
+│   │   └── data/
+│   │       └── testData.ts            # UI test data and constants
+│   │
+│   └── shared/                        # Shared Resources
+│       ├── config/
+│       │   ├── environment.ts         # Environment configuration
+│       │   └── environments.ts        # Multi-environment settings
+│       └── utils/
+│           ├── userDataFactory.ts     # User data generator
+│           ├── paymentDataFactory.ts  # Payment data generator
+│           └── testDataCleanup.util.ts # Test data cleanup utilities
+│
+├── playwright.config.ts               # Playwright configuration (2 projects: api, ui)
+├── tsconfig.json                      # TypeScript compiler configuration
+├── package.json                       # Dependencies and scripts
+├── eslint.config.mjs                  # ESLint configuration
+├── .prettierrc                        # Prettier configuration (TypeScript best practices)
+├── .prettierignore                    # Prettier ignore patterns
+└── README.md                          # This file
 ```
+
+### File Count Summary
+
+| Category                   | Count | Description          |
+| -------------------------- | ----- | -------------------- |
+| **Total TypeScript Files** | 28    | All `.ts` files      |
+| **Test Spec Files**        | 5     | `*.spec.ts` files    |
+| **Page Objects**           | 5     | Feature-specific pages |
+| **Components**             | 2     | Reusable UI components |
+| **Services**               | 2     | API service classes  |
+| **Fixtures**               | 2     | UI & API fixtures    |
 
 ## 🚀 Setup & Installation
 
@@ -125,391 +337,565 @@ npm run format
 | `allure:generate` | Generate Allure report         | `npm run allure:generate` |
 | `allure:open`     | Open Allure report             | `npm run allure:open`     |
 
-## 🛠️ Configuration
+---
 
-### Environment Configuration
+## 🛠️ Technical Stack
 
-Configure test environments in `src/shared/config/environments.ts`:
+### Core Framework
+
+| Technology       | Version | Purpose                          |
+| ---------------- | ------- | -------------------------------- |
+| **Playwright**   | 1.57.0  | Browser automation and API testing |
+| **TypeScript**   | 5.6.3   | Type-safe development            |
+| **Node.js**      | 18+ LTS | Runtime environment              |
+
+### Quality Assurance Tools
+
+| Tool                      | Version | Purpose                               |
+| ------------------------- | ------- | ------------------------------------- |
+| **ESLint**                | 9.39.1  | Code linting and style enforcement    |
+| **Prettier**              | 3.7.4   | Code formatting                       |
+| **Husky**                 | 9.1.7   | Git hooks (pre-commit)                |
+| **TypeScript ESLint**     | 8.13.0  | TypeScript-specific linting rules     |
+
+### Reporting & CI/CD
+
+| Tool                  | Version   | Purpose                                |
+| --------------------- | --------- | -------------------------------------- |
+| **Allure**            | 3.4.3     | Advanced test reporting with history   |
+| **GitHub Actions**    | -         | CI/CD pipeline execution               |
+| **JUnit Reporter**    | Built-in  | Test result publishing                 |
+
+### Key Dependencies
+
+```json
+{
+  "@playwright/test": "^1.57.0",
+  "@playwright/mcp": "^0.0.49",
+  "allure-playwright": "^3.4.3",
+  "typescript": "^5.6.3",
+  "eslint": "^9.39.1",
+  "prettier": "^3.7.4",
+  "husky": "^9.1.7"
+}
+```
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+Ensure you have the following installed:
+
+- **Node.js** 18.x or higher ([Download](https://nodejs.org/))
+- **npm** 8.x or higher (comes with Node.js)
+- **Git** 2.30+ ([Download](https://git-scm.com/))
+
+### Installation
+
+```bash
+# 1. Clone the repository
+git clone https://github.com/DobrosiGergo/playwright-typescript-automation-framework.git
+cd playwright-typescript-automation-framework
+
+# 2. Install dependencies
+npm ci
+
+# 3. Install Playwright browsers
+npx playwright install --with-deps
+
+# 4. Verify installation
+npm run test:list
+```
+
+### Environment Setup
+
+The framework uses `baseURL` configuration from `playwright.config.ts`:
 
 ```typescript
-export const environments = {
-  production: {
-    baseUrl: 'https://automationexercise.com/',
-    apiBaseUrl: 'https://automationexercise.com/api',
+const config = {
+  api: {
+    baseUrl: process.env.API_BASE_URL || 'https://automationexercise.com/api',
   },
-  staging: {
-    baseUrl: 'https://staging.automationexercise.com/',
-    apiBaseUrl: 'https://staging.automationexercise.com/api',
+  ui: {
+    baseUrl: process.env.UI_BASE_URL || 'https://automationexercise.com',
+  },
+  timeouts: {
+    apiTest: 60000, // 60 seconds for API tests
+    e2eTest: 90000, // 90 seconds for UI tests
   },
 };
 ```
 
-### Playwright Configuration
-
-Browser and test configurations in `playwright.config.ts`:
-
-- Cross-browser testing (Chromium, Firefox, WebKit)
-- Parallel execution
-- Screenshot and video on failure
-- HTML and Allure reporting
-
-### ESLint Configuration
-
-Automation testing optimized rules in `eslint.config.mjs`:
-
-- TypeScript best practices
-- Automation-specific patterns
-- Magic number exceptions for timeouts and HTTP codes
-- Console debugging allowed in Page Objects
-
-## 🧪 Test Development Guidelines
-
-### Writing UI Tests
-
-```typescript
-import { test, expect } from '../fixtures/page-fixtures';
-
-test.describe('Feature Name', () => {
-  test('should perform user action successfully', async ({ featurePage }) => {
-    // Use TestHelpers for step logging
-    TestHelpers.logStep('Navigating to feature page');
-    await featurePage.navigateTo('/feature');
-
-    // Interact through page objects only
-    await featurePage.performAction();
-
-    // Assert expected outcomes
-    await expect(featurePage.resultElement).toBeVisible();
-  });
-});
-```
-
-### Writing API Tests
-
-```typescript
-import { test, expect } from '@playwright/test';
-import { FeatureService } from '../services/feature.service';
-
-test.describe('Feature API', () => {
-  test('should return expected data', async ({ request }) => {
-    const featureService = new FeatureService(request);
-
-    const response = await featureService.getData();
-    expect(response.status()).toBe(200);
-
-    const data = await response.json();
-    expect(data).toHaveProperty('expectedField');
-  });
-});
-```
-
-### Locator Strategy
-
-Follow the locator hierarchy as defined in the instructions:
-
-1. **Playwright Built-in Locators** (getByRole, getByLabel, getByText)
-2. **Custom Attributes** (data-testid, aria-label)
-3. **Text Selectors** (for static, unique text)
-4. **CSS Selectors** (only as last resort)
-
-### Assertion Guidelines
-
-- Use **hard assertions** for test pass/fail criteria
-- Use **soft assertions** for intermediate checks only
-- Follow with final hard assertion before test completion
-- No false positives - assertions must accurately reflect expected state
-
-## 🔧 Code Quality & Standards
-
-### Pre-commit Hooks (Husky)
-
-- **ESLint validation** - Code quality checks
-- **Prettier formatting** - Code style consistency
-- **TypeScript compilation** - Type safety validation
-
-### Naming Conventions
-
-- **Page Objects**: `FeaturePage` in `feature.page.ts`
-- **Components**: `FeatureComponent` in `feature.component.ts`
-- **Services**: `FeatureService` in `feature.service.ts`
-- **Tests**: Descriptive names starting with "should"
-
-### File Organization
-
-- **Centralized selectors** - No inline selectors in tests
-- **Data-driven tests** - Use factories and builders
-- **Environment configs** - No hardcoded URLs or endpoints
-- **Dependency injection** - Use Playwright fixtures
-
-## 📊 Reporting & CI/CD
-
-### Test Reports
-
-- **HTML Report** - Built-in Playwright reporting
-- **Allure Report** - Advanced reporting with history and analytics
-- **Screenshots** - Automatic capture on test failures
-- **Videos** - Recording of test execution (configurable)
-
-### Continuous Integration
-
-GitHub Actions workflow included for:
-
-- Multi-browser test execution
-- Parallel test runs
-- Report generation and archiving
-- Quality gate enforcement
-
-## 🤝 Contributing
-
-1. **Follow the instruction guides** in `.github/instructions/`
-2. **Run quality checks** before committing
-3. **Write descriptive commit messages**
-4. **Ensure all tests pass** before pull request
-5. **Update documentation** for new features
-
-### Development Workflow
+**Optional**: Create `.env` file for custom configuration:
 
 ```bash
-# Create feature branch
-git checkout -b feature/new-functionality
-
-# Implement changes following patterns
-# Run quality checks
-npm run lint
-npm run format
-npm test
-
-# Commit changes (triggers Husky hooks)
-git commit -m "descriptive message"
-
-# Push and create pull request
-git push origin feature/new-functionality
+API_BASE_URL=https://your-api-endpoint.com/api
+UI_BASE_URL=https://your-ui-endpoint.com
 ```
-
-## 📚 References
-
-- **Playwright Documentation**: https://playwright.dev/docs/intro
-- **TypeScript Handbook**: https://www.typescriptlang.org/docs/
-- **Automation Exercise Site**: https://automationexercise.com/
-- **Allure Reporting**: https://github.com/allure-framework/allure-js
 
 ---
 
-**Built with ❤️ for automation testing excellence**
+## 🧪 Running Tests
 
-## 🏗️ Project Structure
+### Quick Start
 
-```
-src/
-  ui/
-    po/
-      base/                  # BasePage and shared navigation behaviours
-      components/            # Reusable UI components (CookieConsent, etc.)
-      home/                  # Feature-specific page objects
-        HomePage.po.ts
-      base/NavigationPage.ts # Navigation page object (shared elements)
-    tests/
-      homepage/              # UI specs grouped by feature
-        homepage.spec.ts
-    fixtures/
-      pageFixtures.ts        # Playwright fixtures for DI
-    utils/                   # UI helpers, selector factories
-    data/                    # UI-focused datasets
-shared/
-  config/                    # Environment configs, endpoints, credentials
-  fixtures/                  # Cross-domain fixtures (if needed)
-  utils/                     # Shared utilities (env resolution, logging)
-reports/                     # Built-in HTML report artifacts
+```bash
+# Run all tests (API + UI)
+npm test
+
+# Run with headed browser
+npm run test:headed
+
+# Run in debug mode
+npm run test:debug
 ```
 
-## ✨ Design Patterns Applied
+### Project-Specific Execution
 
-### Page Object Model (POM)
+```bash
+# API tests only (60s timeout)
+npm run test:api
 
-- **BasePage**: Abstract base with common page behaviours
-- **NavigationPage**: Shared header/menu/nav elements and actions
-- **Feature Pages**: `HomePage` in `src/ui/po/home/`
-- **Components**: Reusable UI pieces (e.g., `CookieConsent.component.ts`)
+# UI tests only (90s timeout)
+npm run test:ui
+```
 
-### Dependency Injection
+### Tag-Based Execution
 
-- **Fixtures**: Page objects injected via `src/ui/fixtures/pageFixtures.ts`
-- **Constructor Injection**: Components passed into page object constructors
-
-### Factory/Builder Patterns
-
-- **Data**: Centralized datasets under `src/ui/data/`
-- **Helpers**: Small, composable utilities under `src/ui/utils/`
-
-### Builder Pattern
-
-- **Test Helpers**: Fluent interface for test setup and execution
-- **Configuration**: Environment-specific configuration building
-
-## 🚀 Features Implemented
-
-### Cookie Consent Handling
-
-- **Minimal, robust locators**: Focused selectors for banner/container/button
-- **Cross-frame support**: Detects consent UI in iframes
-- **Acceptance flow**: Click strategies to reliably accept
-- **Post-validation**: Ensures banner is hidden after consent
-
-### Test Architecture
-
-- **Layered Structure**: Clean separation between tests, page objects, and utilities
-- **Fixture-Based DI**: Page objects provided through dependency injection
-- **Comprehensive Logging**: Structured test step logging with success/failure indicators
-- **Error Handling**: Graceful handling of missing elements and timeouts
-
-## 📋 Test Scenarios Covered
-
-### Homepage & Navigation (`homepage.spec.ts`)
-
-- **Smoke**: Page loads, header/nav visible, cookie consent handled
-- **Critical**: Consent acceptance, banner hides, core interactions work
-- **Navigation**: Basic navigation element visibility checks
-- **Regression**: Stable flows validated over time
-
-## 🛠️ Usage
-
-### Running Tests
-
-Use the provided npm scripts for tag-based runs and reporting:
-
-```powershell
-# Install browsers (first run or after updates)
-npx playwright install
-
-# Run all tests
-npm run test
-
-# Run by tag
-npm run test:smoke
+```bash
+# Critical tests only (all projects)
 npm run test:critical
+
+# API critical tests
+npm run test:api:critical
+
+# UI smoke tests
+npm run test:ui:smoke
+
+# UI critical tests
+npm run test:ui:critical
+
+# Regression tests
 npm run test:regression
-npm run test:navigation
+```
 
-# Run a specific project
-npm run test:chromium
-npm run test:firefox
-npm run test:webkit
+### Test Listing
 
-# List discovered tests
+```bash
+# List all tests
 npm run test:list
+
+# List smoke tests
+npm run test:list:smoke
+
+# List critical tests
+npm run test:list:critical
 ```
 
-### Test Reports
+### Viewing Reports
 
-```powershell
-# View Playwright HTML report
-npx playwright show-report
+```bash
+# Open Playwright HTML report
+npm run report
+
+# Generate Allure report
+npm run allure:generate
+
+# Open Allure report (after generation)
+npm run allure:open
+
+# Serve Allure report (generate + open)
+npm run allure:serve
 ```
 
-## 🔧 Configuration
+---
 
-### Environment Variables
-
-- `BASE_URL`: Target application URL (default: https://automationexercise.com)
-- `HEADLESS`: Headless mode (default: true)
-- `TIMEOUT`: Global timeout in ms (default: 30000)
+## ⚙️ Configuration
 
 ### Playwright Configuration
 
-- **Projects**: Chromium, Firefox, WebKit
-- **Reporters**: Built-in HTML reporting
-- **Retry**: Configurable retry logic for CI/CD
+The framework uses **two separate projects** for API and UI testing:
 
-## 📁 Key Components
+```typescript
+// playwright.config.ts
+export default defineConfig({
+  projects: [
+    {
+      name: 'api',
+      testDir: './src/api/tests',
+      testMatch: '**/*.spec.ts',
+      timeout: 60000, // 60 seconds
+      fullyParallel: true, // Parallel execution
+      use: {
+        baseURL: config.api.baseUrl,
+      },
+    },
+    {
+      name: 'ui',
+      testDir: './src/ui/tests',
+      testMatch: '**/*.spec.ts',
+      timeout: 90000, // 90 seconds
+      fullyParallel: false, // Sequential execution
+      use: {
+        ...devices['Desktop Chrome'],
+        baseURL: config.ui.baseUrl,
+        actionTimeout: 30000,
+        navigationTimeout: 30000,
+      },
+    },
+  ],
+});
+```
 
-### BasePage (`src/ui/base/BasePage.ts`)
+### ESLint Configuration
 
-Abstract base class providing:
+```javascript
+// eslint.config.mjs
+export default [
+  {
+    files: ['**/*.ts'],
+    rules: {
+      '@typescript-eslint/no-explicit-any': 'warn',
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        {
+          argsIgnorePattern: '^_',
+        },
+      ],
+      'no-console': 'off', // Allowed in test automation
+    },
+  },
+];
+```
 
-- Navigation utilities
-- Element interaction methods
-- Wait strategies
-- Screenshot capabilities
+### Prettier Configuration
 
-### CookieConsentComponent (`src/ui/po/components/CookieConsent.component.ts`)
+```json
+{
+  "semi": true,
+  "singleQuote": true,
+  "printWidth": 100,
+  "tabWidth": 2,
+  "trailingComma": "all",
+  "bracketSpacing": true,
+  "arrowParens": "always",
+  "endOfLine": "auto"
+}
+```
 
-Purpose:
+### TypeScript Configuration
 
-- Detect visible consent banner/container
-- Accept cookies via robust button locator(s)
-- Validate banner hidden post-acceptance
+```json
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "commonjs",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "types": ["node", "@playwright/test"]
+  },
+  "include": ["src/**/*", "playwright.config.ts"],
+  "exclude": ["node_modules", "test-results", "playwright-report"]
+}
+```
 
-### HomePage (`src/ui/po/home/HomePage.po.ts`)
+---
+
+## 📊 Reporting
+
+### Built-in Playwright Report
+
+Automatically generated after test execution:
+
+```bash
+npm run report
+```
 
 Features:
 
-- Navigate to homepage and handle consent
-- Verify page loaded and core elements visible
-- Delegate consent handling to component
+- Test execution timeline
+- Screenshots on failure
+- Video recordings (on failure)
+- Trace files for debugging
+- Filterable by status/browser
 
-### Test Fixtures (`src/ui/fixtures/pageFixtures.ts`)
+### Allure Report
 
-Dependency injection:
+Advanced reporting with historical data:
 
-- Provides `homePage` for tests
-- Centralizes page object lifecycle
+```bash
+# Generate report
+npm run allure:generate
 
-## 🎯 Quality Standards
+# Open report in browser
+npm run allure:open
+```
 
-### Code Organization
+Features:
 
-- **Strict Layering**: Tests → Page Objects/Components → Utilities/Data
-- **Single Responsibility**: Each class has one clear purpose
-- **DRY**: Reusable components and utilities
-- **Type Safety**: Strong TypeScript typing
+- **Test History & Trends**: Track test stability over time
+- **Flaky Test Detection**: Identify unstable tests
+- **Execution Timeline**: Visual execution flow
+- **Categories**: Group tests by behavior
+- **Attachments**: Screenshots, traces, logs
+- **Retries**: Track test retry attempts
 
-### Test Practices
+### CI/CD Reports
 
-- **Descriptive Naming**: Clear test and method names
-- **Lean Specs**: Logic lives in POs/components
-- **Robust Selectors**: Minimal, readable, stable locators
-- **Observability**: Built-in HTML reports; optional logs
+GitHub Actions automatically:
 
-### Maintenance
+1. Runs all tests on push to `gergo_test_branch`
+2. Generates Allure report with history
+3. Deploys to GitHub Pages (branch-specific)
+4. Publishes JUnit test results
 
-- **Centralized Data**: All test data in dedicated files
-- **Configuration**: Environment-specific settings
-- **Documentation**: Inline comments and README maintenance
-- **Consistency**: Unified patterns across all components
+**Live Report**: [View Latest Allure Report](https://dobrosigergo.github.io/playwright-typescript-automation-framework/gergo_test_branch-allure-report/)
 
-## 🔄 CI/CD Integration
+---
 
-The framework is CI-ready:
+## 🔄 CI/CD Pipeline
 
-- **Parallel Execution**: Tests run in parallel workers
-- **Retry Logic**: Automatic retry for flaky tests
-- **Reports**: Playwright HTML report
-- **Husky/ESLint/Prettier**: Lint and format checks
+### GitHub Actions Workflow
 
-## 🧪 Extending the Framework
+Located at `.github/workflows/playwright.yml`
 
-### Adding New Page Objects
+#### Trigger Events
 
-1. Create a feature folder under `src/ui/po/`
-2. Implement page object extending `BasePage`
-3. Inject via fixtures if needed
-4. Add specs under `src/ui/tests/<feature>/`
+```yaml
+on:
+  push:
+    branches: [main, master, gergo_test_branch]
+  pull_request:
+    branches: [main, master]
+  schedule:
+    - cron: '0 3 * * 0' # Weekly cleanup on Sundays
+```
 
-### Adding New Components
+#### Pipeline Stages
 
-1. Create component in `src/ui/po/components/`
-2. Inject into relevant page objects
-3. Cover via feature specs
+```
+┌─────────────────┐
+│  1. Setup       │  Checkout, Node.js, Install deps, Playwright browsers
+└────────┬────────┘
+         │
+┌────────▼────────┐
+│  2. History     │  Restore Allure history from gh-pages
+└────────┬────────┘
+         │
+┌────────▼────────┐
+│  3. Test        │  Run Playwright tests (continue-on-error)
+└────────┬────────┘
+         │
+┌────────▼────────┐
+│  4. Report      │  Generate Allure report with history
+└────────┬────────┘
+         │
+┌────────▼────────┐
+│  5. Artifacts   │  Upload Playwright & Allure reports
+└────────┬────────┘
+         │
+┌────────▼────────┐
+│  6. Deploy      │  Deploy to GitHub Pages (branch-specific)
+└─────────────────┘
+```
 
-### Adding Test Data
+#### Key Features
 
-1. Add data under `src/ui/data/`
-2. Use strong typing and `as const` when applicable
-3. Import into POs/components/tests
+- **Branch-Specific Deployments**: Each branch gets its own report URL
+- **History Persistence**: Test history saved in `gh-pages` branch
+- **Artifact Retention**: 30 days for reports, 1 day for deployment packages
+- **Parallel Execution**: API tests run in parallel
+- **Automatic Cleanup**: Weekly history cleanup on Sundays
 
-## Notes
+#### Environment URLs
 
-- Legacy files like `cookieBanner.spec.ts` and the old `pages/` directory have been removed in favor of the new layered structure and tag-based execution.
-- Use the npm scripts for common runs and `npx playwright show-report` for viewing results.
+Each branch deploys to:
 
-This framework provides a solid foundation for scalable, maintainable UI automation with Playwright and TypeScript.
+```
+https://dobrosigergo.github.io/playwright-typescript-automation-framework/{branch-name}-allure-report/
+```
+
+Example:
+
+```
+https://dobrosigergo.github.io/playwright-typescript-automation-framework/gergo_test_branch-allure-report/
+```
+
+---
+
+## 👨‍💻 Development Guidelines
+
+### Code Quality Standards
+
+All code must pass these checks before commit:
+
+```bash
+# Lint check
+npm run lint
+
+# Format check
+npm run format
+
+# Run all checks
+npm run lint && npm run format && npm test
+```
+
+**Husky** automatically runs these on `pre-commit`.
+
+### Writing Tests
+
+#### UI Test Example
+
+```typescript
+import { test, expect } from '../../fixtures/uiFixtures';
+
+test.describe('Feature @smoke @critical', () => {
+  test('should perform action successfully', async ({ featurePage, uniqueUserData }) => {
+    await test.step('Navigate to feature page', async () => {
+      await featurePage.navigateTo('/feature');
+    });
+
+    await test.step('Perform action', async () => {
+      await featurePage.performAction(uniqueUserData);
+      await expect(featurePage.successMessage).toBeVisible();
+    });
+  });
+});
+```
+
+#### API Test Example
+
+```typescript
+import { test, expect } from '../../fixtures/apiFixtures';
+import { HttpStatus, ResponseCode } from '../../base/httpStatus';
+
+test.describe('API Endpoint @api @critical', () => {
+  test('should return expected response', async ({ userService, uniqueUserData }) => {
+    await test.step('Call API endpoint', async () => {
+      const response = await userService.createUser(uniqueUserData);
+
+      expect(response.status()).toBe(HttpStatus.OK);
+
+      const body = await response.json();
+      expect(body.responseCode).toBe(ResponseCode.CREATED);
+    });
+  });
+});
+```
+
+### Best Practices
+
+1. **Never use explicit timeouts** - Rely on Playwright's auto-wait
+2. **Centralize selectors** - Always use page objects or components
+3. **Use fixtures for DI** - Inject dependencies, don't instantiate in tests
+4. **Tag your tests** - Use `@smoke`, `@critical`, `@regression` tags
+5. **Test steps** - Wrap logical steps with `test.step()`
+6. **Status codes** - Use `HttpStatus` and `ResponseCode` constants
+7. **Data factories** - Generate unique test data with factories
+8. **Cleanup** - Always clean up test data in `afterEach` or `afterAll`
+
+### Common Patterns
+
+#### Using Centralized Status Codes
+
+```typescript
+// ✅ Good
+expect(response.status()).toBe(HttpStatus.OK);
+expect(body.responseCode).toBe(ResponseCode.CREATED);
+
+// ❌ Bad
+expect(response.status()).toBe(200);
+expect(body.responseCode).toBe(201);
+```
+
+#### Using BaseURL
+
+```typescript
+// ✅ Good
+await page.goto('/login');
+await authPage.navigateTo('/signup');
+
+// ❌ Bad
+await page.goto('https://automationexercise.com/login');
+```
+
+#### Component Reusability
+
+```typescript
+// Navbar component used across multiple pages
+export class HomePage extends BasePage {
+  constructor(page: Page) {
+    super(page);
+    this.navbar = new NavbarComponent(page);
+  }
+
+  async navigateToProducts(): Promise<void> {
+    await this.navbar.goToProducts();
+  }
+}
+```
+
+---
+
+## 📦 Available NPM Scripts
+
+| Script                   | Description                                |
+| ------------------------ | ------------------------------------------ |
+| `npm test`               | Run all tests (API + UI)                   |
+| `npm run test:api`       | Run API tests only                         |
+| `npm run test:ui`        | Run UI tests only                          |
+| `npm run test:critical`  | Run critical tagged tests                  |
+| `npm run test:smoke`     | Run smoke tagged tests                     |
+| `npm run test:regression`| Run regression tagged tests                |
+| `npm run test:headed`    | Run tests with visible browser             |
+| `npm run test:debug`     | Run tests in debug mode                    |
+| `npm run report`         | Open Playwright HTML report                |
+| `npm run allure:generate`| Generate Allure report                     |
+| `npm run allure:open`    | Open Allure report                         |
+| `npm run allure:serve`   | Generate and serve Allure report           |
+| `npm run lint`           | Check code with ESLint                     |
+| `npm run lint:fix`       | Fix ESLint issues automatically            |
+| `npm run format`         | Check code formatting with Prettier        |
+| `npm run format:fix`     | Fix formatting issues automatically        |
+| `npm run test:list`      | List all tests without running             |
+
+---
+
+## 📚 Additional Resources
+
+- **Playwright Documentation**: https://playwright.dev/docs/intro
+- **TypeScript Handbook**: https://www.typescriptlang.org/docs/
+- **Allure Framework**: https://docs.qameta.io/allure/
+- **Target Application**: https://automationexercise.com/
+- **GitHub Repository**: https://github.com/DobrosiGergo/playwright-typescript-automation-framework
+
+---
+
+## 📄 License
+
+This project is licensed under the ISC License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Follow development guidelines and coding standards
+4. Run quality checks: `npm run lint && npm run format && npm test`
+5. Commit changes (`git commit -m 'Add amazing feature'`)
+6. Push to branch (`git push origin feature/amazing-feature`)
+7. Open a Pull Request
+
+---
+
+**Built with ❤️ using Playwright + TypeScript**
+  },
+  staging: {
+    baseUrl: 'https://staging.automationexercise.com/',
+    apiBaseUrl: 'https://staging.automationexercise.com/api',

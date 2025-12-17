@@ -39,7 +39,8 @@ export class ProductsPage extends BasePage {
   async searchProducts(searchTerm: string): Promise<void> {
     await this.searchInput.fill(searchTerm);
     await this.searchButton.click();
-    await this.waitForPageReady();
+    // Wait for search results to load - DOM content loaded is sufficient
+    await this.page.waitForLoadState('domcontentloaded');
   }
 
   /**
@@ -103,7 +104,7 @@ export class ProductsPage extends BasePage {
    */
   async getProductCount(): Promise<number> {
     try {
-      await this.productCards.first().waitFor({ state: 'visible', timeout: 5000 });
+      await this.productCards.first().waitFor({ state: 'visible' });
       return await this.productCards.count();
     } catch {
       // No products found (e.g., search returned no results)

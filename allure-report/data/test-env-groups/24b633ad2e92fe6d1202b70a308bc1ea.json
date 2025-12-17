@@ -1,1 +1,0 @@
-{"id":"24b633ad2e92fe6d1202b70a308bc1ea","fullName":"ui/tests/authentication/authentication.spec.ts:15:10","name":"should register new user via UI and verify user creation via API","status":"passed","testResultsByEnv":{"default":"9a5d4989b4aa65bd8455f5068a66b945"}}

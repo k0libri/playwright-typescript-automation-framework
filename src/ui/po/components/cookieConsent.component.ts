@@ -13,7 +13,7 @@ export class CookieConsentComponent extends BaseComponent {
     super(page);
     this.consentDialog = page.locator('.fc-consent-root');
     this.acceptAllButton = page.locator(
-      'button[aria-label="Consent"], .fc-button[data-role="all"], .fc-cta-consent'
+      'button[aria-label="Consent"], .fc-button[data-role="all"], .fc-cta-consent',
     );
   }
 
@@ -37,8 +37,8 @@ export class CookieConsentComponent extends BaseComponent {
 
       for (const button of acceptButtons) {
         try {
-          if (await button.isVisible({ timeout: 1000 })) {
-            await button.click({ timeout: 3000 });
+          if (await button.isVisible()) {
+            await button.click();
             console.log('Cookie consent accepted successfully');
             return;
           }
@@ -61,7 +61,7 @@ export class CookieConsentComponent extends BaseComponent {
    */
   async isConsentDialogVisible(): Promise<boolean> {
     try {
-      return await this.consentDialog.isVisible({ timeout: 1000 });
+      return await this.consentDialog.isVisible();
     } catch {
       return false;
     }

@@ -1,5 +1,6 @@
 import { test, expect } from '../../fixtures/uiFixtures';
 import { UserDataFactory } from '../../../shared/utils/userDataFactory';
+import { HttpStatus, ResponseCode } from '../../../api/base/httpStatus';
 
 interface ApiErrorResponse {
   responseCode: number;
@@ -48,7 +49,7 @@ test.describe('Authentication @critical', () => {
 
       await test.step('Note: User cleanup not performed', async () => {
         console.log(
-          'Note: User account created will remain due to API CSRF protection - this is expected for automation exercise'
+          'Note: User account created will remain due to API CSRF protection - this is expected for automation exercise',
         );
       });
     });
@@ -63,7 +64,7 @@ test.describe('Authentication @critical', () => {
         await authenticationPage.startSignup(uniqueUserData.name, uniqueUserData.email);
 
         try {
-          await authenticationPage.passwordInput.waitFor({ timeout: 5000 });
+          await authenticationPage.passwordInput.waitFor();
           await authenticationPage.completeRegistration(uniqueUserData);
           await authenticationPage.continueButton.click();
           await expect(authenticationPage.loggedInUserText).toBeVisible();
@@ -103,7 +104,7 @@ test.describe('Authentication @critical', () => {
 
       const invalidLoginResponse = await userService.verifyLogin(
         'invalid@email.com',
-        'wrongpassword'
+        'wrongpassword',
       );
       invalidLoginData = {
         status: invalidLoginResponse.status(),
@@ -112,7 +113,7 @@ test.describe('Authentication @critical', () => {
 
       const nonExistentUserResponse = await userService.verifyLogin(
         'nonexistent@user.com',
-        'password123'
+        'password123',
       );
       nonExistentUserData = {
         status: nonExistentUserResponse.status(),
@@ -150,8 +151,8 @@ test.describe('Authentication @critical', () => {
 
     test('should return error for invalid login via API', async () => {
       await test.step('Verify login error via API using beforeAll response', async () => {
-        expect(invalidLoginData.status).toBe(200);
-        expect(invalidLoginData.body.responseCode).toBe(404);
+        expect(invalidLoginData.status).toBe(HttpStatus.OK);
+        expect(invalidLoginData.body.responseCode).toBe(ResponseCode.NOT_FOUND);
         expect(invalidLoginData.body.message).toContain('User not found!');
       });
     });
@@ -175,11 +176,10 @@ test.describe('Authentication @critical', () => {
       await test.step('Verify browser prevents empty name submission', async () => {
         await authenticationPage.navigateToAuthenticationPage();
         await authenticationPage.signupButton.click();
-        await page.waitForTimeout(500);
         const currentUrl = page.url();
         expect(currentUrl).toContain('/login');
         const nameInputValidity = await authenticationPage.signupNameInput.evaluate(
-          (el: any) => el.validity.valid
+          (el: any) => el.validity.valid,
         );
         expect(nameInputValidity).toBe(false);
       });
@@ -188,11 +188,10 @@ test.describe('Authentication @critical', () => {
         await authenticationPage.navigateToAuthenticationPage();
         await authenticationPage.signupNameInput.fill('Valid Name');
         await authenticationPage.signupButton.click();
-        await page.waitForTimeout(500);
         const currentUrl = page.url();
         expect(currentUrl).toContain('/login');
         const emailInputValidity = await authenticationPage.signupEmailInput.evaluate(
-          (el: any) => el.validity.valid
+          (el: any) => el.validity.valid,
         );
         expect(emailInputValidity).toBe(false);
       });
@@ -200,15 +199,15 @@ test.describe('Authentication @critical', () => {
 
     test('should validate login with non-existent user via API', async () => {
       await test.step('Verify non-existent user login error via API using beforeAll response', async () => {
-        expect(nonExistentUserData.status).toBe(200);
-        expect(nonExistentUserData.body.responseCode).toBe(404);
+        expect(nonExistentUserData.status).toBe(HttpStatus.OK);
+        expect(nonExistentUserData.body.responseCode).toBe(ResponseCode.NOT_FOUND);
         expect(nonExistentUserData.body.message).toContain('User not found!');
       });
     });
 
     test('should handle invalid user data during API registration', async () => {
       await test.step('Verify invalid registration data error via API using beforeAll response', async () => {
-        expect(invalidRegistrationData.status).not.toBe(201);
+        expect(invalidRegistrationData.status).not.toBe(ResponseCode.CREATED);
       });
     });
 

@@ -1,4 +1,0 @@
-Starting User Registration test suite
-Cookie consent accepted successfully
-User registration verified:  TestFirst941 TestLast941
-Note: User account created will remain due to API CSRF protection - this is expected for automation exercise
