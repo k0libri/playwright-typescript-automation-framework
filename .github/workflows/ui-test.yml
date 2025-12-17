@@ -1,0 +1,81 @@
+name: After Merge
+
+on:
+  push:
+    branches-ignore:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - run: npm run lint
+
+  ui-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps
+
+      - name: Run UI tests
+        continue-on-error: true
+        run: npm run test:ui
+
+      - name: Download previous history
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          path: gh-pages
+        continue-on-error: true
+
+      - name: Copy history into report
+        run: |
+          mkdir -p allure-results/history
+          BRANCH_NAME=$(echo "${GITHUB_REF#refs/heads/}" | tr / -)
+          if [ -d "gh-pages/$BRANCH_NAME/ui/history" ]; then
+            cp -r gh-pages/$BRANCH_NAME/ui/history/* allure-results/history/
+          fi
+
+      - name: Generate Allure Report
+        run: npm run allure:generate
+
+      - name: Allure report artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-report
+          path: allure-report/
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: allure-report
+          publish_branch: gh-pages
+          destination_dir: ${{ github.ref_name }}/ui
+ 
