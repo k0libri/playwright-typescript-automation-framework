@@ -45,7 +45,7 @@ export abstract class BasePage {
     try {
       await this.page.waitForLoadState('domcontentloaded');
       // Use a shorter timeout for networkidle to avoid hanging
-      await this.page.waitForLoadState('networkidle', { timeout: 10000 });
+      await this.page.waitForLoadState('networkidle', { timeout: 5000 });
     } catch {
       // If networkidle times out, just ensure dom is loaded
       console.log('Network idle timeout, continuing with DOM ready state');

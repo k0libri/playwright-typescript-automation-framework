@@ -5,7 +5,8 @@ import { CartPage } from '../po/cart/cart.page';
 import { CheckoutPage } from '../po/checkout/checkout.page';
 import { NavbarComponent } from '../po/components/common/navbar.component';
 import { UserService } from '../../api/services/user.service';
-import { UserDataFactory, type UserData } from '../../shared/utils/userDataFactory';
+import { UserDataFactory } from '../../shared/utils/userDataFactory';
+import type { UserData } from '../../shared/data/types';
 
 /**
  * UI Test Fixtures - Provides page objects and components via dependency injection

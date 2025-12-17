@@ -1,16 +1,9 @@
+import { PaymentData } from '../data/types';
+
 /**
  * Payment Data Factory - Generates test payment data
  * Provides factory methods for creating valid payment information for testing
  */
-
-export interface PaymentData {
-  nameOnCard: string;
-  cardNumber: string;
-  cvc: string;
-  expiryMonth: string;
-  expiryYear: string;
-}
-
 export class PaymentDataFactory {
   /**
    * Generate valid test payment data

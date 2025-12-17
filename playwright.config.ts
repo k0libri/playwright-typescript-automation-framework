@@ -20,7 +20,7 @@ const config = {
   },
   timeouts: {
     apiTest: 60000, // 60 seconds for API tests
-    e2eTest: 90000, // 90 seconds for E2E tests
+    e2eTest: 60000, // 60 seconds for E2E tests (optimized)
     action: 30000, // 30 seconds for actions
     navigation: 30000, // 30 seconds for navigation
   },
@@ -35,8 +35,8 @@ export default defineConfig({
   forbidOnly: !!process.env['CI'],
   /* Retry on CI only */
   retries: process.env['CI'] ? 2 : 0,
-  /* Opt out of parallel tests on CI. */
-  workers: process.env['CI'] ? 2 : 1,
+  /* Use parallel execution for faster test runs */
+  workers: process.env['CI'] ? 2 : 4,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: [
     ['html', { open: 'never', outputFolder: 'playwright-report' }],

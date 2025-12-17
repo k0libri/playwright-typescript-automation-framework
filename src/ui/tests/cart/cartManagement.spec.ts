@@ -12,6 +12,7 @@ test.describe('Cart Management - Login + Cart Verification @critical @regression
     navbar,
     uniqueUserData,
   }) => {
+    test.setTimeout(90000);
     await test.step('Create user account via UI', async () => {
       await authenticationPage.navigateToAuthenticationPage();
       await authenticationPage.startSignup(uniqueUserData.name, uniqueUserData.email);
@@ -68,6 +69,7 @@ test.describe('Cart Management - Login + Cart Verification @critical @regression
     cartPage,
     navbar,
   }) => {
+    test.setTimeout(90000);
     await test.step('Navigate to home page', async () => {
       await productsPage.navigateTo('/');
       await expect(navbar.homeLink).toBeVisible();

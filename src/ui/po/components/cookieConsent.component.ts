@@ -21,7 +21,7 @@ export class CookieConsentComponent extends BaseComponent {
    * Handle cookie consent dialog if present
    * @param timeout - Maximum time to wait for consent dialog
    */
-  async handleCookieConsent(timeout = 5000): Promise<void> {
+  async handleCookieConsent(timeout = 2000): Promise<void> {
     try {
       // Wait for the consent dialog to appear
       await this.consentDialog.waitFor({ timeout });

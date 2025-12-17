@@ -1,28 +1,9 @@
+import { UserData } from '../data/types';
+
 /**
  * User Data Factory - Generates unique test user data
  * Provides factory methods for creating realistic user data with unique identifiers
  */
-
-export interface UserData {
-  name: string;
-  email: string;
-  password: string;
-  title: string;
-  birth_date: string;
-  birth_month: string;
-  birth_year: string;
-  firstname: string;
-  lastname: string;
-  company: string;
-  address1: string;
-  address2?: string;
-  country: string;
-  zipcode: string;
-  state: string;
-  city: string;
-  mobile_number: string;
-}
-
 export class UserDataFactory {
   /**
    * Generate unique email address with timestamp

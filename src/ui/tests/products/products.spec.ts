@@ -7,6 +7,7 @@ test.describe('Products @regression', () => {
       navbar,
       page,
     }) => {
+      test.setTimeout(90000);
       await test.step('Search for non-existent products', async () => {
         await page.goto('/');
         await page.waitForLoadState('domcontentloaded');

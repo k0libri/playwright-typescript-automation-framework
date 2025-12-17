@@ -1,7 +1,8 @@
 import { test as baseTest } from '@playwright/test';
 import { UserService } from '../services/user.service';
 import { ProductService } from '../services/product.service';
-import { UserDataFactory, type UserData } from '../../shared/utils/userDataFactory';
+import { UserDataFactory } from '../../shared/utils/userDataFactory';
+import type { UserData } from '../../shared/data/types';
 
 /**
  * API Test Fixtures - Provides service classes via dependency injection

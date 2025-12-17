@@ -283,14 +283,14 @@ playwright-typescript-automation-framework/
 
 ### File Count Summary
 
-| Category                   | Count | Description          |
-| -------------------------- | ----- | -------------------- |
-| **Total TypeScript Files** | 28    | All `.ts` files      |
-| **Test Spec Files**        | 5     | `*.spec.ts` files    |
+| Category                   | Count | Description            |
+| -------------------------- | ----- | ---------------------- |
+| **Total TypeScript Files** | 28    | All `.ts` files        |
+| **Test Spec Files**        | 5     | `*.spec.ts` files      |
 | **Page Objects**           | 5     | Feature-specific pages |
 | **Components**             | 2     | Reusable UI components |
-| **Services**               | 2     | API service classes  |
-| **Fixtures**               | 2     | UI & API fixtures    |
+| **Services**               | 2     | API service classes    |
+| **Fixtures**               | 2     | UI & API fixtures      |
 
 ## 🚀 Setup & Installation
 
@@ -343,28 +343,28 @@ npm run format
 
 ### Core Framework
 
-| Technology       | Version | Purpose                          |
-| ---------------- | ------- | -------------------------------- |
-| **Playwright**   | 1.57.0  | Browser automation and API testing |
-| **TypeScript**   | 5.6.3   | Type-safe development            |
-| **Node.js**      | 18+ LTS | Runtime environment              |
+| Technology     | Version | Purpose                            |
+| -------------- | ------- | ---------------------------------- |
+| **Playwright** | 1.57.0  | Browser automation and API testing |
+| **TypeScript** | 5.6.3   | Type-safe development              |
+| **Node.js**    | 18+ LTS | Runtime environment                |
 
 ### Quality Assurance Tools
 
-| Tool                      | Version | Purpose                               |
-| ------------------------- | ------- | ------------------------------------- |
-| **ESLint**                | 9.39.1  | Code linting and style enforcement    |
-| **Prettier**              | 3.7.4   | Code formatting                       |
-| **Husky**                 | 9.1.7   | Git hooks (pre-commit)                |
-| **TypeScript ESLint**     | 8.13.0  | TypeScript-specific linting rules     |
+| Tool                  | Version | Purpose                            |
+| --------------------- | ------- | ---------------------------------- |
+| **ESLint**            | 9.39.1  | Code linting and style enforcement |
+| **Prettier**          | 3.7.4   | Code formatting                    |
+| **Husky**             | 9.1.7   | Git hooks (pre-commit)             |
+| **TypeScript ESLint** | 8.13.0  | TypeScript-specific linting rules  |
 
 ### Reporting & CI/CD
 
-| Tool                  | Version   | Purpose                                |
-| --------------------- | --------- | -------------------------------------- |
-| **Allure**            | 3.4.3     | Advanced test reporting with history   |
-| **GitHub Actions**    | -         | CI/CD pipeline execution               |
-| **JUnit Reporter**    | Built-in  | Test result publishing                 |
+| Tool               | Version  | Purpose                              |
+| ------------------ | -------- | ------------------------------------ |
+| **Allure**         | 3.4.3    | Advanced test reporting with history |
+| **GitHub Actions** | -        | CI/CD pipeline execution             |
+| **JUnit Reporter** | Built-in | Test result publishing               |
 
 ### Key Dependencies
 
@@ -844,25 +844,25 @@ export class HomePage extends BasePage {
 
 ## 📦 Available NPM Scripts
 
-| Script                   | Description                                |
-| ------------------------ | ------------------------------------------ |
-| `npm test`               | Run all tests (API + UI)                   |
-| `npm run test:api`       | Run API tests only                         |
-| `npm run test:ui`        | Run UI tests only                          |
-| `npm run test:critical`  | Run critical tagged tests                  |
-| `npm run test:smoke`     | Run smoke tagged tests                     |
-| `npm run test:regression`| Run regression tagged tests                |
-| `npm run test:headed`    | Run tests with visible browser             |
-| `npm run test:debug`     | Run tests in debug mode                    |
-| `npm run report`         | Open Playwright HTML report                |
-| `npm run allure:generate`| Generate Allure report                     |
-| `npm run allure:open`    | Open Allure report                         |
-| `npm run allure:serve`   | Generate and serve Allure report           |
-| `npm run lint`           | Check code with ESLint                     |
-| `npm run lint:fix`       | Fix ESLint issues automatically            |
-| `npm run format`         | Check code formatting with Prettier        |
-| `npm run format:fix`     | Fix formatting issues automatically        |
-| `npm run test:list`      | List all tests without running             |
+| Script                    | Description                         |
+| ------------------------- | ----------------------------------- |
+| `npm test`                | Run all tests (API + UI)            |
+| `npm run test:api`        | Run API tests only                  |
+| `npm run test:ui`         | Run UI tests only                   |
+| `npm run test:critical`   | Run critical tagged tests           |
+| `npm run test:smoke`      | Run smoke tagged tests              |
+| `npm run test:regression` | Run regression tagged tests         |
+| `npm run test:headed`     | Run tests with visible browser      |
+| `npm run test:debug`      | Run tests in debug mode             |
+| `npm run report`          | Open Playwright HTML report         |
+| `npm run allure:generate` | Generate Allure report              |
+| `npm run allure:open`     | Open Allure report                  |
+| `npm run allure:serve`    | Generate and serve Allure report    |
+| `npm run lint`            | Check code with ESLint              |
+| `npm run lint:fix`        | Fix ESLint issues automatically     |
+| `npm run format`          | Check code formatting with Prettier |
+| `npm run format:fix`      | Fix formatting issues automatically |
+| `npm run test:list`       | List all tests without running      |
 
 ---
 
@@ -895,7 +895,7 @@ This project is licensed under the ISC License - see the [LICENSE](LICENSE) file
 ---
 
 **Built with ❤️ using Playwright + TypeScript**
-  },
-  staging: {
-    baseUrl: 'https://staging.automationexercise.com/',
-    apiBaseUrl: 'https://staging.automationexercise.com/api',
+},
+staging: {
+baseUrl: 'https://staging.automationexercise.com/',
+apiBaseUrl: 'https://staging.automationexercise.com/api',

@@ -1,11 +1,7 @@
 import { test, expect } from '../../fixtures/uiFixtures';
 import { UserDataFactory } from '../../../shared/utils/userDataFactory';
 import { HttpStatus, ResponseCode } from '../../../api/base/httpStatus';
-
-interface ApiErrorResponse {
-  responseCode: number;
-  message: string;
-}
+import { ApiErrorResponse } from '../../../shared/data/types';
 
 test.describe('Authentication @critical', () => {
   test.describe('Positive Test Cases @smoke', () => {

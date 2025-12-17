@@ -1,83 +1,60 @@
 import type { Locator, Page } from '@playwright/test';
 import { BasePage } from '../base/basePage.page';
+import { LoginFormComponent } from '../components/authentication/loginForm.component';
+import { SignupFormComponent } from '../components/authentication/signupForm.component';
+import { RegistrationFormComponent } from '../components/authentication/registrationForm.component';
 
 /**
  * AuthenticationPage - Handles login and signup functionality
  * Extends BasePage for common page behaviors
  */
 export class AuthenticationPage extends BasePage {
-  // Login form elements
-  readonly loginEmailInput: Locator;
-  readonly loginPasswordInput: Locator;
-  readonly loginButton: Locator;
+  readonly loginForm: LoginFormComponent;
+  readonly signupForm: SignupFormComponent;
+  readonly registrationForm: RegistrationFormComponent;
 
-  // Signup form elements
+  // Exposed locators for backward compatibility with tests
+  readonly passwordInput: Locator;
+  readonly loginErrorMessage: Locator;
+  readonly signupButton: Locator;
   readonly signupNameInput: Locator;
   readonly signupEmailInput: Locator;
-  readonly signupButton: Locator;
-
-  // Registration form elements (after signup)
-  readonly titleMrRadio: Locator;
-  readonly titleMrsRadio: Locator;
-  readonly passwordInput: Locator;
-  readonly daySelect: Locator;
-  readonly monthSelect: Locator;
-  readonly yearSelect: Locator;
-  readonly firstNameInput: Locator;
-  readonly lastNameInput: Locator;
-  readonly companyInput: Locator;
-  readonly address1Input: Locator;
-  readonly address2Input: Locator;
-  readonly countrySelect: Locator;
-  readonly stateInput: Locator;
-  readonly cityInput: Locator;
-  readonly zipcodeInput: Locator;
-  readonly mobileNumberInput: Locator;
-  readonly createAccountButton: Locator;
+  readonly continueButton: Locator;
+  readonly accountCreatedMessage: Locator;
 
   // Success/error messages
-  readonly accountCreatedMessage: Locator;
-  readonly loginErrorMessage: Locator;
   readonly loggedInUserText: Locator;
-  readonly continueButton: Locator;
 
   constructor(page: Page) {
     super(page);
 
-    // Login form locators - using position based approach
-    this.loginEmailInput = page.locator('input[placeholder="Email Address"]').first();
-    this.loginPasswordInput = page.locator('input[placeholder="Password"]');
-    this.loginButton = page.locator('button:has-text("Login")');
+    // Find form containers - using more flexible selectors that work with the actual page structure
+    const loginFormContainer = page
+      .locator('form')
+      .filter({ has: page.locator('input[data-qa="login-email"]') });
+    const signupFormContainer = page
+      .locator('form')
+      .filter({ has: page.locator('input[data-qa="signup-name"]') });
+    const registrationFormContainer = page
+      .locator('form')
+      .filter({ has: page.locator('input[name="password"]') });
 
-    // Signup form locators - using position based approach
-    this.signupNameInput = page.locator('input[placeholder="Name"]');
-    this.signupEmailInput = page.locator('input[placeholder="Email Address"]').last();
-    this.signupButton = page.locator('button:has-text("Signup")');
+    // Initialize components with their containers
+    this.loginForm = new LoginFormComponent(page, loginFormContainer);
+    this.signupForm = new SignupFormComponent(page, signupFormContainer);
+    this.registrationForm = new RegistrationFormComponent(page, registrationFormContainer);
 
-    // Registration form locators
-    this.titleMrRadio = page.getByRole('radio', { name: 'Mr.' });
-    this.titleMrsRadio = page.getByRole('radio', { name: 'Mrs.' });
-    this.passwordInput = page.locator('#password');
-    this.daySelect = page.locator('#days');
-    this.monthSelect = page.locator('#months');
-    this.yearSelect = page.locator('#years');
-    this.firstNameInput = page.locator('#first_name');
-    this.lastNameInput = page.locator('#last_name');
-    this.companyInput = page.locator('#company');
-    this.address1Input = page.locator('#address1');
-    this.address2Input = page.locator('#address2');
-    this.countrySelect = page.locator('#country');
-    this.stateInput = page.locator('#state');
-    this.cityInput = page.locator('#city');
-    this.zipcodeInput = page.locator('#zipcode');
-    this.mobileNumberInput = page.locator('#mobile_number');
-    this.createAccountButton = page.getByRole('button', { name: 'Create Account' });
+    // Expose component locators for backward compatibility
+    this.passwordInput = this.registrationForm.passwordInput;
+    this.loginErrorMessage = this.loginForm.loginErrorMessage;
+    this.signupButton = this.signupForm.signupButton;
+    this.signupNameInput = this.signupForm.signupNameInput;
+    this.signupEmailInput = this.signupForm.signupEmailInput;
+    this.continueButton = this.registrationForm.continueButton;
+    this.accountCreatedMessage = this.registrationForm.accountCreatedMessage;
 
-    // Success/error messages
-    this.accountCreatedMessage = page.getByText('Account Created!');
-    this.loginErrorMessage = page.getByText('Your email or password is incorrect!');
+    // Page-level locators
     this.loggedInUserText = page.getByText('Logged in as');
-    this.continueButton = page.getByRole('link', { name: 'Continue' });
   }
 
   /**
@@ -91,18 +68,14 @@ export class AuthenticationPage extends BasePage {
    * Perform user login
    */
   async login(email: string, password: string): Promise<void> {
-    await this.loginEmailInput.fill(email);
-    await this.loginPasswordInput.fill(password);
-    await this.loginButton.click();
+    await this.loginForm.login(email, password);
   }
 
   /**
    * Start signup process with name and email
    */
   async startSignup(name: string, email: string): Promise<void> {
-    await this.signupNameInput.fill(name);
-    await this.signupEmailInput.fill(email);
-    await this.signupButton.click();
+    await this.signupForm.startSignup(name, email);
   }
 
   /**
@@ -125,39 +98,7 @@ export class AuthenticationPage extends BasePage {
     zipcode: string;
     mobile_number: string;
   }): Promise<void> {
-    // Select title
-    if (userData.title === 'Mr') {
-      await this.titleMrRadio.check();
-    } else {
-      await this.titleMrsRadio.check();
-    }
-
-    // Fill password
-    await this.passwordInput.fill(userData.password);
-
-    // Select birth date
-    await this.daySelect.selectOption(userData.birth_date);
-    await this.monthSelect.selectOption(userData.birth_month);
-    await this.yearSelect.selectOption(userData.birth_year);
-
-    // Fill personal information
-    await this.firstNameInput.fill(userData.firstname);
-    await this.lastNameInput.fill(userData.lastname);
-    await this.companyInput.fill(userData.company);
-
-    // Fill address information
-    await this.address1Input.fill(userData.address1);
-    if (userData.address2) {
-      await this.address2Input.fill(userData.address2);
-    }
-    await this.countrySelect.selectOption(userData.country);
-    await this.stateInput.fill(userData.state);
-    await this.cityInput.fill(userData.city);
-    await this.zipcodeInput.fill(userData.zipcode);
-    await this.mobileNumberInput.fill(userData.mobile_number);
-
-    // Submit form
-    await this.createAccountButton.click();
+    await this.registrationForm.completeRegistration(userData);
   }
 
   /**
