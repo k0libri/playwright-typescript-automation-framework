@@ -13,10 +13,15 @@ import { defineConfig, devices } from '@playwright/test';
  */
 const config = {
   api: {
-    baseUrl: process.env.API_BASE_URL || 'https://automationexercise.com/api',
+    backend: {
+      baseUrl: process.env['BACKEND_API_BASE_URL'] ?? 'https://automationexercise.com/api',
+    },
+    standalone: {
+      baseUrl: process.env['RESTFUL_BOOKER_BASE_URL'] ?? 'https://restful-booker.herokuapp.com',
+    },
   },
   ui: {
-    baseUrl: process.env.UI_BASE_URL || 'https://automationexercise.com',
+    baseUrl: process.env['UI_BASE_URL'] ?? 'https://automationexercise.com',
   },
   timeouts: {
     apiTest: 60000, // 60 seconds for API tests
@@ -64,18 +69,28 @@ export default defineConfig({
   /* Configure projects for API and UI tests */
   projects: [
     {
-      name: 'api',
-      testDir: './src/api/tests',
-      testMatch: '**/*.spec.ts',
+      name: 'api-standalone',
+      testDir: './tests/api/specs',
+      testMatch: '**/standalone/**/*.spec.ts',
       timeout: config.timeouts.apiTest,
       fullyParallel: true,
       use: {
-        baseURL: config.api.baseUrl,
+        baseURL: config.api.standalone.baseUrl,
+      },
+    },
+    {
+      name: 'api-backend',
+      testDir: './tests/api/specs',
+      testMatch: '**/backend/**/*.spec.ts',
+      timeout: config.timeouts.apiTest,
+      fullyParallel: true,
+      use: {
+        baseURL: config.api.backend.baseUrl,
       },
     },
     {
       name: 'ui',
-      testDir: './src/ui/tests',
+      testDir: './tests/ui/specs',
       testMatch: '**/*.spec.ts',
       timeout: config.timeouts.e2eTest,
       fullyParallel: false,

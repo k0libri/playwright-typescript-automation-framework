@@ -5,15 +5,16 @@
 [![Playwright](https://img.shields.io/badge/Playwright-1.57.0-green.svg)](https://playwright.dev/)
 [![License](https://img.shields.io/badge/license-ISC-blue.svg)](LICENSE)
 
-Enterprise-grade test automation framework built with **Playwright** and **TypeScript**, featuring separate API/UI testing architectures, centralized configuration management, and comprehensive CI/CD integration.
+Enterprise-grade test automation framework built with **Playwright** and **TypeScript**, featuring **dual API testing strategies** (standalone + UI validation), centralized configuration management, and comprehensive CI/CD integration.
 
 ## 📊 Quick Links
 
-| Resource                  | Link                                                                                                                        | Description                           |
-| ------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ------------------------------------- |
-| 📈 **Live Test Report**   | [Allure Report](https://dobrosigergo.github.io/playwright-typescript-automation-framework/gergo_test_branch-allure-report/) | Interactive test results with history |
-| 🔄 **CI/CD Pipeline**     | [GitHub Actions](https://github.com/DobrosiGergo/playwright-typescript-automation-framework/actions)                        | Automated test execution              |
-| 🎯 **Target Application** | [Automation Exercise](https://automationexercise.com/)                                                                      | Demo e-commerce platform              |
+| Resource                    | Link                                                                                                                        | Description                           |
+| --------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ------------------------------------- |
+| 📈 **Live Test Report**     | [Allure Report](https://dobrosigergo.github.io/playwright-typescript-automation-framework/gergo_test_branch-allure-report/) | Interactive test results with history |
+| 🔄 **CI/CD Pipeline**       | [GitHub Actions](https://github.com/DobrosiGergo/playwright-typescript-automation-framework/actions)                        | Automated test execution              |
+| 🎯 **UI Test Application**  | [Automation Exercise](https://automationexercise.com/)                                                                      | Demo e-commerce platform              |
+| 🔌 **API Test Application** | [Restful Booker](https://restful-booker.herokuapp.com/)                                                                     | RESTful API testing platform          |
 
 ---
 
@@ -38,16 +39,28 @@ Enterprise-grade test automation framework built with **Playwright** and **TypeS
 
 This framework provides enterprise-level test automation with:
 
-**✅ Dual-Layer Testing Architecture**
+**✅ Dual API Testing Strategy**
+
+- **Standalone API Testing** (`src/api/standalone/`): Pure API tests against restful-booker
+  - Authentication token management
+  - Booking CRUD operations
+  - Unauthorized access validation
+- **Backend API Validation** (`src/api/backend/`): API calls to validate UI actions
+  - User account verification
+  - Cart state validation
+  - Order confirmation checks
+
+**✅ Three-Layer Testing Architecture**
 
 - **UI Testing Layer**: Page Object Model with component-based design
-- **API Testing Layer**: Service pattern with base client abstraction
-- **Separate Project Configs**: Independent timeout and execution settings
+- **Standalone API Layer**: Independent API endpoint testing
+- **Backend API Layer**: UI action validation through API calls
+- **Separate Project Configs**: Independent timeout and execution settings for each domain
 
 **✅ Advanced Configuration Management**
 
 - Centralized HTTP status codes (`httpStatus.ts`)
-- Environment-specific configurations
+- Environment-specific configurations for multiple APIs
 - BaseURL management through Playwright config
 - No hardcoded values in test code
 
@@ -67,13 +80,14 @@ This framework provides enterprise-level test automation with:
 
 ### Test Coverage
 
-| Category      | Tests  | Description                              |
-| ------------- | ------ | ---------------------------------------- |
-| **API Tests** | 5      | User management endpoints                |
-| **UI Tests**  | 16     | Authentication, Cart, Checkout, Products |
-| **Total**     | **21** | Full e2e and integration coverage        |
+| Category                 | Tests  | Description                              |
+| ------------------------ | ------ | ---------------------------------------- |
+| **Standalone API Tests** | 13     | Auth tokens, booking CRUD, unauthorized  |
+| **Backend API Tests**    | 5      | User management for UI validation        |
+| **UI Tests**             | 16     | Authentication, Cart, Checkout, Products |
+| **Total**                | **34** | Full coverage across all domains         |
 
-**Test Execution Time**: ~7-8 minutes (full suite)
+**Test Execution Time**: ~10-12 minutes (full suite with all projects)
 
 ## 🏗️ Architecture
 
@@ -84,19 +98,22 @@ The framework follows **SOLID principles** and industry-standard design patterns
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │                     Test Layer (Specs)                      │
-│  • UI Tests (authentication, cart, checkout, products)     │
-│  • API Tests (user management endpoints)                   │
+│  • UI Tests (authentication, cart, checkout, products)      │
+│  • Standalone API Tests (restful-booker CRUD)               │
+│  • Backend API Tests (automationexercise validation)        │
 └────────────────┬────────────────────────────────────────────┘
                  │
-    ┌────────────┴────────────┐
-    │                         │
-┌───▼─────────────┐  ┌────────▼──────────┐
-│   UI Layer      │  │    API Layer      │
-│                 │  │                   │
-│ • Page Objects  │  │ • Service Classes │
-│ • Components    │  │ • Base Client     │
-│ • BasePage      │  │ • HTTP Methods    │
-└───┬─────────────┘  └────────┬──────────┘
+    ┌────────────┴──────────────────────┐
+    │                                   │
+┌───▼─────────────┐  ┌─────────────────▼──────────────────┐
+│   UI Layer      │  │         API Layer                  │
+│                 │  │                                    │
+│ • Page Objects  │  │ • Standalone Services (restful-   │
+│ • Components    │  │   booker: auth, booking)          │
+│ • BasePage      │  │ • Backend Services (automation    │
+│                 │  │   exercise: user, product)        │
+│                 │  │ • Base API Clients (2 domains)    │
+└───┬─────────────┘  └────────┬───────────────────────────┘
     │                         │
     └────────────┬────────────┘
                  │
@@ -217,19 +234,40 @@ playwright-typescript-automation-framework/
 │
 ├── src/
 │   ├── api/                           # API Testing Layer
-│   │   ├── base/
-│   │   │   ├── baseApiClient.service.ts   # Abstract HTTP client with CSRF handling
-│   │   │   └── httpStatus.ts              # Centralized status codes (HttpStatus, ResponseCode)
-│   │   ├── services/
-│   │   │   ├── user.service.ts            # User API endpoints
-│   │   │   └── product.service.ts         # Product API endpoints
-│   │   ├── tests/
-│   │   │   └── user/
-│   │   │       └── user.spec.ts           # User API test suite (5 tests)
-│   │   ├── fixtures/
-│   │   │   └── apiFixtures.ts             # API test fixtures
-│   │   ├── utils/                         # API-specific utilities
-│   │   └── data/                          # API test data builders
+│   │   ├── standalone/                # Standalone API Testing (restful-booker)
+│   │   │   ├── base/
+│   │   │   │   └── baseApiClient.service.ts   # HTTP client for standalone APIs
+│   │   │   ├── services/
+│   │   │   │   ├── auth.service.ts            # Authentication service
+│   │   │   │   └── booking.service.ts         # Booking CRUD service
+│   │   │   ├── tests/
+│   │   │   │   ├── auth/
+│   │   │   │   │   └── auth.spec.ts           # Auth tests (4 tests)
+│   │   │   │   └── booking/
+│   │   │   │       └── booking.spec.ts        # Booking tests (9 tests)
+│   │   │   ├── fixtures/
+│   │   │   │   └── apiFixtures.ts             # Standalone API fixtures
+│   │   │   ├── utils/
+│   │   │   │   └── bookingDataFactory.ts      # Booking data generator
+│   │   │   └── data/
+│   │   │       └── types.ts                   # Booking type definitions
+│   │   │
+│   │   ├── backend/                   # Backend API (automationexercise.com)
+│   │   │   ├── base/
+│   │   │   │   └── baseApiClient.service.ts   # HTTP client with CSRF handling
+│   │   │   ├── services/
+│   │   │   │   ├── user.service.ts            # User API endpoints
+│   │   │   │   └── product.service.ts         # Product API endpoints
+│   │   │   ├── tests/
+│   │   │   │   └── user/
+│   │   │   │       └── user.spec.ts           # User API tests (5 tests)
+│   │   │   ├── fixtures/
+│   │   │   │   └── backendFixtures.ts         # Backend API fixtures
+│   │   │   ├── utils/                         # Backend-specific utilities
+│   │   │   └── data/                          # Backend test data builders
+│   │   │
+│   │   └── base/                      # Shared API utilities
+│   │       └── httpStatus.ts          # Centralized status codes (HttpStatus, ResponseCode)
 │   │
 │   ├── ui/                            # UI Testing Layer
 │   │   ├── po/                        # Page Objects
@@ -267,12 +305,14 @@ playwright-typescript-automation-framework/
 │       ├── config/
 │       │   ├── environment.ts         # Environment configuration
 │       │   └── environments.ts        # Multi-environment settings
-│       └── utils/
-│           ├── userDataFactory.ts     # User data generator
-│           ├── paymentDataFactory.ts  # Payment data generator
-│           └── testDataCleanup.util.ts # Test data cleanup utilities
+│       ├── utils/
+│       │   ├── userDataFactory.ts     # User data generator
+│       │   ├── paymentDataFactory.ts  # Payment data generator
+│       │   └── testDataCleanup.util.ts # Test data cleanup utilities
+│       └── data/
+│           └── types.ts               # Shared type definitions
 │
-├── playwright.config.ts               # Playwright configuration (2 projects: api, ui)
+├── playwright.config.ts               # Playwright configuration (3 projects: api-standalone, api-backend, ui)
 ├── tsconfig.json                      # TypeScript compiler configuration
 ├── package.json                       # Dependencies and scripts
 ├── eslint.config.mjs                  # ESLint configuration
@@ -320,22 +360,24 @@ npm run format
 
 ## 📋 Available Scripts
 
-| Script            | Description                    | Usage                     |
-| ----------------- | ------------------------------ | ------------------------- |
-| `test`            | Run all tests (UI + API)       | `npm test`                |
-| `test:ui`         | Run UI tests only              | `npm run test:ui`         |
-| `test:api`        | Run API tests only             | `npm run test:api`        |
-| `test:headed`     | Run tests in headed mode       | `npm run test:headed`     |
-| `test:debug`      | Run tests in debug mode        | `npm run test:debug`      |
-| `test:smoke`      | Run smoke tests only           | `npm run test:smoke`      |
-| `test:regression` | Run regression tests only      | `npm run test:regression` |
-| `lint`            | Run ESLint code analysis       | `npm run lint`            |
-| `lint:fix`        | Fix auto-fixable ESLint issues | `npm run lint:fix`        |
-| `format`          | Format code with Prettier      | `npm run format`          |
-| `format:check`    | Check code formatting          | `npm run format:check`    |
-| `report`          | Open HTML test report          | `npm run report`          |
-| `allure:generate` | Generate Allure report         | `npm run allure:generate` |
-| `allure:open`     | Open Allure report             | `npm run allure:open`     |
+| Script                | Description                                 | Usage                         |
+| --------------------- | ------------------------------------------- | ----------------------------- |
+| `test`                | Run all tests (UI + API)                    | `npm test`                    |
+| `test:ui`             | Run UI tests only                           | `npm run test:ui`             |
+| `test:api`            | Run all API tests (standalone + backend)    | `npm run test:api`            |
+| `test:api:standalone` | Run standalone API tests (restful-booker)   | `npm run test:api:standalone` |
+| `test:api:backend`    | Run backend API tests (automation exercise) | `npm run test:api:backend`    |
+| `test:headed`         | Run tests in headed mode                    | `npm run test:headed`         |
+| `test:debug`          | Run tests in debug mode                     | `npm run test:debug`          |
+| `test:smoke`          | Run smoke tests only                        | `npm run test:smoke`          |
+| `test:regression`     | Run regression tests only                   | `npm run test:regression`     |
+| `lint`                | Run ESLint code analysis                    | `npm run lint`                |
+| `lint:fix`            | Fix auto-fixable ESLint issues              | `npm run lint:fix`            |
+| `format`              | Format code with Prettier                   | `npm run format`              |
+| `format:check`        | Check code formatting                       | `npm run format:check`        |
+| `report`              | Open HTML test report                       | `npm run report`              |
+| `allure:generate`     | Generate Allure report                      | `npm run allure:generate`     |
+| `allure:open`         | Open Allure report                          | `npm run allure:open`         |
 
 ---
 
