@@ -1,3 +1,4 @@
+import { faker } from '@faker-js/faker';
 import type { Booking, BookingDates } from '../data/types';
 
 /**
@@ -9,16 +10,13 @@ export class BookingDataFactory {
    * Generate random booking dates (checkin today, checkout in 7 days)
    */
   static generateBookingDates(): BookingDates {
-    const today = new Date();
-    const checkin = today.toISOString().split('T')[0] ?? '';
-
-    const checkout = new Date(today);
-    checkout.setDate(today.getDate() + 7);
-    const checkoutDate = checkout.toISOString().split('T')[0] ?? '';
+    const checkin = faker.date.soon({ days: 1 }).toISOString().split('T')[0] ?? '';
+    const checkout =
+      faker.date.soon({ days: 8, refDate: checkin }).toISOString().split('T')[0] ?? '';
 
     return {
       checkin,
-      checkout: checkoutDate,
+      checkout,
     };
   }
 
@@ -26,16 +24,19 @@ export class BookingDataFactory {
    * Generate complete booking data with randomized values
    */
   static generateBooking(overrides?: Partial<Booking>): Booking {
-    const timestamp = Date.now();
-    const random = Math.floor(Math.random() * 1000);
-
     return {
-      firstname: `Test${timestamp}`,
-      lastname: `User${random}`,
-      totalprice: Math.floor(Math.random() * 500) + 100,
-      depositpaid: true,
+      firstname: faker.person.firstName(),
+      lastname: faker.person.lastName(),
+      totalprice: faker.number.int({ min: 100, max: 600 }),
+      depositpaid: faker.datatype.boolean(),
       bookingdates: this.generateBookingDates(),
-      additionalneeds: 'Breakfast',
+      additionalneeds: faker.helpers.arrayElement([
+        'Breakfast',
+        'Lunch',
+        'Parking',
+        'Late Checkout',
+        'Extra Bed',
+      ]),
       ...overrides,
     };
   }

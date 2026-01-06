@@ -1,3 +1,4 @@
+import { faker } from '@faker-js/faker';
 import { PaymentData } from '../data/types';
 
 /**
@@ -12,11 +13,11 @@ export class PaymentDataFactory {
     const currentYear = new Date().getFullYear();
 
     return {
-      nameOnCard: 'Test User',
+      nameOnCard: faker.person.fullName(),
       cardNumber: '4111111111111111', // Visa test card number
-      cvc: '123',
-      expiryMonth: '12',
-      expiryYear: (currentYear + 2).toString(),
+      cvc: faker.finance.creditCardCVV(),
+      expiryMonth: faker.number.int({ min: 1, max: 12 }).toString().padStart(2, '0'),
+      expiryYear: (currentYear + faker.number.int({ min: 1, max: 5 })).toString(),
     };
   }
 
@@ -26,10 +27,10 @@ export class PaymentDataFactory {
   static generateInvalidPaymentData(): Partial<PaymentData> {
     return {
       nameOnCard: '',
-      cardNumber: '1234', // Too short
-      cvc: '12', // Too short
-      expiryMonth: '13', // Invalid month
-      expiryYear: '2020', // Past year
+      cardNumber: faker.string.numeric(4),
+      cvc: faker.string.numeric(2),
+      expiryMonth: '13',
+      expiryYear: faker.date.past({ years: 5 }).getFullYear().toString(),
     };
   }
 }

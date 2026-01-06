@@ -1,5 +1,4 @@
 import type { Locator, Page } from '@playwright/test';
-import { CookieConsentComponent } from '../components/cookieConsent.component';
 
 /**
  * BasePage - Shared page behaviors and navigation helpers
@@ -7,58 +6,42 @@ import { CookieConsentComponent } from '../components/cookieConsent.component';
  */
 export abstract class BasePage {
   protected readonly page: Page;
-  protected readonly cookieConsent: CookieConsentComponent;
 
   constructor(page: Page) {
     this.page = page;
-    this.cookieConsent = new CookieConsentComponent(page);
+  }
+
+  /**
+   * Navigate to the page's default URL
+   */
+  public async navigate(): Promise<void> {
+    const url = (this as any).pageUrl;
+    if (!url) {
+      throw new Error(`pageUrl is not defined for ${this.constructor.name}`);
+    }
+    await this.navigateTo(url);
+  }
+
+  /**
+   * Navigate to home page
+   */
+  public async navigateToHome(): Promise<void> {
+    await this.navigateTo('/');
   }
 
   /**
    * Navigate to a specific URL
    */
   public async navigateTo(url: string): Promise<void> {
-    try {
-      await this.page.goto(url, { waitUntil: 'domcontentloaded', timeout: 60000 });
-      await this.waitForPageReady();
-      await this.handleCookieConsentIfPresent();
-    } catch (error) {
-      console.error(`Navigation to ${url} failed:`, error);
-      // Retry once after a short delay using Node.js timeout (not page.waitForTimeout)
-      console.log('Retrying navigation after 3 seconds...');
-      await new Promise((resolve) => setTimeout(resolve, 3000));
-      try {
-        await this.page.goto(url, { waitUntil: 'domcontentloaded', timeout: 60000 });
-        await this.waitForPageReady();
-        await this.handleCookieConsentIfPresent();
-      } catch (retryError) {
-        console.error(`Retry navigation to ${url} also failed:`, retryError);
-        throw retryError;
-      }
-    }
+    await this.page.goto(url, { waitUntil: 'domcontentloaded', timeout: 60000 });
+    await this.waitForPageReady();
   }
 
   /**
    * Wait for page to be ready for interaction
    */
   public async waitForPageReady(): Promise<void> {
-    try {
-      await this.page.waitForLoadState('domcontentloaded');
-      // Use a shorter timeout for networkidle to avoid hanging
-      await this.page.waitForLoadState('networkidle', { timeout: 5000 });
-    } catch {
-      // If networkidle times out, just ensure dom is loaded
-      console.log('Network idle timeout, continuing with DOM ready state');
-      await this.page.waitForLoadState('domcontentloaded');
-    }
-  }
-
-  /**
-   * Handle cookie consent if present
-   */
-  public async handleCookieConsentIfPresent(): Promise<void> {
-    await this.cookieConsent.handleCookieConsent();
-    await this.cookieConsent.waitForConsentDialogToBeDismissed();
+    await this.page.waitForLoadState('domcontentloaded');
   }
 
   /**

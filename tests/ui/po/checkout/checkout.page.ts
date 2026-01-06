@@ -1,11 +1,14 @@
 import type { Locator, Page } from '@playwright/test';
 import { BasePage } from '../base/basePage.page';
+import { Logger } from '../../../common/utils/logger.util';
 
 /**
  * CheckoutPage - Handles checkout process
  * Extends BasePage for common page behaviors
  */
 export class CheckoutPage extends BasePage {
+  protected readonly pageUrl = '/checkout';
+
   readonly reviewOrderSection: Locator;
   readonly addressDetails: Locator;
   readonly orderItems: Locator;
@@ -56,98 +59,27 @@ export class CheckoutPage extends BasePage {
     }>
   > {
     const items = [];
-    const itemCount = await this.orderItems.count();
+    const rows = await this.orderItems.all();
 
-    for (let i = 0; i < itemCount; i++) {
-      const item = this.orderItems.nth(i);
-      try {
-        await item.waitFor({ state: 'visible' });
-      } catch {
-        continue; // Skip rows that aren't visible (e.g., header rows)
-      }
-
-      // Try multiple selector patterns for product name
-      let name = '';
-      try {
-        name = (await item.locator('h4 a').textContent()) ?? '';
-      } catch {
-        try {
-          name = (await item.locator('h4').textContent()) ?? '';
-        } catch {
-          try {
-            name = (await item.locator('.cart_description h4').textContent()) ?? '';
-          } catch {
-            // Last resort: get all text from the description cell
-            const cells = await item.locator('td').all();
-            if (cells.length > 1) {
-              name = (await cells[1].textContent()) ?? '';
-            }
-          }
-        }
-      }
-
-      // Skip if name is empty or is the "Total Amount" row
-      const trimmedName = name.trim();
-      if (
-        !trimmedName ||
-        trimmedName === '' ||
-        trimmedName.toLowerCase().includes('total amount')
-      ) {
+    for (const row of rows) {
+      // Skip non-product rows (header, footer, total rows)
+      const hasProductInfo = (await row.locator('.cart_description').count()) > 0;
+      if (!hasProductInfo) {
         continue;
       }
 
-      let price = '';
-      let quantity = '';
-      let total = '';
+      // Extract product information using stable selectors
+      const name = (await row.locator('.cart_description h4 a').textContent())?.trim() ?? '';
+      const price = (await row.locator('.cart_price p').textContent())?.trim() ?? '';
+      const quantity = (await row.locator('.cart_quantity button').textContent())?.trim() ?? '';
+      const total = (await row.locator('.cart_total p').textContent())?.trim() ?? '';
 
-      try {
-        price = (await item.locator('.cart_price p').textContent()) ?? '';
-      } catch {
-        // Try alternative selector without class prefix
-        try {
-          const cells = await item.locator('td').all();
-          if (cells.length > 2) {
-            price = (await cells[2].textContent()) ?? '';
-          }
-        } catch {
-          // Skip this field if not found
-        }
+      // Skip if essential data is missing
+      if (!name) {
+        continue;
       }
 
-      try {
-        quantity = (await item.locator('.cart_quantity button').textContent()) ?? '';
-      } catch {
-        // Try alternative selector
-        try {
-          const cells = await item.locator('td').all();
-          if (cells.length > 3) {
-            quantity = (await cells[3].textContent()) ?? '';
-          }
-        } catch {
-          // Skip this field if not found
-        }
-      }
-
-      try {
-        total = (await item.locator('.cart_total p').textContent()) ?? '';
-      } catch {
-        // Try alternative selector
-        try {
-          const cells = await item.locator('td').all();
-          if (cells.length > 4) {
-            total = (await cells[4].textContent()) ?? '';
-          }
-        } catch {
-          // Skip this field if not found
-        }
-      }
-
-      items.push({
-        name: name.trim(),
-        price: price.trim(),
-        quantity: quantity.trim(),
-        total: total.trim(),
-      });
+      items.push({ name, price, quantity, total });
     }
 
     return items;
@@ -164,6 +96,7 @@ export class CheckoutPage extends BasePage {
    * Place order
    */
   async placeOrder(): Promise<void> {
+    Logger.info('Placing order');
     await this.placeOrderButton.click();
     // Wait for navigation to payment page
     await this.page.waitForURL('**/payment');
@@ -180,6 +113,7 @@ export class CheckoutPage extends BasePage {
     expiryMonth: string;
     expiryYear: string;
   }): Promise<void> {
+    Logger.info('Completing payment');
     await this.nameOnCardInput.fill(paymentData.nameOnCard);
     await this.cardNumberInput.fill(paymentData.cardNumber);
     await this.cvcInput.fill(paymentData.cvc);

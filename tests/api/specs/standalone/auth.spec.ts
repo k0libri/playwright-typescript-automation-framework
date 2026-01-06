@@ -1,4 +1,5 @@
 import { test, expect } from '../../apiFixtures';
+import { faker } from '@faker-js/faker';
 import { StatusCodes } from 'http-status-codes';
 
 /**
@@ -11,67 +12,59 @@ test.describe('Authentication API @api @standalone @critical', () => {
     authService,
     defaultCredentials,
   }) => {
-    await test.step('Send authentication request with valid credentials', async () => {
-      const response = await authService.createToken(defaultCredentials);
+    const response = await authService.createToken(defaultCredentials);
 
-      expect(response.status()).toBe(StatusCodes.OK);
+    expect.soft(response.status()).toBe(StatusCodes.OK);
 
-      const responseBody = await response.json();
-      expect(responseBody).toHaveProperty('token');
-      expect(responseBody.token).toBeTruthy();
-      expect(typeof responseBody.token).toBe('string');
-      expect(responseBody.token.length).toBeGreaterThan(0);
-    });
+    const responseBody = await response.json();
+    expect.soft(responseBody).toHaveProperty('token');
+    expect.soft(responseBody.token).toBeTruthy();
+    expect.soft(typeof responseBody.token).toBe('string');
+    expect(responseBody.token.length).toBeGreaterThan(0);
   });
 
   test('should fail authentication with invalid credentials', async ({ authService }) => {
-    await test.step('Send authentication request with invalid credentials', async () => {
-      const invalidCredentials = {
-        username: 'invalid_user',
-        password: 'wrong_password',
-      };
+    const invalidCredentials = {
+      username: faker.internet.displayName(),
+      password: faker.internet.password(),
+    };
 
-      const response = await authService.createToken(invalidCredentials);
+    const response = await authService.createToken(invalidCredentials);
 
-      expect(response.status()).toBe(StatusCodes.OK);
+    expect.soft(response.status()).toBe(StatusCodes.OK);
 
-      const responseBody = await response.json();
-      expect(responseBody).toHaveProperty('reason');
-      expect(responseBody.reason).toBe('Bad credentials');
-    });
+    const responseBody = await response.json();
+    expect.soft(responseBody).toHaveProperty('reason');
+    expect(responseBody.reason).toBe('Bad credentials');
   });
 
   test('should fail authentication with missing username', async ({ authService }) => {
-    await test.step('Send authentication request without username', async () => {
-      const incompleteCredentials = {
-        username: '',
-        password: 'password123',
-      };
+    const incompleteCredentials = {
+      username: '',
+      password: faker.internet.password(),
+    };
 
-      const response = await authService.createToken(incompleteCredentials);
+    const response = await authService.createToken(incompleteCredentials);
 
-      expect(response.status()).toBe(StatusCodes.OK);
+    expect.soft(response.status()).toBe(StatusCodes.OK);
 
-      const responseBody = await response.json();
-      expect(responseBody).toHaveProperty('reason');
-      expect(responseBody.reason).toBe('Bad credentials');
-    });
+    const responseBody = await response.json();
+    expect.soft(responseBody).toHaveProperty('reason');
+    expect(responseBody.reason).toBe('Bad credentials');
   });
 
   test('should fail authentication with missing password', async ({ authService }) => {
-    await test.step('Send authentication request without password', async () => {
-      const incompleteCredentials = {
-        username: 'admin',
-        password: '',
-      };
+    const incompleteCredentials = {
+      username: 'admin',
+      password: '',
+    };
 
-      const response = await authService.createToken(incompleteCredentials);
+    const response = await authService.createToken(incompleteCredentials);
 
-      expect(response.status()).toBe(StatusCodes.OK);
+    expect.soft(response.status()).toBe(StatusCodes.OK);
 
-      const responseBody = await response.json();
-      expect(responseBody).toHaveProperty('reason');
-      expect(responseBody.reason).toBe('Bad credentials');
-    });
+    const responseBody = await response.json();
+    expect.soft(responseBody).toHaveProperty('reason');
+    expect(responseBody.reason).toBe('Bad credentials');
   });
 });

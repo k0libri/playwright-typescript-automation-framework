@@ -1,5 +1,6 @@
 import type { Locator, Page } from '@playwright/test';
 import { BaseComponent } from '../../base/baseComponent.component';
+import { Logger } from '../../../../common/utils/logger.util';
 
 /**
  * SignupFormComponent - Handles initial signup form functionality
@@ -23,6 +24,7 @@ export class SignupFormComponent extends BaseComponent {
    * Start signup process with name and email
    */
   async startSignup(name: string, email: string): Promise<void> {
+    Logger.info('Filling signup form');
     await this.signupNameInput.fill(name);
     await this.signupEmailInput.fill(email);
     await this.signupButton.click();

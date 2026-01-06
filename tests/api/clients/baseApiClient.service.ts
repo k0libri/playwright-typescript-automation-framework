@@ -99,13 +99,18 @@ export abstract class BaseApiClient {
   protected async delete(
     endpoint: string,
     options?: {
+      data?: Record<string, unknown> | string;
       headers?: Record<string, string>;
       params?: Record<string, string | number | boolean>;
     },
   ): Promise<APIResponse> {
     const url = this.buildUrl(endpoint, options?.params);
     return await this.request.delete(url, {
-      ...(options?.headers && { headers: options.headers }),
+      ...(options?.data && { data: options.data }),
+      headers: {
+        'Content-Type': 'application/json',
+        ...options?.headers,
+      },
     });
   }
 

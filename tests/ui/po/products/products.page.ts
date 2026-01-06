@@ -1,11 +1,14 @@
 import type { Locator, Page } from '@playwright/test';
 import { BasePage } from '../base/basePage.page';
+import { Logger } from '../../../common/utils/logger.util';
 
 /**
  * ProductsPage - Handles product listing and product interactions
  * Extends BasePage for common page behaviors
  */
 export class ProductsPage extends BasePage {
+  protected readonly pageUrl = '/products';
+
   readonly searchInput: Locator;
   readonly searchButton: Locator;
   readonly productsContainer: Locator;
@@ -30,13 +33,15 @@ export class ProductsPage extends BasePage {
    * Navigate to products page
    */
   async navigateToProducts(): Promise<void> {
-    await this.navigateTo('/products');
+    Logger.info('Navigating to products page');
+    await this.navigate();
   }
 
   /**
    * Search for products
    */
   async searchProducts(searchTerm: string): Promise<void> {
+    Logger.info(`Searching for products: "${searchTerm}"`);
     await this.searchInput.fill(searchTerm);
     await this.searchButton.click();
     // Wait for search results to load - DOM content loaded is sufficient
@@ -47,6 +52,7 @@ export class ProductsPage extends BasePage {
    * Add product to cart by index
    */
   async addProductToCart(productIndex: number): Promise<void> {
+    Logger.info(`Adding product at index ${productIndex} to cart`);
     const addToCartButton = this.addToCartButtons.nth(productIndex);
     await addToCartButton.click();
   }
@@ -55,11 +61,14 @@ export class ProductsPage extends BasePage {
    * Add product to cart by name and continue shopping
    */
   async addProductToCartAndContinue(productName: string): Promise<void> {
+    Logger.info(`Adding "${productName}" to cart and continuing`);
     const productCard = this.page
       .locator('.product-image-wrapper')
       .filter({ hasText: productName });
     const addToCartButton = productCard.locator('[data-product-id]').first();
-    await addToCartButton.click();
+
+    // Force click to bypass advertisement overlays that intercept pointer events
+    await addToCartButton.click({ force: true });
 
     // Wait for modal to appear and click continue shopping
     await this.continueShoppingButton.waitFor({ state: 'visible' });
@@ -70,11 +79,14 @@ export class ProductsPage extends BasePage {
    * Add product to cart by name and view cart
    */
   async addProductToCartAndViewCart(productName: string): Promise<void> {
+    Logger.info(`Adding "${productName}" to cart and viewing cart`);
     const productCard = this.page
       .locator('.product-image-wrapper')
       .filter({ hasText: productName });
     const addToCartButton = productCard.locator('[data-product-id]').first();
-    await addToCartButton.click();
+
+    // Force click to bypass advertisement overlays that intercept pointer events
+    await addToCartButton.click({ force: true });
 
     // Wait for modal to appear and click view cart
     await this.viewCartLink.waitFor({ state: 'visible' });

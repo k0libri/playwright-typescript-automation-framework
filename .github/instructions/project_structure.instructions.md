@@ -1,4 +1,4 @@
----
+﻿---
 applyTo: '**'
 ---
 
@@ -7,7 +7,7 @@ applyTo: '**'
 ## Purpose
 
 This guide defines the required directory and file structure for the Playwright + TypeScript automation platform, covering both UI and API automation.  
-It is referenced by Copilot and reviewers to ensure all contributions are consistent, maintainable, and easy to onboard. The code is written using windows Operating System dont use /n.
+It is referenced by Copilot and reviewers to ensure all contributions are consistent, maintainable, and easy to onboard.
 
 **Always consult this guide before adding, moving, or reviewing files in the repository.**
 
@@ -17,8 +17,8 @@ It is referenced by Copilot and reviewers to ensure all contributions are consis
 
 This framework supports **two distinct API testing approaches**:
 
-1. **Standalone API Testing**: Pure API tests against external APIs (e.g., restful-booker) located in `src/api/standalone/`
-2. **UI + API Hybrid Testing**: UI tests with backend API validation (e.g., automationexercise.com) located in `src/api/backend/`
+1. **Standalone API Testing**: Pure API tests against external APIs (e.g., restful-booker)
+2. **UI + API Hybrid Testing**: UI tests with backend API validation (e.g., automationexercise.com)
 
 Both approaches coexist in the same repository, using shared infrastructure while maintaining clear separation of concerns.
 
@@ -27,246 +27,216 @@ Both approaches coexist in the same repository, using shared infrastructure whil
 ## Top-Level Layout
 
 ```text
-src/
+tests/
   ui/
     po/
-      base/                      # BasePage and BaseComponent classes, shared navigation logic
+      base/                      # BasePage and BaseComponent classes
         basePage.page.ts
         baseComponent.component.ts
-      components/                # All reusable UI components (NEVER inside feature folders)
-        cookieConsent.component.ts
-        navbar.component.ts
+      components/                # All reusable UI components
+        common/                  # Common components (navbar, footer, etc.)
+          navbar.component.ts
+        authentication/          # Authentication-specific components
+          accountInfo.component.ts
+          loginForm.component.ts
       authentication/            # Feature-specific page objects ONLY
         authentication.page.ts
       cart/
         cart.page.ts
-    tests/
-      authentication/            # UI + API hybrid specs grouped by feature
+      checkout/
+        checkout.page.ts
+      products/
+        products.page.ts
+    specs/
+      authentication/            # UI test specs grouped by feature
         authentication.spec.ts
       cart/
         cartManagement.spec.ts
       checkout/
         orderCompletion.spec.ts
-    fixtures/
-      uiFixtures.ts              # Playwright fixtures for DI
-    utils/                       # UI helpers, selector factories
-    data/                        # UI-focused datasets
+      products/
+        products.spec.ts
+    uiFixtures.ts                # Playwright fixtures for UI DI
+    data/                        # UI-only datasets (empty - shared data in common/)
   api/
-    standalone/                  # Standalone API testing (e.g., restful-booker)
-      base/
-        baseApiClient.service.ts
-      services/
-        auth.service.ts
-        booking.service.ts
-      tests/
-        auth/
-          auth.spec.ts
+    clients/                     # All API service classes
+      baseApiClient.service.ts   # Base client for all services
+      auth.service.ts            # Standalone - Auth service
+      booking.service.ts         # Standalone - Booking service
+      user.service.ts            # Backend - User service
+      product.service.ts         # Backend - Product service
+    specs/
+      standalone/                # Standalone API tests
+        auth.spec.ts
         booking/
           booking.spec.ts
-      fixtures/
-        apiFixtures.ts
-      utils/
-        bookingDataFactory.ts
-      data/
-        types.ts
-    backend/                     # Backend API for UI validation (e.g., automationexercise)
-      base/
-        baseApiClient.service.ts
-      services/
-        user.service.ts
-        product.service.ts
-      fixtures/
-        backendFixtures.ts
-      utils/
-        helpers.ts
-      data/
-        types.ts
-    base/                        # Shared API utilities (status codes, etc.)
-      httpStatus.ts
-shared/
-  config/                        # Environment configs, endpoints, credentials
-    environment.ts
-  fixtures/                      # Cross-domain fixtures (if needed)
-  utils/                         # Shared utilities (env resolution, logging, data factories)
-    userDataFactory.ts
-    paymentDataFactory.ts
-  data/                          # Shared data types
-    types.ts
-reports/                         # Built-in HTML report artifacts
+      backend/                   # Backend API validation tests
+        user.spec.ts
+    apiFixtures.ts               # Standalone API fixtures
+    backendFixtures.ts           # Backend API fixtures
+    data/                        # API data
+      bookingDataFactory.ts
+      types.ts
+  common/
+    utils/                       # Shared utilities
+      logger.util.ts
+      userDataFactory.ts
+      paymentDataFactory.ts
+    data/                        # Shared data types
+      types.ts
+reports/                         # HTML report artifacts
 allure-results/                  # Allure test results
+.env                            # Local config (git-ignored)
+.env.example                    # Config template (empty values)
+playwright.config.ts            # Playwright config (loads .env)
 ```
 
-> **All components must be placed in `src/ui/po/components/` and imported into page objects as needed. Do not place components inside feature folders.**
+> **All components must be placed in `tests/ui/po/components/` and imported into page objects. Never place components inside feature folders.**
 
 ---
 
 ## Directory & File Rules
 
-### UI
+### UI Structure
 
-- **`src/ui/po/base/`**
-  - Place `BasePage` (`basePage.page.ts`) and `BaseComponent` (`baseComponent.component.ts`) here.
-  - All page objects must extend `BasePage`.
-  - All components must extend `BaseComponent`.
+- **`tests/ui/po/base/`**
+  - `basePage.page.ts` and `baseComponent.component.ts`
+  - All page objects extend `BasePage`
+  - All components extend `BaseComponent`
 
-- **`src/ui/po/components/`**
-  - All reusable UI components as `.component.ts` files (e.g., `cookieConsent.component.ts`).
-  - Component class names: PascalCase, end with `Component` (e.g., `NavbarComponent`).
-  - **No components in feature folders.**
+- **`tests/ui/po/components/`**
+  - All UI components as `.component.ts` files
+  - Common components in `components/common/`
+  - Feature components in `components/<feature>/`
+  - Class names: PascalCase ending with `Component`
 
-- **`src/ui/po/<feature>/`**
-  - Feature-specific page objects as `.page.ts` files (e.g., `authentication.page.ts`).
-  - Page class names: PascalCase, end with `Page` (e.g., `AuthenticationPage`).
-  - **No components here—import from `components/` as needed.**
+- **`tests/ui/po/<feature>/`**
+  - Feature page objects as `.page.ts` files
+  - Class names: PascalCase ending with `Page`
+  - Import components from `components/` only
 
-- **`src/ui/tests/<feature>/`**
-  - UI + API hybrid test specs grouped by feature (e.g., `authentication.spec.ts`).
-  - These tests verify UI behavior and validate backend state via API calls.
+- **`tests/ui/specs/<feature>/`**
+  - Test specs grouped by feature
+  - UI + API hybrid testing supported
 
-- **`src/ui/fixtures/`**
-  - Playwright fixtures for dependency injection and context setup.
+- **`tests/ui/uiFixtures.ts`**
+  - Playwright fixtures for dependency injection
 
-- **`src/ui/utils/`**
-  - UI-specific helpers, selector factories, and utility functions.
+- **`tests/ui/data/`**
+  - UI-only data (currently empty, shared data in `common/`)
 
-- **`src/ui/data/`**
-  - Datasets and data builders for UI tests.
+### API Structure
 
-### API - Standalone Testing
+- **`tests/api/clients/`**
+  - All service classes as `.service.ts` files
+  - `baseApiClient.service.ts` - Base for all services
+  - Standalone services: `auth.service.ts`, `booking.service.ts`
+  - Backend services: `user.service.ts`, `product.service.ts`
+  - Class names: PascalCase ending with `Service`
+  - All extend `BaseApiClient`
 
-- **`src/api/standalone/base/`**
-  - Place `BaseApiClient` for standalone API testing (e.g., restful-booker).
-  - All standalone service classes must extend this base client.
+- **`tests/api/specs/standalone/`**
+  - Pure API tests for external APIs
+  - Grouped by feature
 
-- **`src/api/standalone/services/`**
-  - Standalone API service classes as `.service.ts` files (e.g., `auth.service.ts`, `booking.service.ts`).
-  - Service class names: PascalCase, end with `Service` (e.g., `AuthService`, `BookingService`).
+- **`tests/api/specs/backend/`**
+  - Backend API validation tests
 
-- **`src/api/standalone/tests/<feature>/`**
-  - Pure API test specs grouped by feature (e.g., `auth.spec.ts`, `booking.spec.ts`).
-  - These tests validate API endpoints independently without UI interaction.
+- **`tests/api/apiFixtures.ts`**
+  - Fixtures for standalone API tests
 
-- **`src/api/standalone/fixtures/`**
-  - Playwright fixtures for dependency injection and context setup for standalone API tests.
+- **`tests/api/backendFixtures.ts`**
+  - Fixtures for backend API tests
 
-- **`src/api/standalone/utils/`**
-  - API-specific helpers, factories, and builder functions for standalone tests.
+- **`tests/api/data/`**
+  - API data factories and types
 
-- **`src/api/standalone/data/`**
-  - Datasets, schemas, and data builders for standalone API tests.
+### Common (Shared)
 
-### API - Backend Validation (UI Support)
+- **`tests/common/utils/`**
+  - `logger.util.ts` - Centralized logging
+  - `userDataFactory.ts` - User data (UI + API)
+  - `paymentDataFactory.ts` - Payment data (UI)
 
-- **`src/api/backend/base/`**
-  - Place `BaseApiClient` for backend API validation (e.g., automationexercise.com API).
-  - All backend service classes must extend this base client.
+- **`tests/common/data/`**
+  - `types.ts` - Shared type definitions
 
-- **`src/api/backend/services/`**
-  - Backend API service classes as `.service.ts` files (e.g., `user.service.ts`, `product.service.ts`).
-  - Service class names: PascalCase, end with `Service` (e.g., `UserService`).
-  - These services are used by UI tests for backend validation.
+### Configuration
 
-- **`src/api/backend/fixtures/`**
-  - Playwright fixtures for dependency injection specific to backend API validation.
-
-- **`src/api/backend/utils/`**
-  - Helpers and utilities for backend API validation.
-
-- **`src/api/backend/data/`**
-  - Datasets and types for backend API validation.
-
-### API - Shared
-
-- **`src/api/base/`**
-  - Shared API utilities used by both standalone and backend APIs (e.g., `httpStatus.ts`).
-  - Common enums, constants, and types.
-
-### Shared & Reports
-
-- **`shared/config/`**
-  - Environment configs, endpoints, and credentials for all testing domains.
-- **`shared/fixtures/`**
-  - Cross-domain fixtures (used by UI, standalone API, and backend API).
-- **`shared/utils/`**
-  - Shared utilities (e.g., environment resolution, logging, data factories).
-- **`shared/data/`**
-  - Shared data types and interfaces.
-- **`reports/`**
-  - Artifacts from built-in HTML reports and other reporting tools.
-- **`allure-results/`**
-  - Allure test result artifacts.
+- **`.env`** (git-ignored) - Local environment values
+- **`.env.example`** - Template with empty values
+- **`playwright.config.ts`** - Loads .env via dotenv
 
 ---
 
 ## Naming Conventions
 
 - **Filenames:**
-  - Page objects: `feature.page.ts` (e.g., `authentication.page.ts`)
-  - Components: `feature.component.ts` (e.g., `navbar.component.ts`)
-  - API services (standalone): `feature.service.ts` (e.g., `auth.service.ts`, `booking.service.ts`)
-  - API services (backend): `feature.service.ts` (e.g., `user.service.ts`, `product.service.ts`)
-  - Use camelCase for all filenames.
+  - Pages: `feature.page.ts` (`authentication.page.ts`)
+  - Components: `feature.component.ts` (`navbar.component.ts`)
+  - Services: `feature.service.ts` (`user.service.ts`)
+  - Specs: `feature.spec.ts` (`authentication.spec.ts`)
+  - Use camelCase for all filenames
 
 - **Class Names:**
-  - Page objects: PascalCase, end with `Page` (e.g., `AuthenticationPage`)
-  - Components: PascalCase, end with `Component` (e.g., `NavbarComponent`)
+  - Pages: PascalCase + `Page` (`AuthenticationPage`)
+  - Components: PascalCase + `Component` (`NavbarComponent`)
+  - Services: PascalCase + `Service` (`UserService`)
   - Base classes: `BasePage`, `BaseComponent`, `BaseApiClient`
-  - API services: PascalCase, end with `Service` (e.g., `AuthService`, `BookingService`, `UserService`)
 
 ---
 
-## Inheritance & Configuration
+## Configuration Usage
 
-- All page objects must extend `BasePage`.
-- All components must extend `BaseComponent`.
-- Standalone API service classes must extend `BaseApiClient` from `src/api/standalone/base/`.
-- Backend API service classes must extend `BaseApiClient` from `src/api/backend/base/`.
-- Place shared navigation, utility, and request logic in base classes.
-- **Do not hardcode URLs or endpoints**—configure via Playwright config or environment variables.
+- All page objects extend `BasePage` from `tests/ui/po/base/`
+- All components extend `BaseComponent` from `tests/ui/po/base/`
+- All API services extend `BaseApiClient` from `tests/api/clients/`
+- Environment variables accessed via `process.env['VARIABLE_NAME']`
+- No hardcoded URLs or endpoints - use .env configuration
+- Default values via nullish coalescing: `process.env['VAR'] ?? 'default'`
 
 ---
 
-## Enforcement
+## Enforcement Rules
 
-- **Do not add files or folders outside this structure.**
-- **If a required directory is missing, create it before adding new code.**
-- **Group all new features and specs under their respective feature folders.**
-- **Centralize shared logic in `shared/` to avoid duplication.**
-- **Never place components inside feature folders.**
-- **Keep standalone API tests separate from backend API validation code.**
+- Do not add files outside this structure
+- Never place components in feature folders under `po/`
+- No hardcoded URLs, credentials, or endpoints
+- Do not duplicate shared logic
+- Create missing directories before adding code
+- Group features under their respective folders
+- Centralize shared utilities in `common/`
+- Import components from `components/` directory
 
 ---
 
 ## Common Mistakes to Avoid
 
-- Placing components inside feature folders.
-- Mixing standalone API tests with backend API validation code.
-- Placing service classes in the wrong API domain (standalone vs backend).
-- Storing base clients outside their respective `base/` folders.
-- Duplicating utility functions across domains.
-- Hardcoding data, URLs, or endpoints in specs or services.
-- Using backend API services in standalone API tests or vice versa.
+- Placing components inside `po/<feature>/` folders
+- Hardcoding environment values instead of using `process.env`
+- Duplicating data factories across UI and API
+- Not extending base classes (`BasePage`, `BaseComponent`, `BaseApiClient`)
+- Creating service classes outside `tests/api/clients/`
+- Mixing UI and API test specs in the same folder
 
 ---
 
 ## Example: Adding a New Feature
 
-### For UI + API Hybrid Testing:
+### UI Feature with Backend Validation
 
-1. Create a new folder under `src/ui/po/<feature>/` for page objects only.
-2. Add the corresponding page object as `<feature>.page.ts` and class as `<Feature>Page`.
-3. Add reusable UI widgets in `src/ui/po/components/` as `<feature>.component.ts` and class as `<Feature>Component`.
-4. For backend API validation, add a service class in `src/api/backend/services/` as `<feature>.service.ts`.
-5. Add the UI + API hybrid spec under `src/ui/tests/<feature>/` as `<feature>.spec.ts`.
-6. Import backend API services into the spec for validation.
+1. Create page object: `tests/ui/po/<feature>/<feature>.page.ts`
+2. If needed, create components: `tests/ui/po/components/<feature>/`
+3. Create backend service (if needed): `tests/api/clients/<feature>.service.ts`
+4. Create test spec: `tests/ui/specs/<feature>/<feature>.spec.ts`
+5. Import backend service in spec for validation
 
-### For Standalone API Testing:
+### Standalone API Feature
 
-1. Add a new service class in `src/api/standalone/services/` as `<feature>.service.ts`.
-2. Add the corresponding API spec under `src/api/standalone/tests/<feature>/` as `<feature>.spec.ts`.
-3. Add data factories/builders to `src/api/standalone/utils/` as needed.
-4. Add type definitions to `src/api/standalone/data/` as needed.
+1. Create service: `tests/api/clients/<feature>.service.ts`
+2. Create spec: `tests/api/specs/standalone/<feature>.spec.ts`
+3. Add data factory (if needed): `tests/api/data/<feature>DataFactory.ts`
 
 ---
 
-**Reference this guide before every new contribution or review. Consistency is key!**
+**Reference this guide before every new contribution. Consistency is key!**

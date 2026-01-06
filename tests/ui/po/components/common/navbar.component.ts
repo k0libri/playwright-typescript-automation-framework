@@ -1,6 +1,6 @@
 import type { Locator, Page } from '@playwright/test';
 import { BaseComponent } from '../../base/baseComponent.component';
-import { CookieConsentComponent } from '../cookieConsent.component';
+import { Logger } from '../../../../common/utils/logger.util';
 
 /**
  * NavbarComponent - Handles navigation bar functionality
@@ -16,11 +16,9 @@ export class NavbarComponent extends BaseComponent {
   readonly videoTutorialsLink: Locator;
   readonly contactUsLink: Locator;
   readonly logoutLink: Locator;
-  private readonly cookieConsent: CookieConsentComponent;
 
   constructor(page: Page) {
     super(page);
-    this.cookieConsent = new CookieConsentComponent(page);
 
     this.homeLink = page.getByRole('link', { name: ' Home' });
     this.productsLink = page.getByRole('link', { name: ' Products' });
@@ -37,7 +35,7 @@ export class NavbarComponent extends BaseComponent {
    * Navigate to home page
    */
   async goToHome(): Promise<void> {
-    await this.cookieConsent.handleCookieConsent();
+    Logger.info('Navigating to home via navbar');
     await this.clickElement(this.homeLink);
   }
 
@@ -45,7 +43,7 @@ export class NavbarComponent extends BaseComponent {
    * Navigate to products page
    */
   async goToProducts(): Promise<void> {
-    await this.cookieConsent.handleCookieConsent();
+    Logger.info('Navigating to products via navbar');
     await this.clickElement(this.productsLink);
   }
 
@@ -53,7 +51,7 @@ export class NavbarComponent extends BaseComponent {
    * Navigate to cart page
    */
   async goToCart(): Promise<void> {
-    await this.cookieConsent.handleCookieConsent();
+    Logger.info('Navigating to cart via navbar');
     await this.clickElement(this.cartLink);
   }
 
@@ -61,7 +59,7 @@ export class NavbarComponent extends BaseComponent {
    * Navigate to signup/login page
    */
   async goToSignupLogin(): Promise<void> {
-    await this.cookieConsent.handleCookieConsent();
+    Logger.info('Navigating to signup/login via navbar');
     await this.clickElement(this.signupLoginLink);
   }
 
@@ -69,7 +67,7 @@ export class NavbarComponent extends BaseComponent {
    * Logout user
    */
   async logout(): Promise<void> {
-    await this.cookieConsent.handleCookieConsent();
+    Logger.info('Logging out user');
     await this.clickElement(this.logoutLink);
   }
 

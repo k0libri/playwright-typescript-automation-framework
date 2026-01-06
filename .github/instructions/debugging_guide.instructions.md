@@ -35,10 +35,12 @@ Establish consistent logging and debugging practices to simplify troubleshooting
 - **Logger Utility**
 
   ```ts
-  // shared/utils/logger.util.ts
+  // tests/common/utils/logger.util.ts
   export class Logger {
+    private static isDebugEnabled = process.env['DEBUG_LOGGING'] === 'true';
+
     static info(message: string, data?: unknown) {
-      if (process.env.DEBUG_LOGGING === 'true') console.info('[INFO]', message, data ?? '');
+      if (this.isDebugEnabled) console.info('[INFO]', message, data ?? '');
     }
     static error(message: string, data?: unknown) {
       console.error('[ERROR]', message, data ?? '');

@@ -1,11 +1,14 @@
 import type { Locator, Page } from '@playwright/test';
 import { BasePage } from '../base/basePage.page';
+import { Logger } from '../../../common/utils/logger.util';
 
 /**
  * CartPage - Handles shopping cart functionality
  * Extends BasePage for common page behaviors
  */
 export class CartPage extends BasePage {
+  protected readonly pageUrl = '/view_cart';
+
   readonly cartTable: Locator;
   readonly cartItems: Locator;
   readonly proceedToCheckoutButton: Locator;
@@ -32,41 +35,15 @@ export class CartPage extends BasePage {
    * Navigate to cart page
    */
   async navigateToCart(): Promise<void> {
-    await this.navigateTo('/view_cart');
+    Logger.info('Navigating to cart page');
+    await this.navigate();
   }
 
   /**
    * Check if cart is empty
    */
   async isCartEmpty(): Promise<boolean> {
-    try {
-      // First check if there are any cart items
-      const itemCount = await this.cartItems.count();
-      if (itemCount === 0) {
-        return true;
-      }
-
-      // Check for empty cart message
-      try {
-        const emptyMessage = this.page.getByText('Cart is empty!');
-        await emptyMessage.waitFor();
-        return true;
-      } catch {
-        // No empty message found
-      }
-
-      // Check if cart table is not visible
-      try {
-        const isTableVisible = await this.cartTable.isVisible();
-        return !isTableVisible;
-      } catch {
-        // If we can't determine table visibility, assume not empty
-        return false;
-      }
-    } catch {
-      // If there's any error, assume cart is not empty
-      return false;
-    }
+    return (await this.cartItems.count()) === 0;
   }
 
   /**
@@ -81,21 +58,15 @@ export class CartPage extends BasePage {
     }>
   > {
     const items = [];
-    const itemCount = await this.cartItems.count();
+    const rows = await this.cartItems.all();
 
-    for (let i = 0; i < itemCount; i++) {
-      const item = this.cartItems.nth(i);
-      const name = (await item.locator('.cart_description h4').textContent()) ?? '';
-      const price = (await item.locator('.cart_price p').textContent()) ?? '';
-      const quantity = (await item.locator('.cart_quantity button').textContent()) ?? '';
-      const total = (await item.locator('.cart_total p').textContent()) ?? '';
+    for (const row of rows) {
+      const name = (await row.locator('.cart_description h4').textContent())?.trim() ?? '';
+      const price = (await row.locator('.cart_price p').textContent())?.trim() ?? '';
+      const quantity = (await row.locator('.cart_quantity button').textContent())?.trim() ?? '';
+      const total = (await row.locator('.cart_total p').textContent())?.trim() ?? '';
 
-      items.push({
-        name: name.trim(),
-        price: price.trim(),
-        quantity: quantity.trim(),
-        total: total.trim(),
-      });
+      items.push({ name, price, quantity, total });
     }
 
     return items;
@@ -112,7 +83,7 @@ export class CartPage extends BasePage {
    * Remove item from cart by index
    */
   async removeItemFromCart(itemIndex: number): Promise<void> {
-    await this.handleCookieConsentIfPresent();
+    Logger.info(`Removing item at index ${itemIndex} from cart`);
     await this.removeItemButtons.nth(itemIndex).click({ force: true });
     await this.page.waitForLoadState('domcontentloaded');
     await this.waitForPageReady();
@@ -122,6 +93,7 @@ export class CartPage extends BasePage {
    * Proceed to checkout
    */
   async proceedToCheckout(): Promise<void> {
+    Logger.info('Proceeding to checkout');
     await this.proceedToCheckoutButton.click();
   }
 
@@ -136,17 +108,6 @@ export class CartPage extends BasePage {
    * Get number of items in cart
    */
   async getCartItemCount(): Promise<number> {
-    try {
-      if (await this.isCartEmpty()) {
-        return 0;
-      }
-      return await this.cartItems.count();
-    } catch (error) {
-      if (error.message.includes('Target page, context or browser has been closed')) {
-        throw new Error('Browser context was closed unexpectedly during cart operation');
-      }
-      console.warn('Error getting cart item count:', error.message);
-      return 0;
-    }
+    return await this.cartItems.count();
   }
 }

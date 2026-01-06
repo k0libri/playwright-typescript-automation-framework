@@ -453,29 +453,63 @@ npm run test:list
 
 ### Environment Setup
 
-The framework uses `baseURL` configuration from `playwright.config.ts`:
+The framework uses a `.env` file for configuration management (best practice).
 
-```typescript
-const config = {
-  api: {
-    baseUrl: process.env.API_BASE_URL || 'https://automationexercise.com/api',
-  },
-  ui: {
-    baseUrl: process.env.UI_BASE_URL || 'https://automationexercise.com',
-  },
-  timeouts: {
-    apiTest: 60000, // 60 seconds for API tests
-    e2eTest: 90000, // 90 seconds for UI tests
-  },
-};
-```
+#### 1. Create your .env file
 
-**Optional**: Create `.env` file for custom configuration:
+Copy the example file and customize as needed:
 
 ```bash
-API_BASE_URL=https://your-api-endpoint.com/api
-UI_BASE_URL=https://your-ui-endpoint.com
+# Windows (PowerShell)
+Copy-Item .env.example .env
+
+# macOS/Linux
+cp .env.example .env
 ```
+
+#### 2. Configure your environment
+
+Edit `.env` to customize settings:
+
+```bash
+# UI Testing
+BASE_URL=https://automationexercise.com
+
+# Backend API (for UI validation)
+BACKEND_API_BASE_URL=https://automationexercise.com/api
+
+# Standalone API (restful-booker)
+RESTFUL_BOOKER_BASE_URL=https://restful-booker.herokuapp.com
+
+# General Settings
+TIMEOUT=30000
+HEADLESS=true
+BROWSER=chromium
+
+# Test Configuration
+SCREENSHOT_MODE=only-on-failure
+VIDEO_MODE=retain-on-failure
+
+# Logging
+DEBUG_LOGGING=false
+```
+
+**Important**:
+
+- `.env` is git-ignored and contains your local configuration
+- `.env.example` is committed as a template (with empty values)
+- The framework loads `.env` automatically via `dotenv` package in `playwright.config.ts`
+- All environment variables are accessed directly via `process.env`
+
+**Debug Logging**:
+Set `DEBUG_LOGGING=true` in `.env` to enable verbose logging:
+
+- Info messages
+- Debug messages
+- Warning messages
+- Test step logging
+
+Error messages are always logged regardless of the debug setting.
 
 ---
 

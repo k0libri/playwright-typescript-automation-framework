@@ -1,5 +1,6 @@
 import type { Locator, Page } from '@playwright/test';
 import { BaseComponent } from '../../base/baseComponent.component';
+import { Logger } from '../../../../common/utils/logger.util';
 
 /**
  * LoginFormComponent - Handles login form functionality
@@ -25,6 +26,7 @@ export class LoginFormComponent extends BaseComponent {
    * Perform user login
    */
   async login(email: string, password: string): Promise<void> {
+    Logger.info('Filling login credentials');
     await this.loginEmailInput.fill(email);
     await this.loginPasswordInput.fill(password);
     await this.loginButton.click();

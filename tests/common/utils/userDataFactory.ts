@@ -1,3 +1,4 @@
+import { faker } from '@faker-js/faker';
 import { UserData } from '../data/types';
 
 /**
@@ -6,40 +7,44 @@ import { UserData } from '../data/types';
  */
 export class UserDataFactory {
   /**
-   * Generate unique email address with timestamp
+   * Generate unique email address with UUID
    */
   static generateUniqueEmail(): string {
-    const timestamp = Date.now();
-    const randomSuffix = Math.floor(Math.random() * 1000);
-    return `testuser_${timestamp}_${randomSuffix}@automation.test`;
+    const uniqueId = faker.string.uuid();
+    const username = faker.internet.displayName().toLowerCase();
+    return `${username}_${uniqueId}@automation.test`;
   }
 
   /**
    * Generate complete user data with unique identifiers
    */
   static generateUserData(): UserData {
-    const randomNum = Math.floor(Math.random() * 1000);
-    const firstName = `TestFirst${randomNum}`;
-    const lastName = `TestLast${randomNum}`;
+    const firstName = faker.person.firstName();
+    const lastName = faker.person.lastName();
+    const birthDate = faker.date.birthdate({ min: 18, max: 65, mode: 'age' });
 
     return {
       name: `${firstName} ${lastName}`,
       email: this.generateUniqueEmail(),
-      password: 'TestPassword123!',
-      title: 'Mr',
-      birth_date: '15',
-      birth_month: 'January',
-      birth_year: '1990',
+      password: faker.internet.password({
+        length: 12,
+        memorable: false,
+        pattern: /[A-Za-z0-9!@#$]/,
+      }),
+      title: faker.helpers.arrayElement(['Mr', 'Mrs']),
+      birth_date: birthDate.getDate().toString(),
+      birth_month: birthDate.toLocaleString('en-US', { month: 'long' }),
+      birth_year: birthDate.getFullYear().toString(),
       firstname: firstName,
       lastname: lastName,
-      company: `TestCompany${randomNum}`,
-      address1: `${randomNum} Test Street`,
-      address2: `Apartment ${randomNum}`,
-      country: 'United States',
-      zipcode: '12345',
-      state: 'California',
-      city: 'Los Angeles',
-      mobile_number: `555${String(randomNum).padStart(7, '0')}`,
+      company: faker.company.name(),
+      address1: faker.location.streetAddress(),
+      address2: faker.location.secondaryAddress(),
+      country: 'India',
+      zipcode: faker.location.zipCode(),
+      state: faker.location.state(),
+      city: faker.location.city(),
+      mobile_number: faker.phone.number(),
     };
   }
 
@@ -48,31 +53,31 @@ export class UserDataFactory {
    */
   static generateInvalidUserData(): Partial<UserData> {
     return {
-      email: 'invalid-email-format',
-      password: '123',
+      email: faker.lorem.word(),
+      password: faker.string.alphanumeric(3),
       name: '',
-      mobile_number: 'invalid-phone',
+      mobile_number: faker.lorem.word(),
     };
   }
 
   static generateCompleteInvalidUserData(): UserData {
     return {
       name: '',
-      email: 'invalid-email',
-      password: '123',
+      email: faker.lorem.word(),
+      password: faker.string.alphanumeric(3),
       title: 'Mr',
       birth_date: '1',
       birth_month: 'January',
       birth_year: '1990',
       firstname: '',
       lastname: '',
-      company: 'Test',
-      address1: 'Test',
-      country: 'US',
-      zipcode: '12345',
-      state: 'CA',
-      city: 'LA',
-      mobile_number: 'invalid',
+      company: faker.lorem.word(),
+      address1: faker.lorem.word(),
+      country: faker.location.countryCode(),
+      zipcode: faker.location.zipCode(),
+      state: faker.location.state({ abbreviated: true }),
+      city: faker.location.city(),
+      mobile_number: faker.lorem.word(),
     };
   }
 }

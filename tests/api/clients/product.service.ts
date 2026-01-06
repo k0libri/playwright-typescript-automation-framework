@@ -1,6 +1,5 @@
 import type { APIRequestContext, APIResponse } from '@playwright/test';
 import { BaseApiClient } from './baseApiClient.service';
-import { Environment } from '../../common/config/environment';
 
 /**
  * ProductService - Handles product-related API operations
@@ -8,7 +7,7 @@ import { Environment } from '../../common/config/environment';
  */
 export class ProductService extends BaseApiClient {
   constructor(request: APIRequestContext) {
-    super(request, Environment.API_BASE_URL);
+    super(request, process.env['BACKEND_API_BASE_URL'] ?? 'https://automationexercise.com/api');
   }
 
   /**

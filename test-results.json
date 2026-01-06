@@ -11,7 +11,7 @@
     "grepInvert": null,
     "maxFailures": 0,
     "metadata": {
-      "actualWorkers": 4
+      "actualWorkers": 1
     },
     "preserveOutput": "always",
     "reporter": [
@@ -61,7 +61,7 @@
         "repeatEach": 1,
         "retries": 0,
         "metadata": {
-          "actualWorkers": 4
+          "actualWorkers": 1
         },
         "id": "api-standalone",
         "name": "api-standalone",
@@ -77,7 +77,7 @@
         "repeatEach": 1,
         "retries": 0,
         "metadata": {
-          "actualWorkers": 4
+          "actualWorkers": 1
         },
         "id": "api-backend",
         "name": "api-backend",
@@ -93,7 +93,7 @@
         "repeatEach": 1,
         "retries": 0,
         "metadata": {
-          "actualWorkers": 4
+          "actualWorkers": 1
         },
         "id": "ui",
         "name": "ui",
@@ -115,654 +115,110 @@
   },
   "suites": [
     {
-      "title": "tests\\api\\specs\\standalone\\auth.spec.ts",
-      "file": "tests/api/specs/standalone/auth.spec.ts",
+      "title": "tests\\ui\\specs\\authentication\\authentication.spec.ts",
+      "file": "tests/ui/specs/authentication/authentication.spec.ts",
       "column": 0,
       "line": 0,
       "specs": [],
       "suites": [
         {
-          "title": "Authentication API @api @standalone @critical",
-          "file": "tests/api/specs/standalone/auth.spec.ts",
-          "line": 9,
+          "title": "Authentication @critical",
+          "file": "tests/ui/specs/authentication/authentication.spec.ts",
+          "line": 17,
           "column": 6,
-          "specs": [
+          "specs": [],
+          "suites": [
             {
-              "title": "should successfully authenticate with valid credentials",
-              "ok": true,
-              "tags": [
-                "api",
-                "standalone",
-                "critical"
-              ],
-              "tests": [
+              "title": "Positive Test Cases @smoke",
+              "file": "tests/ui/specs/authentication/authentication.spec.ts",
+              "line": 18,
+              "column": 8,
+              "specs": [
                 {
-                  "timeout": 60000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "api-standalone",
-                  "projectName": "api-standalone",
-                  "results": [
+                  "title": "should register new user via UI and verify user creation via API",
+                  "ok": false,
+                  "tags": [
+                    "critical",
+                    "smoke"
+                  ],
+                  "tests": [
                     {
-                      "workerIndex": 0,
-                      "parallelIndex": 0,
-                      "status": "passed",
-                      "duration": 2654,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "steps": [
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "ui",
+                      "projectName": "ui",
+                      "results": [
                         {
-                          "title": "Send authentication request with valid credentials",
-                          "duration": 2639
+                          "workerIndex": 0,
+                          "parallelIndex": 0,
+                          "status": "timedOut",
+                          "duration": 73142,
+                          "error": {
+                            "message": "\u001b[31mTest timeout of 60000ms exceeded.\u001b[39m",
+                            "stack": "\u001b[31mTest timeout of 60000ms exceeded.\u001b[39m"
+                          },
+                          "errors": [
+                            {
+                              "message": "\u001b[31mTest timeout of 60000ms exceeded.\u001b[39m"
+                            },
+                            {
+                              "location": {
+                                "file": "C:\\Users\\GergoDobrosi\\Documents\\Course\\code\\playwright-typescript-automation-framework\\tests\\ui\\po\\base\\basePage.page.ts",
+                                "column": 21,
+                                "line": 21
+                              },
+                              "message": "TimeoutError: page.goto: Timeout 60000ms exceeded.\nCall log:\n\u001b[2m  - navigating to \"https://automationexercise.com/login\", waiting until \"domcontentloaded\"\u001b[22m\n\n\n\u001b[90m   at \u001b[39mtests\\ui\\po\\base\\basePage.page.ts:21\n\n\u001b[0m \u001b[90m 19 |\u001b[39m \u001b[90m   */\u001b[39m\n \u001b[90m 20 |\u001b[39m   \u001b[36mpublic\u001b[39m \u001b[36masync\u001b[39m navigateTo(url\u001b[33m:\u001b[39m string)\u001b[33m:\u001b[39m \u001b[33mPromise\u001b[39m\u001b[33m<\u001b[39m\u001b[36mvoid\u001b[39m\u001b[33m>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 21 |\u001b[39m     \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mpage\u001b[33m.\u001b[39mgoto(url\u001b[33m,\u001b[39m { waitUntil\u001b[33m:\u001b[39m \u001b[32m'domcontentloaded'\u001b[39m\u001b[33m,\u001b[39m timeout\u001b[33m:\u001b[39m \u001b[35m60000\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                     \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 22 |\u001b[39m     \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mwaitForPageReady()\u001b[33m;\u001b[39m\n \u001b[90m 23 |\u001b[39m     \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mhandleCookieConsentIfPresent()\u001b[33m;\u001b[39m\n \u001b[90m 24 |\u001b[39m   }\u001b[0m\n\u001b[2m    at AuthenticationPage.navigateTo (C:\\Users\\GergoDobrosi\\Documents\\Course\\code\\playwright-typescript-automation-framework\\tests\\ui\\po\\base\\basePage.page.ts:21:21)\u001b[22m\n\u001b[2m    at AuthenticationPage.navigateToAuthenticationPage (C:\\Users\\GergoDobrosi\\Documents\\Course\\code\\playwright-typescript-automation-framework\\tests\\ui\\po\\authentication\\authentication.page.ts:64:16)\u001b[22m\n\u001b[2m    at C:\\Users\\GergoDobrosi\\Documents\\Course\\code\\playwright-typescript-automation-framework\\tests\\ui\\specs\\authentication\\authentication.spec.ts:29:34\u001b[22m\n\u001b[2m    at C:\\Users\\GergoDobrosi\\Documents\\Course\\code\\playwright-typescript-automation-framework\\tests\\ui\\specs\\authentication\\authentication.spec.ts:28:18\u001b[22m"
+                            }
+                          ],
+                          "stdout": [
+                            {
+                              "text": "Starting User Registration test suite\n"
+                            }
+                          ],
+                          "stderr": [],
+                          "retry": 0,
+                          "steps": [
+                            {
+                              "title": "Navigate to signup/login page",
+                              "duration": 60027,
+                              "error": {
+                                "message": "TimeoutError: page.goto: Timeout 60000ms exceeded.\nCall log:\n\u001b[2m  - navigating to \"https://automationexercise.com/login\", waiting until \"domcontentloaded\"\u001b[22m\n",
+                                "stack": "TimeoutError: page.goto: Timeout 60000ms exceeded.\nCall log:\n\u001b[2m  - navigating to \"https://automationexercise.com/login\", waiting until \"domcontentloaded\"\u001b[22m\n\n    at AuthenticationPage.navigateTo (C:\\Users\\GergoDobrosi\\Documents\\Course\\code\\playwright-typescript-automation-framework\\tests\\ui\\po\\base\\basePage.page.ts:21:21)\n    at AuthenticationPage.navigateToAuthenticationPage (C:\\Users\\GergoDobrosi\\Documents\\Course\\code\\playwright-typescript-automation-framework\\tests\\ui\\po\\authentication\\authentication.page.ts:64:16)\n    at C:\\Users\\GergoDobrosi\\Documents\\Course\\code\\playwright-typescript-automation-framework\\tests\\ui\\specs\\authentication\\authentication.spec.ts:29:34\n    at C:\\Users\\GergoDobrosi\\Documents\\Course\\code\\playwright-typescript-automation-framework\\tests\\ui\\specs\\authentication\\authentication.spec.ts:28:18",
+                                "location": {
+                                  "file": "C:\\Users\\GergoDobrosi\\Documents\\Course\\code\\playwright-typescript-automation-framework\\tests\\ui\\po\\base\\basePage.page.ts",
+                                  "column": 21,
+                                  "line": 21
+                                },
+                                "snippet": "\u001b[90m   at \u001b[39mtests\\ui\\po\\base\\basePage.page.ts:21\n\n\u001b[0m \u001b[90m 19 |\u001b[39m \u001b[90m   */\u001b[39m\n \u001b[90m 20 |\u001b[39m   \u001b[36mpublic\u001b[39m \u001b[36masync\u001b[39m navigateTo(url\u001b[33m:\u001b[39m string)\u001b[33m:\u001b[39m \u001b[33mPromise\u001b[39m\u001b[33m<\u001b[39m\u001b[36mvoid\u001b[39m\u001b[33m>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 21 |\u001b[39m     \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mpage\u001b[33m.\u001b[39mgoto(url\u001b[33m,\u001b[39m { waitUntil\u001b[33m:\u001b[39m \u001b[32m'domcontentloaded'\u001b[39m\u001b[33m,\u001b[39m timeout\u001b[33m:\u001b[39m \u001b[35m60000\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                     \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 22 |\u001b[39m     \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mwaitForPageReady()\u001b[33m;\u001b[39m\n \u001b[90m 23 |\u001b[39m     \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mhandleCookieConsentIfPresent()\u001b[33m;\u001b[39m\n \u001b[90m 24 |\u001b[39m   }\u001b[0m"
+                              }
+                            }
+                          ],
+                          "startTime": "2026-01-05T17:20:43.280Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "video",
+                              "contentType": "video/webm",
+                              "path": "C:\\Users\\GergoDobrosi\\Documents\\Course\\code\\playwright-typescript-automation-framework\\test-results\\authentication-authenticat-0eecc-erify-user-creation-via-API-ui\\video.webm"
+                            },
+                            {
+                              "name": "trace",
+                              "contentType": "application/zip",
+                              "path": "C:\\Users\\GergoDobrosi\\Documents\\Course\\code\\playwright-typescript-automation-framework\\test-results\\authentication-authenticat-0eecc-erify-user-creation-via-API-ui\\trace.zip"
+                            }
+                          ]
                         }
                       ],
-                      "startTime": "2026-01-05T14:50:45.171Z",
-                      "annotations": [],
-                      "attachments": []
+                      "status": "unexpected"
                     }
                   ],
-                  "status": "expected"
+                  "id": "a80de8cf7db3da3066d1-51ebdff8be26f3ac2391",
+                  "file": "tests/ui/specs/authentication/authentication.spec.ts",
+                  "line": 23,
+                  "column": 9
                 }
-              ],
-              "id": "8dc5f40c759958d9bfdd-8eeb1decc9a2626ec930",
-              "file": "tests/api/specs/standalone/auth.spec.ts",
-              "line": 10,
-              "column": 7
-            },
-            {
-              "title": "should fail authentication with invalid credentials",
-              "ok": true,
-              "tags": [
-                "api",
-                "standalone",
-                "critical"
-              ],
-              "tests": [
-                {
-                  "timeout": 60000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "api-standalone",
-                  "projectName": "api-standalone",
-                  "results": [
-                    {
-                      "workerIndex": 1,
-                      "parallelIndex": 1,
-                      "status": "passed",
-                      "duration": 2610,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "steps": [
-                        {
-                          "title": "Send authentication request with invalid credentials",
-                          "duration": 2591
-                        }
-                      ],
-                      "startTime": "2026-01-05T14:50:45.180Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "8dc5f40c759958d9bfdd-a4d9345c18a5375ad8fb",
-              "file": "tests/api/specs/standalone/auth.spec.ts",
-              "line": 27,
-              "column": 7
-            },
-            {
-              "title": "should fail authentication with missing username",
-              "ok": true,
-              "tags": [
-                "api",
-                "standalone",
-                "critical"
-              ],
-              "tests": [
-                {
-                  "timeout": 60000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "api-standalone",
-                  "projectName": "api-standalone",
-                  "results": [
-                    {
-                      "workerIndex": 2,
-                      "parallelIndex": 2,
-                      "status": "passed",
-                      "duration": 3614,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "steps": [
-                        {
-                          "title": "Send authentication request without username",
-                          "duration": 3599
-                        }
-                      ],
-                      "startTime": "2026-01-05T14:50:45.219Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "8dc5f40c759958d9bfdd-89e80c350f60c4539acc",
-              "file": "tests/api/specs/standalone/auth.spec.ts",
-              "line": 44,
-              "column": 7
-            },
-            {
-              "title": "should fail authentication with missing password",
-              "ok": true,
-              "tags": [
-                "api",
-                "standalone",
-                "critical"
-              ],
-              "tests": [
-                {
-                  "timeout": 60000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "api-standalone",
-                  "projectName": "api-standalone",
-                  "results": [
-                    {
-                      "workerIndex": 3,
-                      "parallelIndex": 3,
-                      "status": "passed",
-                      "duration": 2549,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "steps": [
-                        {
-                          "title": "Send authentication request without password",
-                          "duration": 2533
-                        }
-                      ],
-                      "startTime": "2026-01-05T14:50:45.238Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "8dc5f40c759958d9bfdd-da1fdb82512b64e4652c",
-              "file": "tests/api/specs/standalone/auth.spec.ts",
-              "line": 61,
-              "column": 7
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "title": "tests\\api\\specs\\standalone\\booking\\booking.spec.ts",
-      "file": "tests/api/specs/standalone/booking/booking.spec.ts",
-      "column": 0,
-      "line": 0,
-      "specs": [],
-      "suites": [
-        {
-          "title": "Booking API @api @standalone @critical",
-          "file": "tests/api/specs/standalone/booking/booking.spec.ts",
-          "line": 9,
-          "column": 6,
-          "specs": [
-            {
-              "title": "should create a new booking and verify details",
-              "ok": true,
-              "tags": [
-                "api",
-                "standalone",
-                "critical"
-              ],
-              "tests": [
-                {
-                  "timeout": 60000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "api-standalone",
-                  "projectName": "api-standalone",
-                  "results": [
-                    {
-                      "workerIndex": 3,
-                      "parallelIndex": 3,
-                      "status": "passed",
-                      "duration": 264,
-                      "errors": [],
-                      "stdout": [
-                        {
-                          "text": "Starting Booking API test suite\n"
-                        }
-                      ],
-                      "stderr": [],
-                      "retry": 0,
-                      "steps": [
-                        {
-                          "title": "Create a new booking",
-                          "duration": 127
-                        },
-                        {
-                          "title": "Verify booking details via GET request",
-                          "duration": 125
-                        }
-                      ],
-                      "startTime": "2026-01-05T14:50:47.820Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "7c4e98a200268f243ad4-4fca1a07d2fdd030f7f5",
-              "file": "tests/api/specs/standalone/booking/booking.spec.ts",
-              "line": 20,
-              "column": 7
-            },
-            {
-              "title": "should retrieve all booking IDs",
-              "ok": true,
-              "tags": [
-                "api",
-                "standalone",
-                "critical"
-              ],
-              "tests": [
-                {
-                  "timeout": 60000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "api-standalone",
-                  "projectName": "api-standalone",
-                  "results": [
-                    {
-                      "workerIndex": 3,
-                      "parallelIndex": 3,
-                      "status": "passed",
-                      "duration": 126,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "steps": [
-                        {
-                          "title": "Get all booking IDs",
-                          "duration": 121
-                        }
-                      ],
-                      "startTime": "2026-01-05T14:50:48.108Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "7c4e98a200268f243ad4-5dd9550262e28f59fcbd",
-              "file": "tests/api/specs/standalone/booking/booking.spec.ts",
-              "line": 55,
-              "column": 7
-            },
-            {
-              "title": "should filter bookings by name",
-              "ok": true,
-              "tags": [
-                "api",
-                "standalone",
-                "critical"
-              ],
-              "tests": [
-                {
-                  "timeout": 60000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "api-standalone",
-                  "projectName": "api-standalone",
-                  "results": [
-                    {
-                      "workerIndex": 3,
-                      "parallelIndex": 3,
-                      "status": "passed",
-                      "duration": 244,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "steps": [
-                        {
-                          "title": "Create a booking with unique name",
-                          "duration": 121
-                        },
-                        {
-                          "title": "Filter bookings by firstname",
-                          "duration": 120
-                        }
-                      ],
-                      "startTime": "2026-01-05T14:50:48.242Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "7c4e98a200268f243ad4-053f43ade1f53e4dd53c",
-              "file": "tests/api/specs/standalone/booking/booking.spec.ts",
-              "line": 68,
-              "column": 7
-            },
-            {
-              "title": "should update an existing booking",
-              "ok": true,
-              "tags": [
-                "api",
-                "standalone",
-                "critical"
-              ],
-              "tests": [
-                {
-                  "timeout": 60000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "api-standalone",
-                  "projectName": "api-standalone",
-                  "results": [
-                    {
-                      "workerIndex": 1,
-                      "parallelIndex": 1,
-                      "status": "passed",
-                      "duration": 502,
-                      "errors": [],
-                      "stdout": [
-                        {
-                          "text": "Starting Booking API test suite\n"
-                        }
-                      ],
-                      "stderr": [],
-                      "retry": 0,
-                      "steps": [
-                        {
-                          "title": "Create a booking to update",
-                          "duration": 125
-                        },
-                        {
-                          "title": "Update the booking",
-                          "duration": 121
-                        },
-                        {
-                          "title": "Verify the booking was updated",
-                          "duration": 129
-                        }
-                      ],
-                      "startTime": "2026-01-05T14:50:47.824Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "7c4e98a200268f243ad4-bdcc87236464fabd3b91",
-              "file": "tests/api/specs/standalone/booking/booking.spec.ts",
-              "line": 96,
-              "column": 7
-            },
-            {
-              "title": "should partially update a booking",
-              "ok": true,
-              "tags": [
-                "api",
-                "standalone",
-                "critical"
-              ],
-              "tests": [
-                {
-                  "timeout": 60000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "api-standalone",
-                  "projectName": "api-standalone",
-                  "results": [
-                    {
-                      "workerIndex": 1,
-                      "parallelIndex": 1,
-                      "status": "passed",
-                      "duration": 359,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "steps": [
-                        {
-                          "title": "Create a booking to partially update",
-                          "duration": 116
-                        },
-                        {
-                          "title": "Partially update the booking",
-                          "duration": 120
-                        }
-                      ],
-                      "startTime": "2026-01-05T14:50:48.349Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "7c4e98a200268f243ad4-df7e4592773b456be3c5",
-              "file": "tests/api/specs/standalone/booking/booking.spec.ts",
-              "line": 132,
-              "column": 7
-            },
-            {
-              "title": "should delete a booking and verify deletion",
-              "ok": true,
-              "tags": [
-                "api",
-                "standalone",
-                "critical"
-              ],
-              "tests": [
-                {
-                  "timeout": 60000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "api-standalone",
-                  "projectName": "api-standalone",
-                  "results": [
-                    {
-                      "workerIndex": 1,
-                      "parallelIndex": 1,
-                      "status": "passed",
-                      "duration": 495,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "steps": [
-                        {
-                          "title": "Create a booking to delete",
-                          "duration": 126
-                        },
-                        {
-                          "title": "Delete the booking",
-                          "duration": 120
-                        },
-                        {
-                          "title": "Verify the booking was deleted",
-                          "duration": 124
-                        }
-                      ],
-                      "startTime": "2026-01-05T14:50:48.721Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "7c4e98a200268f243ad4-df16187ff53b8b4b0a3c",
-              "file": "tests/api/specs/standalone/booking/booking.spec.ts",
-              "line": 168,
-              "column": 7
-            },
-            {
-              "title": "should reject update without authentication token",
-              "ok": true,
-              "tags": [
-                "api",
-                "standalone",
-                "critical"
-              ],
-              "tests": [
-                {
-                  "timeout": 60000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "api-standalone",
-                  "projectName": "api-standalone",
-                  "results": [
-                    {
-                      "workerIndex": 0,
-                      "parallelIndex": 0,
-                      "status": "passed",
-                      "duration": 264,
-                      "errors": [],
-                      "stdout": [
-                        {
-                          "text": "Starting Booking API test suite\n"
-                        }
-                      ],
-                      "stderr": [],
-                      "retry": 0,
-                      "steps": [
-                        {
-                          "title": "Create a booking",
-                          "duration": 131
-                        },
-                        {
-                          "title": "Attempt to update without token",
-                          "duration": 125
-                        }
-                      ],
-                      "startTime": "2026-01-05T14:50:47.856Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "7c4e98a200268f243ad4-8d732603326c04300af7",
-              "file": "tests/api/specs/standalone/booking/booking.spec.ts",
-              "line": 196,
-              "column": 7
-            },
-            {
-              "title": "should reject delete without authentication token",
-              "ok": true,
-              "tags": [
-                "api",
-                "standalone",
-                "critical"
-              ],
-              "tests": [
-                {
-                  "timeout": 60000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "api-standalone",
-                  "projectName": "api-standalone",
-                  "results": [
-                    {
-                      "workerIndex": 0,
-                      "parallelIndex": 0,
-                      "status": "passed",
-                      "duration": 261,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "steps": [
-                        {
-                          "title": "Create a booking",
-                          "duration": 131
-                        },
-                        {
-                          "title": "Attempt to delete without token",
-                          "duration": 127
-                        }
-                      ],
-                      "startTime": "2026-01-05T14:50:48.145Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "7c4e98a200268f243ad4-a6bf935dcff508784fca",
-              "file": "tests/api/specs/standalone/booking/booking.spec.ts",
-              "line": 215,
-              "column": 7
-            },
-            {
-              "title": "should return 404 for non-existent booking",
-              "ok": true,
-              "tags": [
-                "api",
-                "standalone",
-                "critical"
-              ],
-              "tests": [
-                {
-                  "timeout": 60000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "api-standalone",
-                  "projectName": "api-standalone",
-                  "results": [
-                    {
-                      "workerIndex": 0,
-                      "parallelIndex": 0,
-                      "status": "passed",
-                      "duration": 130,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "steps": [
-                        {
-                          "title": "Request non-existent booking",
-                          "duration": 126
-                        }
-                      ],
-                      "startTime": "2026-01-05T14:50:48.413Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "7c4e98a200268f243ad4-dfa0334d2082d221274b",
-              "file": "tests/api/specs/standalone/booking/booking.spec.ts",
-              "line": 232,
-              "column": 7
+              ]
             }
           ]
         }
@@ -771,11 +227,11 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2026-01-05T14:50:44.469Z",
-    "duration": 4796.057,
-    "expected": 13,
+    "startTime": "2026-01-05T17:20:42.117Z",
+    "duration": 74578.68299999999,
+    "expected": 0,
     "skipped": 0,
-    "unexpected": 0,
+    "unexpected": 1,
     "flaky": 0
   }
 }
