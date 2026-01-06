@@ -50,14 +50,14 @@ jobs:
       - name: Restore branch-specific history
         if: ${{ github.event_name != 'schedule' }}
         run: |
-          BRANCH_FOLDER="gh-pages-checkout/${{ github.ref_name }}-allure-report/.allure"
+          BRANCH_FOLDER="gh-pages-checkout/${{ github.ref_name }}-allure-report/allure-history"
           if [ -d "$BRANCH_FOLDER" ]; then
             echo "📋 Restoring history for branch: ${{ github.ref_name }}"
-            mkdir -p .allure
-            cp -R "$BRANCH_FOLDER"/* .allure/
+            mkdir -p allure-history
+            cp -R "$BRANCH_FOLDER"/* allure-history/
           else
             echo "No previous history found for this branch"
-            mkdir -p .allure/history
+            mkdir -p allure-history/history
           fi
           rm -rf gh-pages-checkout
 
@@ -66,8 +66,8 @@ jobs:
         if: ${{ github.event_name == 'schedule' }}
         run: |
           echo "🧹 Sunday cleanup: Clearing Allure history..."
-          rm -rf .allure allure-results allure-report
-          mkdir -p .allure/history
+          rm -rf allure-history allure-results allure-report
+          mkdir -p allure-history/history
 
       # Step 7: Run tests
       - name: Run Playwright tests
@@ -78,10 +78,10 @@ jobs:
       - name: Merge Allure history
         if: ${{ !cancelled() && github.event_name != 'schedule' }}
         run: |
-          if [ -d .allure/history ]; then
+          if [ -d allure-history/history ]; then
             echo "📋 Copying previous Allure history..."
             mkdir -p allure-results
-            cp -R .allure/history allure-results/
+            cp -R allure-history/history allure-results/
           else
             echo "No previous history found"
           fi
@@ -95,11 +95,11 @@ jobs:
       - name: Save Allure history
         if: ${{ !cancelled() }}
         run: |
-          mkdir -p .allure
+          mkdir -p allure-history
           if [ -d allure-report/history ]; then
             echo "💾 Saving Allure history..."
-            rm -rf .allure/history
-            cp -R allure-report/history .allure/
+            rm -rf allure-history/history
+            cp -R allure-report/history allure-history/
           fi
 
       # Step 11: Prepare GitHub Pages deployment
@@ -113,9 +113,9 @@ jobs:
           # Copy Allure report to branch-specific folder
           cp -R allure-report/* gh-pages-deploy/${{ github.ref_name }}-allure-report/
 
-          # Copy .allure history into branch folder
-          mkdir -p gh-pages-deploy/${{ github.ref_name }}-allure-report/.allure
-          cp -R .allure/* gh-pages-deploy/${{ github.ref_name }}-allure-report/.allure/
+          # Copy allure-history into branch folder
+          mkdir -p gh-pages-deploy/${{ github.ref_name }}-allure-report/allure-history
+          cp -R allure-history/* gh-pages-deploy/${{ github.ref_name }}-allure-report/allure-history/
           echo "💾 History saved for branch: ${{ github.ref_name }}"
 
           # Add .nojekyll to prevent Jekyll processing
