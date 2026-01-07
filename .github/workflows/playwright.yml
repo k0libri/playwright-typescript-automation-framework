@@ -73,7 +73,25 @@ jobs:
         run: npx playwright test
         continue-on-error: true
 
-      # Step 8: Verify history data
+      # Step 8: Create executor.json for history tracking
+      - name: Create executor.json
+        if: ${{ !cancelled() }}
+        run: |
+          echo "📝 Creating executor.json for history tracking..."
+          cat > allure-results/executor.json << EOF
+          {
+            "name": "GitHub Actions",
+            "type": "github",
+            "buildOrder": ${{ github.run_number }},
+            "buildName": "Run #${{ github.run_number }}",
+            "buildUrl": "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}",
+            "reportUrl": "https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/${{ github.ref_name }}-allure-report/",
+            "reportName": "Allure Report - Run #${{ github.run_number }}"
+          }
+          EOF
+          echo "✅ Executor file created with buildOrder: ${{ github.run_number }}"
+
+      # Step 9: Verify history data
       - name: Verify Allure history
         if: ${{ !cancelled() && github.event_name != 'schedule' }}
         run: |
@@ -84,19 +102,19 @@ jobs:
             echo "ℹ️  No previous history - this will be the baseline run"
           fi
 
-      # Step 9: Generate Allure report
+      # Step 10: Generate Allure report
       - name: Generate Allure report
         if: ${{ !cancelled() }}
         run: npx allure generate allure-results -o allure-report --clean
 
-      # Step 10: Save new history
+      # Step 11: Verify generated report
       - name: Verify generated report
         if: ${{ !cancelled() }}
         run: |
           echo "📊 Allure report generated successfully"
           ls -la allure-report/
 
-      # Step 11: Prepare GitHub Pages deployment
+      # Step 12: Prepare GitHub Pages deployment
       - name: Prepare GitHub Pages content
         if: ${{ !cancelled() }}
         run: |
