@@ -66,6 +66,7 @@ test.describe('Cart Management - Login + Cart Verification @critical @regression
     await authenticationPage.navigateToAuthenticationPage();
     await authenticationPage.startSignup(uniqueUserData.name, uniqueUserData.email);
     await authenticationPage.completeRegistration(uniqueUserData);
+    await expect(authenticationPage.continueButton).toBeVisible();
     await authenticationPage.continueButton.click();
 
     await expect(authenticationPage.loggedInUserText).toBeVisible();
