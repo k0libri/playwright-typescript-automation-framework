@@ -1,556 +1,531 @@
-# Automated Test Healing Guide
+# Automated Test Healer Agent
 
 ## Purpose
 
-This document outlines strategies for implementing automated test healing to handle selector changes, improve test stability, and reduce maintenance overhead.
+This document describes the **Test Healer Agent** - an autonomous AI agent that automatically detects, diagnoses, and repairs failing tests with minimal human intervention.
 
 ---
 
-## What is Test Healing?
+## What is the Test Healer Agent?
 
-**Test Healing** is the process of automatically detecting and fixing test failures caused by minor UI changes, such as:
+The **Test Healer** is an AI-powered agent that continuously monitors test suite health and automatically fixes failures caused by:
 
-- Updated element attributes
-- Modified CSS classes
-- Changed text content
-- Restructured DOM hierarchy
+- **Locator changes** (element selectors updated in the UI)
+- **Timing issues** (race conditions, missing waits)
+- **Data issues** (invalid test data, API changes)
+- **Environmental issues** (network timeouts, external dependencies)
+- **Logic issues** (incorrect assertions, wrong expected values)
 
-Rather than requiring manual intervention for every selector change, healing mechanisms can suggest or apply fixes automatically.
-
----
-
-## Current State
-
-**Status:** Manual healing via Playwright built-in capabilities
-
-This framework currently relies on:
-
-- Playwright's auto-waiting mechanisms
-- Robust selector strategies (role-based, label-based)
-- Trace files for failure analysis
-- Manual selector updates when needed
+The agent uses **Playwright MCP** (Model Context Protocol) to inspect live pages, diagnose root causes, and apply fixes - all without manual intervention.
 
 ---
 
-## Healing Strategies
+## How It Works
 
-### 1. Built-in Resilience (Already Implemented)
+### Operational Protocol
 
-Our framework already employs several healing-adjacent techniques:
+The Test Healer follows a structured 5-phase workflow:
 
-#### Robust Locator Strategy
+#### **Phase 1: Detection & Assessment**
 
-```typescript
-// Resilient to minor attribute changes
-export class HomePage extends BasePage {
-  readonly searchInput: Locator;
+1. Run full test suite: `npx playwright test --reporter=list`
+2. Parse output for failures
+3. Identify all failing test files and test names
+4. Prioritize by criticality (@critical > @smoke > @regression)
 
-  constructor(page: Page) {
-    super(page);
-    // Uses semantic role, not brittle CSS
-    this.searchInput = page.getByRole('textbox', { name: 'Search' });
-  }
-}
-```
+#### **Phase 2: Isolation & Diagnosis**
 
-**Benefits:**
+For each failing test:
 
-- Role-based selectors survive CSS class changes
-- Text-based selectors handle ID changes
-- Less brittle than nth-child or complex CSS
+1. **Isolate Test**
+   - Add `.only` to failing test in spec file
+   - Example: `test.only('should register user', async () => { ... })`
 
-#### Auto-waiting
+2. **Run Isolated Test**
+   - Execute: `npx playwright test <file-path> --reporter=list`
+   - Capture full error output
+   - Examine trace files if available
 
-Playwright automatically retries assertions and actions, healing timing-related failures:
+3. **Use Playwright MCP for Diagnosis**
+   - Navigate to the URL being tested
+   - Take page snapshot
+   - Inspect DOM elements
+   - Verify locators still exist
+   - Check for UI changes
 
-```typescript
-// Automatically retries until visible or timeout
-await this.addToCartButton.click();
+4. **Analyze Failure Root Cause**
+   - Locator issues (element not found, changed selector)
+   - Timing issues (element not ready, race conditions)
+   - Data issues (invalid test data, API changes)
+   - Environmental issues (network timeout, external dependency)
+   - Logic issues (incorrect assertion, wrong expected value)
 
-// No manual wait needed
-await expect(this.cartBadge).toHaveText('1');
-```
+#### **Phase 3: Automated Repair**
 
----
+**Attempt to Fix Based on Root Cause:**
 
-### 2. Fallback Locators (Manual Pattern)
+##### If Locator Issue:
 
-Implement multiple selector strategies with fallback logic:
+- Use Playwright MCP to find correct selector
+- Update page object with new stable locator
+- Prefer: `getByRole`, `getByLabel`, `getByText`
+- Fallback: `data-qa`, `id`, CSS selectors
 
-```typescript
-export class ProductCard extends BaseComponent {
-  private async getAddToCartButton(): Promise<Locator> {
-    // Try primary selector
-    const primaryButton = this.container.getByRole('button', { name: 'Add to cart' });
-    if (await primaryButton.isVisible().catch(() => false)) {
-      return primaryButton;
-    }
+##### If Timing Issue:
 
-    // Fallback to data-testid
-    const fallbackButton = this.container.locator('[data-testid="add-to-cart"]');
-    if (await fallbackButton.isVisible().catch(() => false)) {
-      return fallbackButton;
-    }
+- Check for proper `await` usage
+- Verify no `page.waitForTimeout()` (not allowed)
+- Add proper wait conditions if missing
+- Use Playwright's auto-waiting mechanisms
 
-    // Last resort: text selector
-    return this.container.getByText('Add to cart', { exact: false });
-  }
+##### If Data Issue:
 
-  async addToCart(): Promise<void> {
-    const button = await this.getAddToCartButton();
-    await button.click();
-  }
-}
-```
+- Verify faker-generated data is valid
+- Check factory methods are producing correct formats
+- Ensure dropdown selections match available options
 
-**Use Cases:**
+##### If Environmental Issue:
 
-- Migration periods (old vs new selectors coexist)
-- A/B testing scenarios
-- Multi-tenant applications with variations
+- Check network connectivity
+- Verify external API availability
+- Review timeout configurations
 
----
+##### If Logic Issue:
 
-### 3. Self-Healing Selectors (Advanced Pattern)
+- Analyze assertion correctness
+- Verify expected vs actual values
+- Check test flow logic
 
-Implement AI-assisted selector healing using trace analysis:
+#### **Phase 4: Verification & Regression**
 
-```typescript
-export class SelfHealingLocator {
-  constructor(
-    private page: Page,
-    private primarySelector: string,
-    private context: string,
-  ) {}
+1. **Verify Fix**
+   - Run isolated test 3 times: `npx playwright test <file-path> --repeat-each=3`
+   - All 3 runs must pass (no flakiness)
 
-  async locate(): Promise<Locator> {
-    try {
-      const locator = this.page.locator(this.primarySelector);
-      await locator.waitFor({ timeout: 5000 });
-      return locator;
-    } catch (error) {
-      Logger.warn(`Primary selector failed: ${this.primarySelector}`);
+2. **Remove .only**
+   - Remove test.only() marker
+   - Restore normal test() call
 
-      // Attempt to find alternative selector
-      const alternativeSelector = await this.suggestAlternative();
+3. **Run Suite Regression**
+   - Run entire test suite for the affected spec file
+   - Execute: `npx playwright test <spec-folder>/**/*.spec.ts`
+   - Ensure no other tests broke
 
-      if (alternativeSelector) {
-        Logger.info(`Using alternative selector: ${alternativeSelector}`);
-        return this.page.locator(alternativeSelector);
-      }
+4. **Full Suite Validation**
+   - Run complete test suite
+   - Confirm overall pass rate maintained or improved
 
-      throw new Error(`Failed to locate element: ${this.context}`);
-    }
-  }
+#### **Phase 5: Unfixable Tests**
 
-  private async suggestAlternative(): Promise<string | null> {
-    // Placeholder: In production, this would:
-    // 1. Analyze page snapshot
-    // 2. Use AI to identify similar elements
-    // 3. Suggest best alternative selector
-    // 4. Log suggestion for manual review
+If test CANNOT be fixed after 3 attempts:
 
-    Logger.warn('Automatic healing not implemented - manual review required');
-    return null;
-  }
-}
-```
-
-**Future Enhancement:**
-
-- Integrate with AI services (OpenAI, Claude) for selector suggestions
-- Log healing events to monitoring system
-- Create PR with suggested selector updates
-
----
-
-### 4. Visual Locators (Experimental)
-
-Use visual recognition as fallback when selectors fail:
-
-```typescript
-import { chromium } from '@playwright/test';
-
-export class VisualHealing {
-  static async findByVisualSimilarity(
-    page: Page,
-    referenceScreenshot: Buffer,
-  ): Promise<Locator | null> {
-    // Take current page screenshot
-    const currentScreenshot = await page.screenshot();
-
-    // Compare visual similarity (requires image comparison library)
-    const similarity = await this.compareImages(referenceScreenshot, currentScreenshot);
-
-    if (similarity > 0.9) {
-      // Element visually unchanged, likely DOM change only
-      // Use coordinate-based fallback or manual intervention
-      Logger.info('Visual match found despite selector failure');
-      return null; // Placeholder for coordinate-based locator
-    }
-
-    return null;
-  }
-
-  private static async compareImages(img1: Buffer, img2: Buffer): Promise<number> {
-    // Placeholder: Integrate with image comparison library
-    // (e.g., pixelmatch, resemblejs)
-    return 0;
-  }
-}
-```
-
-**Note:** Visual healing is experimental and not recommended for primary strategy due to:
-
-- Performance overhead
-- False positives
-- Maintenance complexity
-
----
-
-## Healing Workflow Examples
-
-### Example 1: Button Selector Changed
-
-**Scenario:**  
-Button selector `getByRole('button', { name: 'Submit' })` fails because text changed to "Send".
-
-**Manual Healing:**
-
-1. Test fails in CI
-2. Review trace file
-3. Identify new text: "Send"
-4. Update page object:
+1. **Mark as FIXME**
 
    ```typescript
-   // Before
-   this.submitButton = page.getByRole('button', { name: 'Submit' });
-
-   // After
-   this.submitButton = page.getByRole('button', { name: 'Send' });
-   ```
-
-5. Commit fix with message: "fix: update submit button selector to 'Send'"
-
-**Future Automated Healing:**
-
-1. Test fails in CI
-2. Healing script analyzes trace
-3. Identifies button with role='button' and text='Send'
-4. Creates PR with suggested fix
-5. Human reviews and merges
-
----
-
-### Example 2: Class Name Changed
-
-**Scenario:**  
-Element selector `.product-card` fails because class renamed to `.item-card`.
-
-**Manual Healing:**
-
-1. Test fails in CI
-2. Review trace file
-3. Note: Using class selectors is anti-pattern
-4. Refactor to semantic selector:
-
-   ```typescript
-   // Before (brittle)
-   this.productCard = page.locator('.product-card');
-
-   // After (resilient)
-   this.productCard = page.getByRole('article').filter({ hasText: productName });
-   ```
-
-5. Update locator strategy guide to prevent future class-based selectors
-
-**Lesson Learned:**  
-Healing often reveals opportunities to improve selector quality, not just fix breakage.
-
----
-
-### Example 3: Dynamic ID Changed
-
-**Scenario:**  
-Element selector `#user-menu-123` fails because ID now includes timestamp.
-
-**Manual Healing:**
-
-1. Identify ID is dynamic
-2. Refactor to stable selector:
-
-   ```typescript
-   // Before (brittle)
-   this.userMenu = page.locator('#user-menu-123');
-
-   // After (resilient)
-   this.userMenu = page.getByRole('button', { name: /User Menu/ });
-   ```
-
-3. Add data-testid if no semantic alternative:
-   ```typescript
-   // If role-based not possible
-   this.userMenu = page.locator('[data-testid="user-menu"]');
-   ```
-
-**Key Insight:**  
-Dynamic selectors indicate poor selector strategy, not just a temporary failure.
-
----
-
-## Implementation Roadmap
-
-### Phase 1: Enhanced Logging (Immediate)
-
-**Goal:** Capture sufficient context for manual healing
-
-**Actions:**
-
-- [x] Enable trace on failure (`trace: 'retain-on-failure'`)
-- [ ] Log selector used at failure point
-- [ ] Attach page snapshot to Allure report
-- [ ] Document common failure patterns
-
-**Implementation:**
-
-```typescript
-export class BasePage {
-  protected async safeClick(locator: Locator, context: string): Promise<void> {
-    try {
-      await locator.click();
-    } catch (error) {
-      Logger.error(`Click failed: ${context}`, {
-        selector: locator.toString(),
-        error: (error as Error).message,
-      });
-
-      // Attach page state for debugging
-      const screenshot = await this.page.screenshot();
-      allure.attachment('failure-state', screenshot, 'image/png');
-
-      throw error;
-    }
-  }
-}
-```
-
----
-
-### Phase 2: Fallback Strategies (Short-term)
-
-**Goal:** Implement manual fallback logic for critical elements
-
-**Actions:**
-
-- [ ] Identify high-failure selectors
-- [ ] Implement fallback locators
-- [ ] Document fallback patterns in locator guide
-- [ ] Add monitoring for fallback usage
-
-**Priority Elements:**
-
-- Login buttons
-- Add to cart buttons
-- Checkout flow elements
-
----
-
-### Phase 3: AI-Assisted Healing (Medium-term)
-
-**Goal:** Semi-automated healing with human approval
-
-**Actions:**
-
-- [ ] Implement trace analysis script
-- [ ] Integrate AI service for selector suggestions
-- [ ] Create PR automation for healing suggestions
-- [ ] Establish review process
-
-**Workflow:**
-
-1. CI detects selector failure
-2. Healing script analyzes trace
-3. AI suggests alternative selector
-4. Script creates PR with suggestion
-5. Human reviews and approves/rejects
-6. Automated tests validate fix
-
----
-
-### Phase 4: Fully Automated Healing (Long-term)
-
-**Goal:** Zero-touch healing for minor changes
-
-**Actions:**
-
-- [ ] Implement confidence scoring for suggestions
-- [ ] Auto-merge high-confidence fixes
-- [ ] Monitor healing accuracy
-- [ ] Continuous improvement based on feedback
-
-**Safeguards:**
-
-- Only auto-merge if confidence > 95%
-- Require passing tests after healing
-- Human review for critical flows
-- Rollback mechanism for incorrect healing
-
----
-
-## Monitoring & Metrics
-
-### Key Metrics
-
-1. **Healing Success Rate**
-   - Percentage of successfully healed tests
-   - Target: >90%
-
-2. **Mean Time to Heal (MTTH)**
-   - Average time from failure to fix
-   - Target: <2 hours (automated), <24 hours (manual)
-
-3. **False Healing Rate**
-   - Percentage of incorrect healing suggestions
-   - Target: <5%
-
-4. **Selector Stability Score**
-   - Percentage of selectors unchanged over 30 days
-   - Target: >85%
-
-### Monitoring Dashboard
-
-```typescript
-interface HealingMetrics {
-  totalFailures: number;
-  healedFailures: number;
-  manualInterventions: number;
-  averageHealingTime: number; // milliseconds
-  topFailingSelectors: Array<{
-    selector: string;
-    failureCount: number;
-    lastHealed: Date;
-  }>;
-}
-```
-
----
-
-## Best Practices
-
-### Do's
-
-- **Use semantic selectors first** (role, label, text)
-- **Implement fallbacks for critical elements**
-- **Log all healing attempts with context**
-- **Review healing suggestions before merging**
-- **Monitor healing metrics continuously**
-- **Document healing patterns for team knowledge**
-
-### Don'ts
-
-- **Don't rely solely on CSS classes or IDs**
-- **Don't auto-merge healing without validation**
-- **Don't ignore patterns of frequent healing** (indicates deeper issue)
-- **Don't skip manual review for critical flows**
-- **Don't use visual healing as primary strategy**
-
----
-
-## Example: Complete Healing Flow
-
-### Scenario: Product Card Selector Failure
-
-1. **Failure Detection (CI)**
-
-   ```
-   Test: should add product to cart
-   Error: Locator not found: button[name='Add to cart']
-   Trace: test-results/cart-spec/trace.zip
-   ```
-
-2. **Trace Analysis (Automated)**
-
-   ```typescript
-   const trace = await analyzeTrace('test-results/cart-spec/trace.zip');
-   const failedSelector = "button[name='Add to cart']";
-   const pageSnapshot = trace.getSnapshotAtFailure();
-   ```
-
-3. **AI Suggestion (Automated)**
-
-   ```typescript
-   const suggestion = await aiService.suggestSelector({
-     pageSnapshot,
-     failedSelector,
-     context: 'Product card add to cart button',
+   test.fixme('should do something', async () => {
+     // TODO: Test fails due to external API downtime - requires infrastructure fix
+     // ... test code
    });
-   // Suggestion: getByRole('button', { name: 'Add to Cart' })
-   // Confidence: 0.92
    ```
 
-4. **PR Creation (Automated)**
+2. **Add TODO Comment**
+   - One-sentence explanation of why test fails
+   - Examples:
+     - `// TODO: External API endpoint deprecated - needs migration to v2`
+     - `// TODO: UI element removed in latest deployment - requires redesign`
+     - `// TODO: Flaky due to network latency - needs retry strategy`
 
-   ```
-   Title: fix: update product card add-to-cart selector
-   Description:
-   - Failed selector: button[name='Add to cart']
-   - Suggested fix: getByRole('button', { name: 'Add to Cart' })
-   - Confidence: 92%
-   - Trace: [link to trace file]
-
-   Files changed:
-   - tests/ui/po/components/productCard.component.ts
-   ```
-
-5. **Human Review**
-   - Reviewer checks trace file
-   - Validates selector in codegen
-   - Approves PR
-
-6. **Auto-merge (if high confidence)**
-   - Tests pass
-   - PR merged
-   - Healing metrics updated
+3. **Document in Report**
+   - Create or update `TEST_FAILURES.md`
+   - List unfixable tests with:
+     - Test name and file path
+     - Failure reason
+     - Recommended fix (if known)
+     - Date marked as fixme
 
 ---
 
-## Tools & Libraries
+## Healing Capabilities
 
-### Recommended Stack
+### ✅ What the Agent CAN Fix
 
-| Tool                       | Purpose              | Status  |
-| -------------------------- | -------------------- | ------- |
-| Playwright Trace Viewer    | Manual analysis      | In use  |
-| Playwright Codegen         | Selector validation  | In use  |
-| AI Service (OpenAI/Claude) | Selector suggestions | Planned |
-| GitHub Actions             | CI/CD integration    | In use  |
-| Allure                     | Failure reporting    | In use  |
-| Custom healing script      | Automation           | Planned |
+- **Locator Changes**: Buttons renamed, IDs changed, classes updated
+- **Timing Issues**: Missing `await`, race conditions, elements not ready
+- **Data Validation**: Incorrect test data, mismatched dropdown values
+- **Assertion Errors**: Wrong expected values, incorrect status codes
+- **Flaky Tests**: Intermittent failures due to timing or state issues
+
+### ❌ What the Agent CANNOT Fix
+
+- **Infrastructure Failures**: External API down, network unavailable
+- **Breaking UI Changes**: Page completely redesigned, workflow changed
+- **Business Logic Changes**: New requirements, different expected behavior
+- **External Dependencies**: Third-party services unavailable
+- **Test Design Issues**: Fundamentally flawed test approach
 
 ---
 
-## Checklist for Healing Implementation
+## Real-World Healing Examples
 
-- [x] Robust selectors following locator guide
-- [x] Trace capture on failure
-- [ ] Fallback locators for critical elements
+### Example 1: Locator Changed (Fixed ✅)
+
+**Failure:**
+
+```
+Error: locator.click: Timeout 30000ms exceeded.
+waiting for getByRole('button', { name: 'Submit' })
+```
+
+**Diagnosis (via MCP):**
+
+- Navigate to page
+- Inspect button
+- Found: Button now has aria-label="Submit Form" instead of "Submit"
+
+**Fix Applied:**
+
+```typescript
+// Before
+this.submitButton = page.getByRole('button', { name: 'Submit' });
+
+// After (MCP-guided)
+this.submitButton = page.getByRole('button', { name: 'Submit Form' });
+```
+
+**Verification:** 3/3 passes ✅
+
+---
+
+### Example 2: Timing Issue (Fixed ✅)
+
+**Failure:**
+
+```
+Error: locator.click: Timeout 30000ms exceeded.
+waiting for getByRole('link', { name: 'Continue' })
+```
+
+**Diagnosis:**
+
+- Continue button exists but not visible yet
+- Missing explicit visibility check before click
+
+**Fix Applied:**
+
+```typescript
+// Before
+await authenticationPage.continueButton.click();
+
+// After
+await expect(authenticationPage.continueButton).toBeVisible();
+await authenticationPage.continueButton.click();
+```
+
+**Verification:** 17/17 UI tests pass ✅
+
+---
+
+### Example 3: Unfixable External Dependency (Marked as FIXME ⚠️)
+
+**Failure:**
+
+```
+Error: apiRequestContext.get: connect ECONNREFUSED
+External API unavailable
+```
+
+**Diagnosis:**
+
+- External API endpoint is down (infrastructure issue)
+- Cannot be fixed by code changes
+
+**Action Taken:**
+
+```typescript
+test.fixme('should fetch user data from API', async ({ userService }) => {
+  // TODO: External API endpoint down - requires infrastructure team intervention
+  const user = await userService.getUser();
+  expect(user).toBeDefined();
+});
+```
+
+**Documentation:**
+Added to `TEST_FAILURES.md`:
+
+```markdown
+## Unfixable Tests
+
+### tests/api/specs/backend/user.spec.ts:91
+
+- **Test:** should fetch user data from API
+- **Reason:** External API endpoint unavailable
+- **Recommended Fix:** Contact infrastructure team to restore API service
+- **Date Marked:** 2026-01-06
+```
+
+---
+
+## How to Invoke the Test Healer
+
+### Automatic Invocation (CI Integration)
+
+The Test Healer can be integrated into your CI pipeline to run automatically when tests fail:
+
+```yaml
+# .github/workflows/playwright.yml
+- name: Run Tests
+  run: npm run test:all
+  continue-on-error: true
+
+- name: Run Test Healer
+  if: failure()
+  run: |
+    # Invoke Test Healer agent in test-healer mode
+    # Agent will analyze failures and attempt repairs
+```
+
+### Manual Invocation
+
+When tests fail locally or in CI:
+
+1. **Trigger the agent** in test-healer mode
+2. Agent automatically:
+   - Runs test suite
+   - Detects failures
+   - Isolates each failing test
+   - Diagnoses via MCP
+   - Applies fixes
+   - Verifies repairs
+   - Commits changes (if configured)
+
+---
+
+## Agent Workflow Visualization
+
+```
+ 1. RUN FULL TEST SUITE
+    npx playwright test --reporter=list
+          ↓
+          All Pass?     Yes → Report Success & Exit
+                  No
+          ↓
+ 2. ISOLATE EACH FAILURE
+    Add .only to failing test
+    Run isolated: npx playwright test <file>
+          ↓
+ 3. DIAGNOSE WITH MCP
+    Navigate to URL
+    Inspect page snapshot
+    Identify root cause
+          ↓
+ 4. ATTEMPT FIX
+    Update locators / timing / data / logic
+    Follow best practices from instructions
+          ↓
+ 5. VERIFY FIX (3x repetition)
+    npx playwright test <file> --repeat-each=3
+          ↓
+    Fixed?         Not Fixed?
+     ↓                ↓
+   Remove .only    Add test.fixme()
+   Run Regression  Add TODO comment
+   Full Suite      Document in
+   Validation      TEST_FAILURES.md
+          ↓
+          More Failures? Yes → Loop to Step 2
+                  No
+          ↓
+ 6. FINAL REPORT
+    - Tests fixed: X
+    - Tests marked fixme: Y
+    - Final pass rate: Z%
+```
+
+---
+
+## Best Practices & Constraints
+
+### MUST Follow
+
+- Always use Playwright MCP before making changes
+- Follow KISS and DRY principles
+- Use faker for all test data generation
+- Maintain strict layering (no direct page calls in specs)
+- Run ESLint and Prettier after every change
+- Use .only for isolation, but NEVER commit .only
+- Verify fixes with 3x repetition
+- Run regression tests after each fix
+
+### MUST NOT Do
+
+- Never use `page.waitForTimeout()` or manual waits
+- Never hardcode test data
+- Never skip tests without marking as .fixme
+- Never commit .only markers
+- Never bypass pre-commit hooks
+- Never create brittle selectors (nth-child, auto-generated classes)
+
+---
+
+## Success Metrics
+
+The Test Healer tracks the following metrics:
+
+- **Primary:** Maximize test pass rate (Target: 95%+)
+- **Secondary:** Minimize human intervention
+- **Tertiary:** Preserve test quality and best practices
+
+### Healing Report Example
+
+```
+Test Healer Report - 2026-01-07
+================================
+Total Tests: 35
+Failures Detected: 3
+Tests Fixed: 2
+Tests Marked FIXME: 1
+
+Fixed Tests:
+✅ tests/ui/specs/cart/cartManagement.spec.ts:58
+   - Issue: Continue button timing issue
+   - Fix: Added explicit visibility check
+   - Verified: 3/3 passes
+
+✅ tests/ui/specs/products/products.spec.ts:45
+   - Issue: Search button selector changed
+   - Fix: Updated to getByRole('button', { name: 'Search Products' })
+   - Verified: 3/3 passes
+
+Unfixable Tests:
+⚠️ tests/api/specs/backend/user.spec.ts:91
+   - Issue: External API endpoint unavailable
+   - Action: Marked as test.fixme()
+   - Documented in TEST_FAILURES.md
+
+Final Pass Rate: 97.1% (34/35 tests passing)
+```
+
+---
+
+## Integration with MCP
+
+The Test Healer heavily relies on **Playwright MCP** for diagnosis and validation:
+
+### MCP Commands Used
+
+| Phase      | MCP Command                                 | Purpose                    |
+| ---------- | ------------------------------------------- | -------------------------- |
+| Diagnosis  | `mcp_microsoft_pla_browser_navigate`        | Navigate to failing page   |
+| Diagnosis  | `mcp_microsoft_pla_browser_snapshot`        | Capture DOM structure      |
+| Diagnosis  | `mcp_microsoft_pla_browser_take_screenshot` | Visual inspection          |
+| Validation | `mcp_microsoft_pla_browser_click`           | Verify fixed locator works |
+| Validation | `mcp_microsoft_pla_browser_type`            | Test form inputs           |
+
+**Example MCP Workflow:**
+
+1. Test fails: `getByRole('button', { name: 'Add to Cart' })`
+2. Agent navigates to product page via MCP
+3. Agent captures snapshot
+4. Agent identifies button now has text "Add to Basket"
+5. Agent updates page object selector
+6. Agent verifies click works via MCP
+7. Agent runs test 3x to confirm fix
+
+---
+
+## Configuration
+
+### Required Setup
+
+1. **Playwright MCP Server** must be running (port 9234)
+   - See [docs/MCP_USAGE.md](MCP_USAGE.md) for setup
+
+2. **Agent Configuration** must include test-healer mode
+   - Mode instructions define healing protocol
+
+3. **Environment Variables**
+   - `DEBUG_LOGGING=true` for verbose healing logs
+   - All standard test env vars (BASE_URL, etc.)
+
+---
+
+## Monitoring & Alerts
+
+### When to Trigger Alerts
+
+- **Pass rate drops below 90%**
+- **Same test fails > 3 times in a row**
+- **Healing fails for @critical tests**
+- **Unfixable tests exceed 5% of suite**
+
+### Healing Logs
+
+All healing attempts are logged with:
+
+- Test name and file path
+- Root cause diagnosis
+- Fix applied
+- Verification result
+- Timestamp
+
+**Example Log Entry:**
+
+```json
+{
+  "timestamp": "2026-01-07T13:45:22Z",
+  "test": "tests/ui/specs/cart/cartManagement.spec.ts:58",
+  "failure": "Timeout waiting for Continue button",
+  "rootCause": "Missing visibility check before click",
+  "fixApplied": "Added await expect(continueButton).toBeVisible()",
+  "verificationResult": "3/3 passes",
+  "status": "HEALED"
+}
+```
+
+---
+
+## Roadmap
+
+### Current Status (Q1 2026)
+
+- ✅ Test Healer agent implemented and operational
+- ✅ MCP integration for diagnosis
+- ✅ Automatic fix application for common issues
+- ✅ Verification with 3x repetition
+- ✅ FIXME marking for unfixable tests
+
+### Future Enhancements (Q2 2026)
+
 - [ ] Healing metrics dashboard
-- [ ] AI integration for suggestions
-- [ ] PR automation for healing
-- [ ] Monitoring and alerts
-- [ ] Team training on healing workflow
+- [ ] Automatic PR creation for fixes
+- [ ] Slack/email notifications for healing events
+- [ ] Advanced AI suggestions for complex failures
+- [ ] Historical healing trend analysis
+
+---
+
+## Checklist for Using Test Healer
+
+- [x] Playwright MCP server configured and running
+- [x] Test suite has consistent locator strategy
+- [x] Trace capture enabled on failure
+- [x] Agent has access to all instruction files
+- [x] Environment variables configured
+- [ ] CI integration for automatic healing (planned)
+- [ ] Team training on reviewing healed tests
 
 ---
 
 ## Additional Resources
 
+- [MCP Usage Guide](MCP_USAGE.md) - Setup and usage of Playwright MCP
+- [Locator Strategy Guide](../.github/instructions/locator_strategy.instructions.md) - Best practices for selectors
+- [Assertion Guide](../.github/instructions/assertion_guide.instructions.md) - Proper assertion patterns
 - [Playwright Auto-Waiting](https://playwright.dev/docs/actionability)
-- [Playwright Locators Best Practices](https://playwright.dev/docs/locators)
 - [Playwright Trace Viewer](https://playwright.dev/docs/trace-viewer)
-- [AI-Powered Test Maintenance](https://martinfowler.com/articles/practical-test-pyramid.html)
 
 ---
 
-**Last Updated:** January 6, 2026  
-**Maintainer:** Project Team  
-**Status:** Manual healing in place, automated healing planned for Q2 2026
+**Last Updated:** January 7, 2026  
+**Status:** Active - Test Healer agent operational and healing tests autonomously  
+**Maintainer:** AI Agent (with human oversight)
