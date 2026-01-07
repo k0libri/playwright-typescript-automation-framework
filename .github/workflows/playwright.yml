@@ -50,12 +50,12 @@ jobs:
       - name: Restore branch-specific history
         if: ${{ github.event_name != 'schedule' }}
         run: |
-          DATA_FOLDER="gh-pages-checkout/${{ github.ref_name }}-allure-report/data"
-          if [ -d "$DATA_FOLDER" ]; then
-            echo "📋 Restoring Allure 3.x history data for branch: ${{ github.ref_name }}"
-            mkdir -p allure-results/data
-            cp -R "$DATA_FOLDER"/* allure-results/data/
-            echo "✅ Previous report data restored"
+          HISTORY_FOLDER="gh-pages-checkout/${{ github.ref_name }}-allure-report/history"
+          if [ -d "$HISTORY_FOLDER" ]; then
+            echo "📋 Restoring Allure history for branch: ${{ github.ref_name }}"
+            mkdir -p allure-results/history
+            cp -R "$HISTORY_FOLDER"/* allure-results/history/
+            echo "✅ History restored successfully"
           else
             echo "ℹ️  No previous history found for this branch (first run)"
           fi
@@ -77,17 +77,17 @@ jobs:
       - name: Verify Allure history
         if: ${{ !cancelled() && github.event_name != 'schedule' }}
         run: |
-          if [ -d allure-results/data ]; then
-            echo "✅ Previous report data available for history/trend analysis"
-            ls -la allure-results/data/
+          if [ -d allure-results/history ]; then
+            echo "✅ Allure history available for trend analysis"
+            ls -la allure-results/history/ | head -10
           else
-            echo "ℹ️  No previous data - this will be the baseline run"
+            echo "ℹ️  No previous history - this will be the baseline run"
           fi
 
       # Step 9: Generate Allure report
       - name: Generate Allure report
         if: ${{ !cancelled() }}
-        run: npx allure@latest generate allure-results -o allure-report
+        run: npx allure generate allure-results -o allure-report --clean
 
       # Step 10: Save new history
       - name: Verify generated report
@@ -107,10 +107,14 @@ jobs:
           # Copy Allure report to branch-specific folder
           cp -R allure-report/* gh-pages-deploy/${{ github.ref_name }}-allure-report/
 
-          # Note: Allure 3.x stores history in the data directory
-          # The data folder from allure-report will be used in the next run
-          echo "💾 Report data saved (includes history for next run)"
-          echo "📊 Branch: ${{ github.ref_name }}"
+          # Allure 2.x: History is stored in allure-report/history
+          # It will be automatically restored in the next run
+          if [ -d allure-report/history ]; then
+            echo "💾 History folder preserved in report (Allure 2.x)"
+            echo "📊 Branch: ${{ github.ref_name }}"
+          else
+            echo "ℹ️  First run - history will be created for next run"
+          fi
 
           # Add .nojekyll to prevent Jekyll processing
           touch gh-pages-deploy/.nojekyll
