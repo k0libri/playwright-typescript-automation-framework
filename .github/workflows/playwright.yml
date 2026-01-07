@@ -50,14 +50,14 @@ jobs:
       - name: Restore branch-specific history
         if: ${{ github.event_name != 'schedule' }}
         run: |
-          BRANCH_FOLDER="gh-pages-checkout/${{ github.ref_name }}-allure-report/allure-history"
-          if [ -d "$BRANCH_FOLDER" ]; then
-            echo "📋 Restoring history for branch: ${{ github.ref_name }}"
-            mkdir -p allure-history
-            cp -R "$BRANCH_FOLDER"/* allure-history/
+          DATA_FOLDER="gh-pages-checkout/${{ github.ref_name }}-allure-report/data"
+          if [ -d "$DATA_FOLDER" ]; then
+            echo "📋 Restoring Allure 3.x history data for branch: ${{ github.ref_name }}"
+            mkdir -p allure-results/data
+            cp -R "$DATA_FOLDER"/* allure-results/data/
+            echo "✅ Previous report data restored"
           else
-            echo "No previous history found for this branch"
-            mkdir -p allure-history/history
+            echo "ℹ️  No previous history found for this branch (first run)"
           fi
           rm -rf gh-pages-checkout
 
@@ -66,24 +66,22 @@ jobs:
         if: ${{ github.event_name == 'schedule' }}
         run: |
           echo "🧹 Sunday cleanup: Clearing Allure history..."
-          rm -rf allure-history allure-results allure-report
-          mkdir -p allure-history/history
+          rm -rf allure-results allure-report
 
       # Step 7: Run tests
       - name: Run Playwright tests
         run: npx playwright test
         continue-on-error: true
 
-      # Step 8: Merge previous history into results
-      - name: Merge Allure history
+      # Step 8: Verify history data
+      - name: Verify Allure history
         if: ${{ !cancelled() && github.event_name != 'schedule' }}
         run: |
-          if [ -d allure-history/history ]; then
-            echo "📋 Copying previous Allure history..."
-            mkdir -p allure-results
-            cp -R allure-history/history allure-results/
+          if [ -d allure-results/data ]; then
+            echo "✅ Previous report data available for history/trend analysis"
+            ls -la allure-results/data/
           else
-            echo "No previous history found"
+            echo "ℹ️  No previous data - this will be the baseline run"
           fi
 
       # Step 9: Generate Allure report
@@ -92,15 +90,11 @@ jobs:
         run: npx allure@latest generate allure-results -o allure-report
 
       # Step 10: Save new history
-      - name: Save Allure history
+      - name: Verify generated report
         if: ${{ !cancelled() }}
         run: |
-          mkdir -p allure-history
-          if [ -d allure-report/history ]; then
-            echo "💾 Saving Allure history..."
-            rm -rf allure-history/history
-            cp -R allure-report/history allure-history/
-          fi
+          echo "📊 Allure report generated successfully"
+          ls -la allure-report/
 
       # Step 11: Prepare GitHub Pages deployment
       - name: Prepare GitHub Pages content
@@ -113,10 +107,10 @@ jobs:
           # Copy Allure report to branch-specific folder
           cp -R allure-report/* gh-pages-deploy/${{ github.ref_name }}-allure-report/
 
-          # Copy allure-history into branch folder
-          mkdir -p gh-pages-deploy/${{ github.ref_name }}-allure-report/allure-history
-          cp -R allure-history/* gh-pages-deploy/${{ github.ref_name }}-allure-report/allure-history/
-          echo "💾 History saved for branch: ${{ github.ref_name }}"
+          # Note: Allure 3.x stores history in the data directory
+          # The data folder from allure-report will be used in the next run
+          echo "💾 Report data saved (includes history for next run)"
+          echo "📊 Branch: ${{ github.ref_name }}"
 
           # Add .nojekyll to prevent Jekyll processing
           touch gh-pages-deploy/.nojekyll
