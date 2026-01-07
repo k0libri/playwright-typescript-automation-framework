@@ -15,9 +15,14 @@ permissions:
 
 jobs:
   test:
-    name: Run Tests & Generate Reports
+    name: Run Tests (Shard ${{ matrix.shardIndex }}/${{ matrix.shardTotal }})
     timeout-minutes: 60
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        shardIndex: [1, 2, 3, 4]
+        shardTotal: [4]
     steps:
       # Step 1: Checkout repository
       - name: Checkout repository
@@ -78,7 +83,7 @@ jobs:
 
       # Step 9: Run tests
       - name: Run Playwright tests
-        run: npx playwright test
+        run: npx playwright test --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
         continue-on-error: true
 
       # Step 8: Create executor.json for history tracking
@@ -203,23 +208,175 @@ jobs:
         uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
         with:
-          name: playwright-report-${{ github.ref_name }}
+          name: playwright-report-${{ github.ref_name }}-${{ matrix.shardIndex }}
           path: playwright-report/
           retention-days: 30
 
-      # Artifact 2: Allure Report
-      - name: Upload Allure Report
+      # Artifact 2: Allure Results (not report, we'll merge later)
+      - name: Upload Allure Results
         uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
+        with:
+          name: allure-results-${{ github.ref_name }}-${{ matrix.shardIndex }}
+          path: allure-results/
+          retention-days: 1
+
+  merge-reports:
+    name: 📊 Merge Reports & Deploy
+    needs: test
+    if: ${{ !cancelled() }}
+    runs-on: ubuntu-latest
+    steps:
+      # Step 1: Checkout repository
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Step 2: Setup Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+          cache: 'npm'
+
+      # Step 3: Install dependencies
+      - name: Install dependencies
+        run: npm ci
+
+      # Step 4: Download all Allure results from shards
+      - name: Download all Allure results
+        uses: actions/download-artifact@v4
+        with:
+          pattern: allure-results-${{ github.ref_name }}-*
+          path: allure-results-shards
+          merge-multiple: true
+
+      # Step 5: Merge all shard results into one folder
+      - name: Merge Allure results
+        run: |
+          echo "📦 Merging Allure results from all shards..."
+          mkdir -p allure-results
+          find allure-results-shards -type f -name "*.json" -exec cp {} allure-results/ \;
+          echo "✅ Merged $(find allure-results -type f -name "*.json" | wc -l) result files"
+
+      # Step 6: Restore Allure history from gh-pages branch
+      - name: Checkout gh-pages for history
+        if: ${{ github.event_name != 'schedule' }}
+        uses: actions/checkout@v4
+        continue-on-error: true
+        with:
+          ref: gh-pages
+          path: gh-pages-checkout
+
+      - name: Restore branch-specific history
+        if: ${{ github.event_name != 'schedule' }}
+        run: |
+          HISTORY_FOLDER="gh-pages-checkout/${{ github.ref_name }}-allure-report/history"
+          if [ -d "$HISTORY_FOLDER" ]; then
+            echo "📋 Restoring Allure history for branch: ${{ github.ref_name }}"
+            mkdir -p allure-results/history
+            cp -R "$HISTORY_FOLDER"/* allure-results/history/
+            echo "✅ History restored successfully"
+          else
+            echo "ℹ️  No previous history found for this branch (first run)"
+          fi
+          rm -rf gh-pages-checkout
+
+      # Step 7: Create executor.json for history tracking
+      - name: Create executor.json
+        run: |
+          echo "📝 Creating executor.json for history tracking..."
+          cat > allure-results/executor.json << EOF
+          {
+            "name": "GitHub Actions",
+            "type": "github",
+            "buildOrder": ${{ github.run_number }},
+            "buildName": "Run #${{ github.run_number }}",
+            "buildUrl": "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}",
+            "reportUrl": "https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/${{ github.ref_name }}-allure-report/",
+            "reportName": "Allure Report - Run #${{ github.run_number }}"
+          }
+          EOF
+          echo "✅ Executor file created with buildOrder: ${{ github.run_number }}"
+
+      # Step 8: Generate merged Allure report
+      - name: Generate Allure report
+        run: npx allure generate allure-results -o allure-report --clean
+
+      # Step 9: Verify generated report
+      - name: Verify generated report
+        run: |
+          echo "📊 Allure report generated successfully"
+          ls -la allure-report/
+
+      # Step 10: Prepare GitHub Pages deployment
+      - name: Prepare GitHub Pages content
+        run: |
+          echo "📦 Preparing GitHub Pages deployment..."
+          rm -rf gh-pages-deploy
+          mkdir -p gh-pages-deploy/${{ github.ref_name }}-allure-report
+
+          # Copy Allure report to branch-specific folder
+          cp -R allure-report/* gh-pages-deploy/${{ github.ref_name }}-allure-report/
+
+          # Add .nojekyll to prevent Jekyll processing
+          touch gh-pages-deploy/.nojekyll
+
+          # Create index.html that redirects to the branch report
+          cat > gh-pages-deploy/index.html << 'EOF'
+          <!DOCTYPE html>
+          <html lang="en">
+          <head>
+              <meta charset="UTF-8">
+              <meta name="viewport" content="width=device-width, initial-scale=1.0">
+              <meta http-equiv="refresh" content="0; url=./${{ github.ref_name }}-allure-report/">
+              <title>Allure Reports - Redirecting...</title>
+              <style>
+                  body {
+                      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+                      display: flex;
+                      justify-content: center;
+                      align-items: center;
+                      height: 100vh;
+                      margin: 0;
+                      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                      color: white;
+                  }
+                  .container {
+                      text-align: center;
+                      padding: 2rem;
+                      background: rgba(255,255,255,0.1);
+                      border-radius: 10px;
+                      backdrop-filter: blur(10px);
+                  }
+                  h1 { margin: 0 0 1rem 0; }
+                  p { margin: 0.5rem 0; }
+                  a { color: #ffd700; text-decoration: none; font-weight: bold; }
+                  a:hover { text-decoration: underline; }
+              </style>
+          </head>
+          <body>
+              <div class="container">
+                  <h1>📊 Allure Test Reports</h1>
+                  <p>Redirecting to branch: <strong>${{ github.ref_name }}</strong></p>
+                  <p>If not redirected, <a href="./${{ github.ref_name }}-allure-report/">click here</a></p>
+              </div>
+          </body>
+          </html>
+          EOF
+
+          echo "✅ GitHub Pages content ready"
+
+      # Step 11: Upload merged Allure Report as artifact
+      - name: Upload merged Allure Report
+        uses: actions/upload-artifact@v4
         with:
           name: allure-report-${{ github.ref_name }}
           path: allure-report/
           retention-days: 30
 
-      # Upload deployment package for deploy job
+      # Step 12: Upload deployment package for deploy job
       - name: Upload deployment package
         uses: actions/upload-artifact@v4
-        if: ${{ !cancelled() }}
         with:
           name: gh-pages-deploy-${{ github.ref_name }}
           path: gh-pages-deploy/
@@ -227,7 +384,7 @@ jobs:
 
   deploy:
     name: 📊 Deploy Allure Report
-    needs: test
+    needs: merge-reports
     if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     environment:
