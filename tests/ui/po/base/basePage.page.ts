@@ -1,4 +1,5 @@
 import type { Locator, Page } from '@playwright/test';
+import { NavbarComponent } from '../components/common/navbar.component';
 
 /**
  * BasePage - Shared page behaviors and navigation helpers
@@ -6,9 +7,11 @@ import type { Locator, Page } from '@playwright/test';
  */
 export abstract class BasePage {
   protected readonly page: Page;
+  readonly navbar: NavbarComponent;
 
   constructor(page: Page) {
     this.page = page;
+    this.navbar = new NavbarComponent(page);
   }
 
   /**

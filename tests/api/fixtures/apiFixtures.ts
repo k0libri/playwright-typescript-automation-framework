@@ -1,8 +1,8 @@
 import { test as baseTest } from '@playwright/test';
-import { AuthService } from './clients/auth.service';
-import { BookingService } from './clients/booking.service';
-import type { Booking, AuthCredentials } from './data/types';
-import { BookingDataFactory } from './data/bookingDataFactory';
+import { AuthService } from '../clients/auth.service';
+import { BookingService } from '../clients/booking.service';
+import type { Booking, AuthCredentials } from '../data/types';
+import { BookingDataFactory } from '../data/bookingDataFactory';
 
 const RESTFUL_BOOKER_BASE_URL =
   process.env['RESTFUL_BOOKER_BASE_URL'] ?? 'https://restful-booker.herokuapp.com';

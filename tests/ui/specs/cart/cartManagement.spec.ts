@@ -55,19 +55,20 @@ test.describe('Cart Management - Login + Cart Verification @critical @regression
     await userService.cleanupUser(uniqueUserData.email, uniqueUserData.password);
   });
 
-  test('should login via UI, add products to cart, and verify cart via API', async ({
+  test('should login via UI, add products to cart, and verify user state via API', async ({
     authenticationPage,
     productsPage,
     cartPage,
     navbar,
     uniqueUserData,
+    userService,
   }) => {
     test.setTimeout(90000);
     await authenticationPage.navigateToAuthenticationPage();
     await authenticationPage.startSignup(uniqueUserData.name, uniqueUserData.email);
     await authenticationPage.completeRegistration(uniqueUserData);
-    await expect(authenticationPage.continueButton).toBeVisible();
-    await authenticationPage.continueButton.click();
+    await expect(authenticationPage.registrationForm.continueButton).toBeVisible();
+    await authenticationPage.registrationForm.continueButton.click();
 
     await expect(authenticationPage.loggedInUserText).toBeVisible();
 
@@ -98,6 +99,13 @@ test.describe('Cart Management - Login + Cart Verification @critical @regression
 
     const isEmpty = await cartPage.isCartEmpty();
     expect.soft(isEmpty).toBe(false);
+
+    const userResponse = await userService.getUserByEmail(uniqueUserData.email);
+    expect.soft(userResponse.status()).toBe(200);
+    const userData = await userResponse.json();
+    expect.soft(userData).toHaveProperty('user');
+    expect.soft(userData.user.email).toBe(uniqueUserData.email);
+    expect(userData.user.name).toBe(uniqueUserData.name);
 
     await expect(authenticationPage.loggedInUserText).toBeVisible();
   });

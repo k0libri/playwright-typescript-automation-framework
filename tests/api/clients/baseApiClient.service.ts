@@ -129,7 +129,7 @@ export abstract class BaseApiClient {
   }
 
   /**
-   * Log error response with masked sensitive data
+   * Log error response
    */
   private async logErrorResponse<TData = string>(
     method: HttpMethod,
@@ -137,60 +137,18 @@ export abstract class BaseApiClient {
     response: APIResponse,
     options?: RequestOptions<TData>,
   ): Promise<void> {
-    const maskedUrl = this.maskSensitiveUrlData(url);
-    const maskedHeaders = this.maskSensitiveHeaders(options?.headers);
     const status = response.status();
     const responseBody = (await response.body()).toString();
 
     Logger.warn(
-      `\nA ${method.toUpperCase()} request to "${maskedUrl}" returned status: ${status}` +
+      `\nA ${method.toUpperCase()} request to "${url}" returned status: ${status}` +
         `\nDetails:` +
-        `\nRequest: ${method.toUpperCase()} ${maskedUrl}` +
+        `\nRequest: ${method.toUpperCase()} ${url}` +
         `\nRequest body: ${JSON.stringify(options?.data, null, 2)}` +
-        `\nRequest headers: ${JSON.stringify(maskedHeaders, null, 2)}` +
+        `\nRequest headers: ${JSON.stringify(options?.headers, null, 2)}` +
         `\nResponse status: ${status}` +
         `\nResponse body: ${JSON.stringify(responseBody, null, 2)}`,
     );
-  }
-
-  /**
-   * Mask sensitive data in URL (e.g., API keys, tokens)
-   */
-  private maskSensitiveUrlData(urlString: string): string {
-    const url = new URL(urlString);
-    const sensitiveParams = ['apiKey', 'token', 'key', 'secret'];
-
-    sensitiveParams.forEach((param) => {
-      const value = url.searchParams.get(param);
-      if (value) {
-        url.searchParams.set(param, `${value.slice(0, 10)}...`);
-      }
-    });
-
-    return url.toString();
-  }
-
-  /**
-   * Mask sensitive data in headers
-   */
-  private maskSensitiveHeaders(
-    headers?: Record<string, string>,
-  ): Record<string, string> | undefined {
-    if (!headers) {
-      return undefined;
-    }
-
-    const masked = { ...headers };
-    const sensitiveKeys = ['authorization', 'cookie', 'x-api-key', 'x-service-account-key'];
-
-    Object.keys(masked).forEach((key) => {
-      if (sensitiveKeys.includes(key.toLowerCase())) {
-        const value = masked[key];
-        masked[key] = value && value.length > 10 ? `${value.slice(0, 10)}...` : '***';
-      }
-    });
-
-    return masked;
   }
 
   /**

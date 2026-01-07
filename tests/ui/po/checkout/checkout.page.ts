@@ -22,8 +22,6 @@ export class CheckoutPage extends BasePage {
   readonly expiryYearInput: Locator;
   readonly payAndConfirmButton: Locator;
   readonly orderConfirmationMessage: Locator;
-  readonly orderNumber: Locator;
-  readonly downloadInvoiceButton: Locator;
   readonly continueButton: Locator;
 
   constructor(page: Page) {
@@ -42,8 +40,6 @@ export class CheckoutPage extends BasePage {
     this.expiryYearInput = page.locator('[name="expiry_year"]');
     this.payAndConfirmButton = page.locator('[data-qa="pay-button"]');
     this.orderConfirmationMessage = page.getByText('Order Placed!');
-    this.orderNumber = page.locator('.order-confirmation');
-    this.downloadInvoiceButton = page.getByText('Download Invoice');
     this.continueButton = page.getByRole('link', { name: 'Continue' });
   }
 
@@ -62,19 +58,16 @@ export class CheckoutPage extends BasePage {
     const rows = await this.orderItems.all();
 
     for (const row of rows) {
-      // Skip non-product rows (header, footer, total rows)
       const hasProductInfo = (await row.locator('.cart_description').count()) > 0;
       if (!hasProductInfo) {
         continue;
       }
 
-      // Extract product information using stable selectors
       const name = (await row.locator('.cart_description h4 a').textContent())?.trim() ?? '';
       const price = (await row.locator('.cart_price p').textContent())?.trim() ?? '';
       const quantity = (await row.locator('.cart_quantity button').textContent())?.trim() ?? '';
       const total = (await row.locator('.cart_total p').textContent())?.trim() ?? '';
 
-      // Skip if essential data is missing
       if (!name) {
         continue;
       }
@@ -98,7 +91,6 @@ export class CheckoutPage extends BasePage {
   async placeOrder(): Promise<void> {
     Logger.info('Placing order');
     await this.placeOrderButton.click();
-    // Wait for navigation to payment page
     await this.page.waitForURL('**/payment');
     await this.page.waitForLoadState('domcontentloaded');
   }

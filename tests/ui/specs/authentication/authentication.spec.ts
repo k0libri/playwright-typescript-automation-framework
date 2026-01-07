@@ -13,24 +13,30 @@ test.describe('Authentication @critical', () => {
       page,
       authenticationPage,
       uniqueUserData,
+      userService,
     }) => {
       await authenticationPage.navigateToAuthenticationPage();
 
       await authenticationPage.startSignup(uniqueUserData.name, uniqueUserData.email);
-      await expect(authenticationPage.passwordInput).toBeVisible();
+      await expect(
+        authenticationPage.registrationForm.accountInfoComponent.passwordInput,
+      ).toBeVisible();
 
       await authenticationPage.completeRegistration(uniqueUserData);
-      await expect(authenticationPage.accountCreatedMessage).toBeVisible();
+      await expect(authenticationPage.registrationForm.accountCreatedMessage).toBeVisible();
 
-      await authenticationPage.continueButton.click();
+      await authenticationPage.registrationForm.continueButton.click();
       await page.waitForLoadState('domcontentloaded');
       await expect.soft(authenticationPage.loggedInUserText).toBeVisible();
       const loggedInUser = await authenticationPage.getLoggedInUsername();
       expect(loggedInUser).toContain(uniqueUserData.name);
 
-      await expect.soft(authenticationPage.loggedInUserText).toBeVisible();
-      const finalLoggedInUser = await authenticationPage.getLoggedInUsername();
-      expect(finalLoggedInUser).toContain(uniqueUserData.name);
+      const userResponse = await userService.getUserByEmail(uniqueUserData.email);
+      expect.soft(userResponse.status()).toBe(StatusCodes.OK);
+      const userData = await userResponse.json();
+      expect.soft(userData).toHaveProperty('user');
+      expect.soft(userData.user.email).toBe(uniqueUserData.email);
+      expect(userData.user.name).toBe(uniqueUserData.name);
     });
 
     test('should display error for duplicate email registration', async ({
@@ -48,30 +54,10 @@ test.describe('Authentication @critical', () => {
   });
 
   test.describe('Negative Test Cases @negative', () => {
-    let invalidLoginData: { status: number; body: ApiErrorResponse };
-    let nonExistentUserData: { status: number; body: ApiErrorResponse };
     let invalidRegistrationData: { status: number; body: ApiErrorResponse };
     let emptyEmailData: { status: number; body: ApiErrorResponse | null };
 
     test.beforeAll(async ({ userService }) => {
-      const invalidLoginResponse = await userService.verifyLogin(
-        'invalid@email.com',
-        'wrongpassword',
-      );
-      invalidLoginData = {
-        status: invalidLoginResponse.status(),
-        body: await invalidLoginResponse.json(),
-      };
-
-      const nonExistentUserResponse = await userService.verifyLogin(
-        'nonexistent@user.com',
-        'password123',
-      );
-      nonExistentUserData = {
-        status: nonExistentUserResponse.status(),
-        body: await nonExistentUserResponse.json(),
-      };
-
       const invalidData = UserDataFactory.generateInvalidUserData();
       const invalidRegistrationResponse = await userService.createUser(invalidData as any);
       invalidRegistrationData = {
@@ -82,18 +68,19 @@ test.describe('Authentication @critical', () => {
       emptyEmailData = await userService.safeGetUserByEmail('');
     });
 
-    test('should display error for invalid login credentials via UI', async ({
+    test('should display error for invalid login credentials via UI and verify via API', async ({
       authenticationPage,
+      userService,
     }) => {
       await authenticationPage.navigateToAuthenticationPage();
       await authenticationPage.login('invalid@email.com', 'wrongpassword');
-      await expect(authenticationPage.loginErrorMessage).toBeVisible();
-    });
+      await expect(authenticationPage.loginForm.loginErrorMessage).toBeVisible();
 
-    test('should return error for invalid login via API', async () => {
-      expect.soft(invalidLoginData.status).toBe(StatusCodes.OK);
-      expect.soft(invalidLoginData.body.responseCode).toBe(StatusCodes.NOT_FOUND);
-      expect(invalidLoginData.body.message).toContain('User not found!');
+      const apiResponse = await userService.verifyLogin('invalid@email.com', 'wrongpassword');
+      expect.soft(apiResponse.status()).toBe(StatusCodes.OK);
+      const apiData = await apiResponse.json();
+      expect.soft(apiData.responseCode).toBe(StatusCodes.NOT_FOUND);
+      expect(apiData.message).toContain('User not found!');
     });
 
     test('should handle invalid email format during registration', async ({
@@ -111,29 +98,38 @@ test.describe('Authentication @critical', () => {
       page,
     }) => {
       await authenticationPage.navigateToAuthenticationPage();
-      await authenticationPage.signupButton.click();
+      await authenticationPage.signupForm.signupButton.click();
       const currentUrl = page.url();
       expect.soft(currentUrl).toContain('/login');
-      const nameInputValidity = await authenticationPage.signupNameInput.evaluate(
+      const nameInputValidity = await authenticationPage.signupForm.signupNameInput.evaluate(
         (el: any) => el.validity.valid,
       );
       expect(nameInputValidity).toBe(false);
 
       await authenticationPage.navigateToAuthenticationPage();
-      await authenticationPage.signupNameInput.fill('Valid Name');
-      await authenticationPage.signupButton.click();
+      await authenticationPage.signupForm.signupNameInput.fill('Valid Name');
+      await authenticationPage.signupForm.signupButton.click();
       const currentUrlAfterEmail = page.url();
       expect.soft(currentUrlAfterEmail).toContain('/login');
-      const emailInputValidity = await authenticationPage.signupEmailInput.evaluate(
+      const emailInputValidity = await authenticationPage.signupForm.signupEmailInput.evaluate(
         (el: any) => el.validity.valid,
       );
       expect(emailInputValidity).toBe(false);
     });
 
-    test('should validate login with non-existent user via API', async () => {
-      expect.soft(nonExistentUserData.status).toBe(StatusCodes.OK);
-      expect.soft(nonExistentUserData.body.responseCode).toBe(StatusCodes.NOT_FOUND);
-      expect(nonExistentUserData.body.message).toContain('User not found!');
+    test('should validate login with non-existent user via UI and API', async ({
+      authenticationPage,
+      userService,
+    }) => {
+      await authenticationPage.navigateToAuthenticationPage();
+      await authenticationPage.login('nonexistent@user.com', 'password123');
+      await expect(authenticationPage.loginForm.loginErrorMessage).toBeVisible();
+
+      const apiResponse = await userService.verifyLogin('nonexistent@user.com', 'password123');
+      expect.soft(apiResponse.status()).toBe(StatusCodes.OK);
+      const apiData = await apiResponse.json();
+      expect.soft(apiData.responseCode).toBe(StatusCodes.NOT_FOUND);
+      expect(apiData.message).toContain('User not found!');
     });
 
     test('should handle invalid user data during API registration', async () => {

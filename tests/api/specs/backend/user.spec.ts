@@ -1,5 +1,6 @@
-import { test, expect } from '../../backendFixtures';
+import { test, expect } from '../../fixtures/backendFixtures';
 import { StatusCodes } from 'http-status-codes';
+import { faker } from '@faker-js/faker';
 
 /**
  * User API Tests - Backend API validation for UI testing
@@ -19,7 +20,6 @@ test.describe('User Backend API @api @backend @critical', () => {
     expect.soft(getUserResponse.status()).toBe(StatusCodes.OK);
 
     const userData = await getUserResponse.json();
-    expect.soft(userData).toHaveProperty('user');
     expect.soft(userData.user.email).toBe(uniqueUserData.email);
     expect(userData.user.name).toBe(uniqueUserData.name);
 
@@ -46,7 +46,10 @@ test.describe('User Backend API @api @backend @critical', () => {
   });
 
   test('should return error for invalid login credentials', async ({ userService }) => {
-    const loginResponse = await userService.verifyLogin('invalid@email.com', 'wrongpassword');
+    const loginResponse = await userService.verifyLogin(
+      faker.internet.email(),
+      faker.internet.password(),
+    );
     expect.soft(loginResponse.status()).toBe(StatusCodes.OK);
 
     const responseJson = await loginResponse.json();
@@ -64,7 +67,6 @@ test.describe('User Backend API @api @backend @critical', () => {
     expect.soft(getUserResponse.status()).toBe(StatusCodes.OK);
 
     const userData = await getUserResponse.json();
-    expect.soft(userData).toHaveProperty('user');
     expect.soft(userData.user.email).toBe(uniqueUserData.email);
     expect.soft(userData.user.name).toBe(uniqueUserData.name);
     expect.soft(userData.user.first_name).toBe(uniqueUserData.firstname);
@@ -74,7 +76,7 @@ test.describe('User Backend API @api @backend @critical', () => {
   });
 
   test('should return error for non-existent user email', async ({ userService }) => {
-    const getUserResponse = await userService.getUserByEmail('nonexistent@test.com');
+    const getUserResponse = await userService.getUserByEmail(faker.internet.email());
     expect.soft(getUserResponse.status()).toBe(StatusCodes.OK);
 
     const responseJson = await getUserResponse.json();

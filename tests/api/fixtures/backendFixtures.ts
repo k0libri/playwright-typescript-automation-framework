@@ -1,8 +1,8 @@
 import { test as baseTest } from '@playwright/test';
-import { UserService } from './clients/user.service';
-import { ProductService } from './clients/product.service';
-import { UserDataFactory } from '../common/utils/userDataFactory';
-import type { UserData } from '../common/data/types';
+import { UserService } from '../clients/user.service';
+import { ProductService } from '../clients/product.service';
+import { UserDataFactory } from '../../common/utils/userDataFactory';
+import type { UserData } from '../../common/data/types';
 
 /**
  * Backend API Test Fixtures - Provides service classes via dependency injection

@@ -15,7 +15,6 @@ export class LoginFormComponent extends BaseComponent {
   constructor(page: Page, container: Locator) {
     super(page);
 
-    // Login form locators - scoped to container
     this.loginEmailInput = container.getByRole('textbox', { name: /email address/i });
     this.loginPasswordInput = container.getByPlaceholder('Password');
     this.loginButton = container.getByRole('button', { name: /login/i });

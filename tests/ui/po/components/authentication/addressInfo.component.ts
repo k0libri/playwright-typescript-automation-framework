@@ -42,7 +42,6 @@ export class AddressInfoComponent extends BaseComponent {
       await this.address2Input.fill(addressData.address2);
     }
 
-    // Select random country from available dropdown options
     const countryOptions = await this.countrySelect.locator('option').all();
     if (countryOptions.length > 0) {
       const randomIndex = faker.number.int({ min: 0, max: countryOptions.length - 1 });

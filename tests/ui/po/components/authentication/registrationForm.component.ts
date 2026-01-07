@@ -21,12 +21,10 @@ export class RegistrationFormComponent extends BaseComponent {
   constructor(page: Page, container: Locator) {
     super(page);
 
-    // Initialize sub-components
     this.accountInfoComponent = new AccountInfoComponent(page, container);
     this.personalInfoComponent = new PersonalInfoComponent(page, container);
     this.addressInfoComponent = new AddressInfoComponent(page, container);
 
-    // Form-level controls
     this.createAccountButton = container.getByRole('button', { name: 'Create Account' });
     this.accountCreatedMessage = page.getByText('Account Created!');
     this.continueButton = page.getByRole('link', { name: 'Continue' });
@@ -53,7 +51,6 @@ export class RegistrationFormComponent extends BaseComponent {
     mobile_number: string;
   }): Promise<void> {
     Logger.info('Completing registration form');
-    // Fill account information
     await this.accountInfoComponent.fillAccountInfo({
       title: userData.title,
       password: userData.password,
@@ -62,7 +59,6 @@ export class RegistrationFormComponent extends BaseComponent {
       birth_year: userData.birth_year,
     });
 
-    // Fill personal information
     await this.personalInfoComponent.fillPersonalInfo({
       firstname: userData.firstname,
       lastname: userData.lastname,
@@ -70,7 +66,6 @@ export class RegistrationFormComponent extends BaseComponent {
       mobile_number: userData.mobile_number,
     });
 
-    // Fill address information
     await this.addressInfoComponent.fillAddressInfo({
       address1: userData.address1,
       ...(userData.address2 && { address2: userData.address2 }),
@@ -81,7 +76,6 @@ export class RegistrationFormComponent extends BaseComponent {
     });
 
     Logger.info('Submitting registration form');
-    // Submit form
     await this.createAccountButton.click();
   }
 

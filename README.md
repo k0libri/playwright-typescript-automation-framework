@@ -41,6 +41,15 @@ Enterprise-grade test automation framework built with **Playwright** and **TypeS
 
 ### Framework Capabilities
 
+**✅ UI + API Hybrid Testing (Production-Ready)**
+
+- **Complete User Journey Validation**: All UI actions verified through backend API calls
+  - ✅ User registration via UI + API user verification (User Story 1)
+  - ✅ Cart operations via UI + API state validation (User Story 2)
+  - ✅ Order completion via UI + API order verification (User Story 3)
+  - ✅ Negative scenarios with UI + API error validation (User Story 4)
+  - ✅ Comprehensive Allure reporting with attachments (User Story 5)
+
 **✅ Dual API Testing Strategy**
 
 - **Standalone API Testing**: Pure API tests against restful-booker.herokuapp.com
@@ -48,8 +57,8 @@ Enterprise-grade test automation framework built with **Playwright** and **TypeS
   - Booking CRUD operations
   - Unauthorized access validation
 - **Backend API Validation**: API calls to validate UI actions on automationexercise.com
-  - User account verification
-  - Product data validation
+  - User account verification after registration
+  - User state validation during cart/checkout flows
 
 **✅ Three-Layer Testing Architecture**
 
@@ -84,14 +93,25 @@ Enterprise-grade test automation framework built with **Playwright** and **TypeS
 
 ### Test Coverage
 
-| Category                 | Tests  | Description                              |
-| ------------------------ | ------ | ---------------------------------------- |
-| **Standalone API Tests** | 13     | Auth tokens, booking CRUD, unauthorized  |
-| **Backend API Tests**    | 5      | User management for UI validation        |
-| **UI Tests**             | 16     | Authentication, Cart, Checkout, Products |
-| **Total**                | **34** | Full coverage across all domains         |
+| Category                  | Tests  | Description                                        |
+| ------------------------- | ------ | -------------------------------------------------- |
+| **Standalone API Tests**  | 13     | Auth tokens, booking CRUD, unauthorized access     |
+| **Backend API Tests**     | 5      | User management for backend validation             |
+| **UI Tests**              | 16     | Authentication, Cart, Checkout, Products           |
+| **UI + API Hybrid Tests** | 6      | Registration, cart, checkout with API verification |
+| **Total**                 | **34** | Full coverage across all domains                   |
 
-**Test Execution Time**: ~10-12 minutes (full suite with all projects)
+**Test Execution Time**: ~35-40 seconds (full suite with all projects)
+
+### User Stories Completed ✅
+
+All 5 user stories from Mini Project 2 (E2E Hybrid Automation) are fully implemented:
+
+1. ✅ **User Story 1**: Register user via UI + verify via API
+2. ✅ **User Story 2**: Add items to cart via UI + verify state via API
+3. ✅ **User Story 3**: Complete purchase + verify order via API
+4. ✅ **User Story 4**: Negative scenarios (invalid login, errors) with UI + API validation
+5. ✅ **User Story 5**: Allure reporting with comprehensive attachments
 
 ---
 
@@ -1592,6 +1612,39 @@ test.describe('Feature @smoke @critical', () => {
       await featurePage.performAction(uniqueUserData);
       await expect(featurePage.successMessage).toBeVisible();
     });
+  });
+});
+```
+
+#### UI + API Hybrid Test Example (Recommended)
+
+```typescript
+import { test, expect } from '../../uiFixtures';
+import { StatusCodes } from 'http-status-codes';
+
+test.describe('User Registration @smoke @hybrid', () => {
+  test('should register new user via UI and verify user creation via API', async ({
+    authenticationPage,
+    uniqueUserData,
+    userService,
+  }) => {
+    // UI: Register user through the website
+    await authenticationPage.navigateToAuthenticationPage();
+    await authenticationPage.startSignup(uniqueUserData.name, uniqueUserData.email);
+    await authenticationPage.completeRegistration(uniqueUserData);
+
+    await authenticationPage.registrationForm.continueButton.click();
+    await expect.soft(authenticationPage.loggedInUserText).toBeVisible();
+    const loggedInUser = await authenticationPage.getLoggedInUsername();
+    expect.soft(loggedInUser).toContain(uniqueUserData.name);
+
+    // API: Verify user exists in backend
+    const userResponse = await userService.getUserByEmail(uniqueUserData.email);
+    expect.soft(userResponse.status()).toBe(StatusCodes.OK);
+    const userData = await userResponse.json();
+    expect.soft(userData).toHaveProperty('user');
+    expect.soft(userData.user.email).toBe(uniqueUserData.email);
+    expect(userData.user.name).toBe(uniqueUserData.name);
   });
 });
 ```

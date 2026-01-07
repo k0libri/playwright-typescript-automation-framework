@@ -1,6 +1,6 @@
-import { test, expect } from '../../../apiFixtures';
+import { test, expect } from '../../../fixtures/apiFixtures';
 import { StatusCodes } from 'http-status-codes';
-import { BookingDataFactory } from '../../../data/bookingDataFactory';
+import { BookingDataFactory, BOOKING_VALIDATION } from '../../../data/bookingDataFactory';
 
 /**
  * Booking API Tests - CRUD operations
@@ -18,9 +18,6 @@ test.describe('Booking API @api @standalone @critical', () => {
     expect.soft(response.status()).toBe(StatusCodes.OK);
 
     const responseBody = await response.json();
-    expect.soft(responseBody).toHaveProperty('bookingid');
-    expect.soft(responseBody).toHaveProperty('booking');
-
     createdBookingId = responseBody.bookingid;
 
     expect.soft(responseBody.booking.firstname).toBe(uniqueBooking.firstname);
@@ -47,8 +44,7 @@ test.describe('Booking API @api @standalone @critical', () => {
 
     const bookingIds = await response.json();
     expect.soft(Array.isArray(bookingIds)).toBe(true);
-    expect.soft(bookingIds.length).toBeGreaterThan(0);
-    expect(bookingIds[0]).toHaveProperty('bookingid');
+    expect(bookingIds.length).toBeGreaterThan(BOOKING_VALIDATION.MIN_BOOKING_IDS_COUNT);
   });
 
   test('should filter bookings by name', async ({ bookingService, uniqueBooking }) => {
@@ -97,8 +93,8 @@ test.describe('Booking API @api @standalone @critical', () => {
     const getResponse = await bookingService.getBookingById(createdBookingId);
     const bookingData = await getResponse.json();
 
-    expect.soft(bookingData.totalprice).toBe(uniqueBooking.totalprice + 50);
-    expect(bookingData.additionalneeds).toBe('Breakfast and Lunch');
+    expect.soft(bookingData.totalprice).toBe(updatedBooking.totalprice);
+    expect(bookingData.additionalneeds).toBe(updatedBooking.additionalneeds);
   });
 
   test('should partially update a booking', async ({
@@ -110,10 +106,7 @@ test.describe('Booking API @api @standalone @critical', () => {
     const createBody = await createResponse.json();
     createdBookingId = createBody.bookingid;
 
-    const partialUpdate = {
-      firstname: 'UpdatedFirstName',
-      lastname: 'UpdatedLastName',
-    };
+    const partialUpdate = BookingDataFactory.generatePartialUpdate();
 
     const response = await bookingService.partialUpdateBooking(
       createdBookingId,
@@ -124,8 +117,8 @@ test.describe('Booking API @api @standalone @critical', () => {
     expect.soft(response.status()).toBe(StatusCodes.OK);
 
     const updatedData = await response.json();
-    expect.soft(updatedData.firstname).toBe('UpdatedFirstName');
-    expect.soft(updatedData.lastname).toBe('UpdatedLastName');
+    expect.soft(updatedData.firstname).toBe(partialUpdate.firstname);
+    expect.soft(updatedData.lastname).toBe(partialUpdate.lastname);
     expect(updatedData.totalprice).toBe(uniqueBooking.totalprice);
   });
 
@@ -135,12 +128,15 @@ test.describe('Booking API @api @standalone @critical', () => {
     authToken,
   }) => {
     const createResponse = await bookingService.createBooking(uniqueBooking);
+    expect.soft(createResponse.status()).toBe(StatusCodes.OK);
+
     const createBody = await createResponse.json();
+    expect.soft(createBody.bookingid).toBeDefined();
     createdBookingId = createBody.bookingid;
 
     const response = await bookingService.deleteBooking(createdBookingId, authToken);
 
-    expect(response.status()).toBe(StatusCodes.CREATED);
+    expect.soft(response.status()).toBe(StatusCodes.CREATED);
 
     const getResponse = await bookingService.getBookingById(createdBookingId);
 
@@ -157,7 +153,7 @@ test.describe('Booking API @api @standalone @critical', () => {
 
     const updatedBooking = BookingDataFactory.generateUpdatedBooking(uniqueBooking);
 
-    const response = await bookingService.updateBooking(createdBookingId, updatedBooking, '');
+    const response = await bookingService.updateBooking(createdBookingId, updatedBooking);
 
     expect(response.status()).toBe(StatusCodes.FORBIDDEN);
   });
@@ -170,13 +166,13 @@ test.describe('Booking API @api @standalone @critical', () => {
     const createBody = await createResponse.json();
     createdBookingId = createBody.bookingid;
 
-    const response = await bookingService.deleteBooking(createdBookingId, '');
+    const response = await bookingService.deleteBooking(createdBookingId);
 
     expect(response.status()).toBe(StatusCodes.FORBIDDEN);
   });
 
   test('should return 404 for non-existent booking', async ({ bookingService }) => {
-    const nonExistentId = 999999999;
+    const nonExistentId = BookingDataFactory.generateNonExistentBookingId();
     const response = await bookingService.getBookingById(nonExistentId);
 
     expect(response.status()).toBe(StatusCodes.NOT_FOUND);

@@ -26,9 +26,7 @@ export interface UIFixtures {
 
 export const test = baseTest.extend<UIFixtures>({
   context: async ({ context }, use) => {
-    // Handle cookie consent by removing the dialog element before any page loads
     await context.addInitScript(() => {
-      // Remove consent dialog immediately when detected
       const removeConsentDialog = () => {
         const consentRoot = document.querySelector('.fc-consent-root');
         if (consentRoot) {
@@ -36,12 +34,10 @@ export const test = baseTest.extend<UIFixtures>({
         }
       };
 
-      // Set up mutation observer to remove dialog if it gets added
       const observer = new MutationObserver(() => {
         removeConsentDialog();
       });
 
-      // Start observing when body is available
       const startObserving = () => {
         if (document.body) {
           observer.observe(document.body, { childList: true, subtree: false });
@@ -52,7 +48,6 @@ export const test = baseTest.extend<UIFixtures>({
 
       startObserving();
 
-      // Also remove on DOM ready
       if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', removeConsentDialog);
       } else {

@@ -16,22 +16,11 @@ export class AuthenticationPage extends BasePage {
   readonly signupForm: SignupFormComponent;
   readonly registrationForm: RegistrationFormComponent;
 
-  // Exposed locators for backward compatibility with tests
-  readonly passwordInput: Locator;
-  readonly loginErrorMessage: Locator;
-  readonly signupButton: Locator;
-  readonly signupNameInput: Locator;
-  readonly signupEmailInput: Locator;
-  readonly continueButton: Locator;
-  readonly accountCreatedMessage: Locator;
-
-  // Success/error messages
   readonly loggedInUserText: Locator;
 
   constructor(page: Page) {
     super(page);
 
-    // Find form containers - using more flexible selectors that work with the actual page structure
     const loginFormContainer = page
       .locator('form')
       .filter({ has: page.locator('input[data-qa="login-email"]') });
@@ -42,21 +31,10 @@ export class AuthenticationPage extends BasePage {
       .locator('form')
       .filter({ has: page.locator('input[name="password"]') });
 
-    // Initialize components with their containers
     this.loginForm = new LoginFormComponent(page, loginFormContainer);
     this.signupForm = new SignupFormComponent(page, signupFormContainer);
     this.registrationForm = new RegistrationFormComponent(page, registrationFormContainer);
 
-    // Expose component locators for backward compatibility
-    this.passwordInput = this.registrationForm.accountInfoComponent.passwordInput;
-    this.loginErrorMessage = this.loginForm.loginErrorMessage;
-    this.signupButton = this.signupForm.signupButton;
-    this.signupNameInput = this.signupForm.signupNameInput;
-    this.signupEmailInput = this.signupForm.signupEmailInput;
-    this.continueButton = this.registrationForm.continueButton;
-    this.accountCreatedMessage = this.registrationForm.accountCreatedMessage;
-
-    // Page-level locators
     this.loggedInUserText = page.getByText('Logged in as');
   }
 
@@ -108,18 +86,6 @@ export class AuthenticationPage extends BasePage {
   }
 
   /**
-   * Check if user is logged in
-   */
-  async isUserLoggedIn(): Promise<boolean> {
-    try {
-      await this.loggedInUserText.waitFor();
-      return true;
-    } catch {
-      return false;
-    }
-  }
-
-  /**
    * Get logged in username
    */
   async getLoggedInUsername(): Promise<string> {
@@ -154,9 +120,9 @@ export class AuthenticationPage extends BasePage {
     page: Page,
   ): Promise<boolean> {
     try {
-      await this.passwordInput.waitFor({ timeout: 5000 });
+      await this.registrationForm.accountInfoComponent.passwordInput.waitFor({ timeout: 5000 });
       await this.completeRegistration(userData);
-      await this.continueButton.click();
+      await this.registrationForm.continueButton.click();
       await this.loggedInUserText.waitFor({ state: 'visible' });
       await page.getByRole('link', { name: ' Logout' }).click();
       await page.waitForLoadState('domcontentloaded');

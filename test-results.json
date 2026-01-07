@@ -153,12 +153,12 @@
                           "workerIndex": 0,
                           "parallelIndex": 0,
                           "status": "passed",
-                          "duration": 7778,
+                          "duration": 5524,
                           "errors": [],
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2026-01-07T11:29:52.805Z",
+                          "startTime": "2026-01-07T16:10:52.112Z",
                           "annotations": [],
                           "attachments": []
                         }
@@ -190,12 +190,12 @@
                           "workerIndex": 0,
                           "parallelIndex": 0,
                           "status": "passed",
-                          "duration": 5423,
+                          "duration": 5350,
                           "errors": [],
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2026-01-07T11:30:00.755Z",
+                          "startTime": "2026-01-07T16:10:57.805Z",
                           "annotations": [],
                           "attachments": []
                         }
@@ -205,7 +205,7 @@
                   ],
                   "id": "a80de8cf7db3da3066d1-177044cea4bd42003e7c",
                   "file": "tests/ui/specs/authentication/authentication.spec.ts",
-                  "line": 36,
+                  "line": 42,
                   "column": 9
                 }
               ]
@@ -213,11 +213,11 @@
             {
               "title": "Negative Test Cases @negative",
               "file": "tests/ui/specs/authentication/authentication.spec.ts",
-              "line": 50,
+              "line": 56,
               "column": 8,
               "specs": [
                 {
-                  "title": "should display error for invalid login credentials via UI",
+                  "title": "should display error for invalid login credentials via UI and verify via API",
                   "ok": true,
                   "tags": [
                     "critical",
@@ -235,12 +235,12 @@
                           "workerIndex": 0,
                           "parallelIndex": 0,
                           "status": "passed",
-                          "duration": 2265,
+                          "duration": 2685,
                           "errors": [],
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2026-01-07T11:30:06.186Z",
+                          "startTime": "2026-01-07T16:11:03.171Z",
                           "annotations": [],
                           "attachments": []
                         }
@@ -248,46 +248,9 @@
                       "status": "expected"
                     }
                   ],
-                  "id": "a80de8cf7db3da3066d1-bc793d8d318b16190d51",
+                  "id": "a80de8cf7db3da3066d1-76b3a5031f8d36ffa22b",
                   "file": "tests/ui/specs/authentication/authentication.spec.ts",
-                  "line": 85,
-                  "column": 9
-                },
-                {
-                  "title": "should return error for invalid login via API",
-                  "ok": true,
-                  "tags": [
-                    "critical",
-                    "negative"
-                  ],
-                  "tests": [
-                    {
-                      "timeout": 60000,
-                      "annotations": [],
-                      "expectedStatus": "passed",
-                      "projectId": "ui",
-                      "projectName": "ui",
-                      "results": [
-                        {
-                          "workerIndex": 0,
-                          "parallelIndex": 0,
-                          "status": "passed",
-                          "duration": 2,
-                          "errors": [],
-                          "stdout": [],
-                          "stderr": [],
-                          "retry": 0,
-                          "startTime": "2026-01-07T11:30:09.552Z",
-                          "annotations": [],
-                          "attachments": []
-                        }
-                      ],
-                      "status": "expected"
-                    }
-                  ],
-                  "id": "a80de8cf7db3da3066d1-4950f796123f0215240a",
-                  "file": "tests/ui/specs/authentication/authentication.spec.ts",
-                  "line": 93,
+                  "line": 71,
                   "column": 9
                 },
                 {
@@ -309,12 +272,12 @@
                           "workerIndex": 0,
                           "parallelIndex": 0,
                           "status": "passed",
-                          "duration": 1636,
+                          "duration": 1860,
                           "errors": [],
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2026-01-07T11:30:09.564Z",
+                          "startTime": "2026-01-07T16:11:06.805Z",
                           "annotations": [],
                           "attachments": []
                         }
@@ -324,7 +287,7 @@
                   ],
                   "id": "a80de8cf7db3da3066d1-bfc6aac9e311b95cc99d",
                   "file": "tests/ui/specs/authentication/authentication.spec.ts",
-                  "line": 99,
+                  "line": 86,
                   "column": 9
                 },
                 {
@@ -346,12 +309,12 @@
                           "workerIndex": 0,
                           "parallelIndex": 0,
                           "status": "passed",
-                          "duration": 2080,
+                          "duration": 3140,
                           "errors": [],
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2026-01-07T11:30:11.210Z",
+                          "startTime": "2026-01-07T16:11:08.678Z",
                           "annotations": [],
                           "attachments": []
                         }
@@ -361,11 +324,11 @@
                   ],
                   "id": "a80de8cf7db3da3066d1-694db78cdf035995c972",
                   "file": "tests/ui/specs/authentication/authentication.spec.ts",
-                  "line": 109,
+                  "line": 96,
                   "column": 9
                 },
                 {
-                  "title": "should validate login with non-existent user via API",
+                  "title": "should validate login with non-existent user via UI and API",
                   "ok": true,
                   "tags": [
                     "critical",
@@ -383,12 +346,12 @@
                           "workerIndex": 0,
                           "parallelIndex": 0,
                           "status": "passed",
-                          "duration": 3,
+                          "duration": 2008,
                           "errors": [],
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2026-01-07T11:30:13.300Z",
+                          "startTime": "2026-01-07T16:11:11.837Z",
                           "annotations": [],
                           "attachments": []
                         }
@@ -396,13 +359,50 @@
                       "status": "expected"
                     }
                   ],
-                  "id": "a80de8cf7db3da3066d1-87d0d3166ab35d5990c4",
+                  "id": "a80de8cf7db3da3066d1-3f7202684115bffb8060",
                   "file": "tests/ui/specs/authentication/authentication.spec.ts",
-                  "line": 133,
+                  "line": 120,
                   "column": 9
                 },
                 {
                   "title": "should handle invalid user data during API registration",
+                  "ok": true,
+                  "tags": [
+                    "critical",
+                    "negative"
+                  ],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "ui",
+                      "projectName": "ui",
+                      "results": [
+                        {
+                          "workerIndex": 0,
+                          "parallelIndex": 0,
+                          "status": "passed",
+                          "duration": 0,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2026-01-07T16:11:13.858Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "a80de8cf7db3da3066d1-6cfee1d01bb7aefb1660",
+                  "file": "tests/ui/specs/authentication/authentication.spec.ts",
+                  "line": 135,
+                  "column": 9
+                },
+                {
+                  "title": "should handle API errors gracefully",
                   "ok": true,
                   "tags": [
                     "critical",
@@ -425,44 +425,7 @@
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2026-01-07T11:30:13.318Z",
-                          "annotations": [],
-                          "attachments": []
-                        }
-                      ],
-                      "status": "expected"
-                    }
-                  ],
-                  "id": "a80de8cf7db3da3066d1-6cfee1d01bb7aefb1660",
-                  "file": "tests/ui/specs/authentication/authentication.spec.ts",
-                  "line": 139,
-                  "column": 9
-                },
-                {
-                  "title": "should handle API errors gracefully",
-                  "ok": true,
-                  "tags": [
-                    "critical",
-                    "negative"
-                  ],
-                  "tests": [
-                    {
-                      "timeout": 60000,
-                      "annotations": [],
-                      "expectedStatus": "passed",
-                      "projectId": "ui",
-                      "projectName": "ui",
-                      "results": [
-                        {
-                          "workerIndex": 0,
-                          "parallelIndex": 0,
-                          "status": "passed",
-                          "duration": 3,
-                          "errors": [],
-                          "stdout": [],
-                          "stderr": [],
-                          "retry": 0,
-                          "startTime": "2026-01-07T11:30:13.330Z",
+                          "startTime": "2026-01-07T16:11:13.864Z",
                           "annotations": [],
                           "attachments": []
                         }
@@ -472,7 +435,7 @@
                   ],
                   "id": "a80de8cf7db3da3066d1-dc5149ab395984fc2c17",
                   "file": "tests/ui/specs/authentication/authentication.spec.ts",
-                  "line": 143,
+                  "line": 139,
                   "column": 9
                 }
               ]
@@ -515,12 +478,12 @@
                       "workerIndex": 1,
                       "parallelIndex": 1,
                       "status": "passed",
-                      "duration": 9913,
+                      "duration": 8885,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-01-07T11:29:52.845Z",
+                      "startTime": "2026-01-07T16:10:52.096Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -534,7 +497,7 @@
               "column": 7
             },
             {
-              "title": "should login via UI, add products to cart, and verify cart via API",
+              "title": "should login via UI, add products to cart, and verify user state via API",
               "ok": true,
               "tags": [
                 "critical",
@@ -552,12 +515,12 @@
                       "workerIndex": 1,
                       "parallelIndex": 1,
                       "status": "passed",
-                      "duration": 7236,
+                      "duration": 7058,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-01-07T11:30:02.932Z",
+                      "startTime": "2026-01-07T16:11:01.158Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -565,7 +528,7 @@
                   "status": "expected"
                 }
               ],
-              "id": "15e0a340eb49224c76d6-fb5261994329601bf0a9",
+              "id": "15e0a340eb49224c76d6-28ff084fc9fdaf4c9133",
               "file": "tests/ui/specs/cart/cartManagement.spec.ts",
               "line": 58,
               "column": 7
@@ -589,12 +552,12 @@
                       "workerIndex": 1,
                       "parallelIndex": 1,
                       "status": "passed",
-                      "duration": 4637,
+                      "duration": 5174,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-01-07T11:30:10.178Z",
+                      "startTime": "2026-01-07T16:11:08.234Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -604,7 +567,7 @@
               ],
               "id": "15e0a340eb49224c76d6-ac09f9666d78e3698a5a",
               "file": "tests/ui/specs/cart/cartManagement.spec.ts",
-              "line": 105,
+              "line": 113,
               "column": 7
             },
             {
@@ -626,12 +589,12 @@
                       "workerIndex": 1,
                       "parallelIndex": 1,
                       "status": "passed",
-                      "duration": 3547,
+                      "duration": 4185,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-01-07T11:30:14.826Z",
+                      "startTime": "2026-01-07T16:11:13.423Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -641,7 +604,7 @@
               ],
               "id": "15e0a340eb49224c76d6-6b585c05fb7af5696074",
               "file": "tests/ui/specs/cart/cartManagement.spec.ts",
-              "line": 142,
+              "line": 150,
               "column": 7
             }
           ]
@@ -662,7 +625,7 @@
           "column": 6,
           "specs": [
             {
-              "title": "should complete purchase flow and verify order confirmation",
+              "title": "should complete purchase flow and verify order confirmation and user via API",
               "ok": true,
               "tags": [
                 "critical",
@@ -680,12 +643,12 @@
                       "workerIndex": 2,
                       "parallelIndex": 2,
                       "status": "passed",
-                      "duration": 15241,
+                      "duration": 12573,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-01-07T11:29:52.808Z",
+                      "startTime": "2026-01-07T16:10:52.157Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -693,7 +656,7 @@
                   "status": "expected"
                 }
               ],
-              "id": "a704d7ddb343df3f518f-05b0026d030af25388c8",
+              "id": "a704d7ddb343df3f518f-61bb32d3002d6d04b8c3",
               "file": "tests/ui/specs/checkout/orderCompletion.spec.ts",
               "line": 10,
               "column": 7
@@ -717,12 +680,12 @@
                       "workerIndex": 2,
                       "parallelIndex": 2,
                       "status": "passed",
-                      "duration": 9619,
+                      "duration": 11607,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-01-07T11:30:08.223Z",
+                      "startTime": "2026-01-07T16:11:04.932Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -732,7 +695,7 @@
               ],
               "id": "a704d7ddb343df3f518f-532cd70ee54686150aba",
               "file": "tests/ui/specs/checkout/orderCompletion.spec.ts",
-              "line": 80,
+              "line": 82,
               "column": 7
             },
             {
@@ -754,12 +717,12 @@
                       "workerIndex": 2,
                       "parallelIndex": 2,
                       "status": "passed",
-                      "duration": 7660,
+                      "duration": 7518,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-01-07T11:30:17.857Z",
+                      "startTime": "2026-01-07T16:11:16.557Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -769,7 +732,7 @@
               ],
               "id": "a704d7ddb343df3f518f-f7f750dcd032fb535093",
               "file": "tests/ui/specs/checkout/orderCompletion.spec.ts",
-              "line": 118,
+              "line": 120,
               "column": 7
             }
           ]
@@ -815,12 +778,12 @@
                           "workerIndex": 3,
                           "parallelIndex": 3,
                           "status": "passed",
-                          "duration": 37295,
+                          "duration": 4848,
                           "errors": [],
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2026-01-07T11:29:52.837Z",
+                          "startTime": "2026-01-07T16:10:52.081Z",
                           "annotations": [],
                           "attachments": []
                         }
@@ -842,9 +805,9 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2026-01-07T11:29:51.576Z",
-    "duration": 38845.994999999995,
-    "expected": 17,
+    "startTime": "2026-01-07T16:10:50.796Z",
+    "duration": 33435.952000000005,
+    "expected": 16,
     "skipped": 0,
     "unexpected": 0,
     "flaky": 0

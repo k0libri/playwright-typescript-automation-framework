@@ -34,17 +34,14 @@ export class AccountInfoComponent extends BaseComponent {
     birth_month: string;
     birth_year: string;
   }): Promise<void> {
-    // Select title
     if (accountData.title === 'Mr') {
       await this.titleMrRadio.check();
     } else {
       await this.titleMrsRadio.check();
     }
 
-    // Fill password
     await this.passwordInput.fill(accountData.password);
 
-    // Select birth date
     await this.daySelect.selectOption(accountData.birth_date);
     await this.monthSelect.selectOption(accountData.birth_month);
     await this.yearSelect.selectOption(accountData.birth_year);

@@ -7,7 +7,7 @@ import { PaymentDataFactory } from '../../../common/utils/paymentDataFactory';
 import { StatusCodes } from 'http-status-codes';
 
 test.describe('Order Completion - Purchase + Order History @critical @e2e', () => {
-  test('should complete purchase flow and verify order confirmation', async ({
+  test('should complete purchase flow and verify order confirmation and user via API', async ({
     authenticationPage,
     productsPage,
     cartPage,
@@ -21,9 +21,7 @@ test.describe('Order Completion - Purchase + Order History @critical @e2e', () =
     await authenticationPage.navigateToAuthenticationPage();
     await authenticationPage.startSignup(uniqueUserData.name, uniqueUserData.email);
     await authenticationPage.completeRegistration(uniqueUserData);
-    await authenticationPage.continueButton.click();
-
-    await expect(authenticationPage.loggedInUserText).toBeVisible();
+    await authenticationPage.registrationForm.continueButton.click();
 
     await expect(authenticationPage.loggedInUserText).toBeVisible();
 
@@ -65,10 +63,14 @@ test.describe('Order Completion - Purchase + Order History @critical @e2e', () =
     expect.soft(isConfirmed).toBe(true);
 
     const confirmationMessage = await checkoutPage.getOrderConfirmationMessage();
-    expect(confirmationMessage).toContain('Order Placed!');
+    expect.soft(confirmationMessage).toContain('Order Placed!');
 
     const userResponse = await userService.getUserByEmail(uniqueUserData.email);
-    expect(userResponse.status()).toBe(StatusCodes.OK);
+    expect.soft(userResponse.status()).toBe(StatusCodes.OK);
+    const userData = await userResponse.json();
+    expect.soft(userData).toHaveProperty('user');
+    expect.soft(userData.user.email).toBe(uniqueUserData.email);
+    expect(userData.user.name).toBe(uniqueUserData.name);
 
     await checkoutPage.continueAfterOrder();
 
@@ -89,7 +91,7 @@ test.describe('Order Completion - Purchase + Order History @critical @e2e', () =
     await authenticationPage.navigateToAuthenticationPage();
     await authenticationPage.startSignup(uniqueUserData.name, uniqueUserData.email);
     await authenticationPage.completeRegistration(uniqueUserData);
-    await authenticationPage.continueButton.click();
+    await authenticationPage.registrationForm.continueButton.click();
 
     await expect(authenticationPage.loggedInUserText).toBeVisible();
 
@@ -129,7 +131,7 @@ test.describe('Order Completion - Purchase + Order History @critical @e2e', () =
     await authenticationPage.navigateToAuthenticationPage();
     await authenticationPage.startSignup(uniqueUserData.name, uniqueUserData.email);
     await authenticationPage.completeRegistration(uniqueUserData);
-    await authenticationPage.continueButton.click();
+    await authenticationPage.registrationForm.continueButton.click();
 
     await expect(authenticationPage.loggedInUserText).toBeVisible();
 

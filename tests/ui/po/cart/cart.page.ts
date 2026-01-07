@@ -12,10 +12,7 @@ export class CartPage extends BasePage {
   readonly cartTable: Locator;
   readonly cartItems: Locator;
   readonly proceedToCheckoutButton: Locator;
-  readonly emptyCartMessage: Locator;
-  readonly cartTotal: Locator;
   readonly removeItemButtons: Locator;
-  readonly quantityInputs: Locator;
   readonly registerLoginLink: Locator;
 
   constructor(page: Page) {
@@ -24,10 +21,7 @@ export class CartPage extends BasePage {
     this.cartTable = page.locator('#cart_info_table');
     this.cartItems = page.locator('#cart_info tbody tr');
     this.proceedToCheckoutButton = page.getByText('Proceed To Checkout');
-    this.emptyCartMessage = page.getByText('Cart is empty!');
-    this.cartTotal = page.locator('.cart_total_price');
     this.removeItemButtons = page.locator('.cart_quantity_delete');
-    this.quantityInputs = page.locator('.cart_quantity_input');
     this.registerLoginLink = page.getByRole('link', { name: 'Register / Login' });
   }
 
@@ -73,13 +67,6 @@ export class CartPage extends BasePage {
   }
 
   /**
-   * Get total cart value
-   */
-  async getCartTotal(): Promise<string> {
-    return (await this.cartTotal.textContent()) ?? '';
-  }
-
-  /**
    * Remove item from cart by index
    */
   async removeItemFromCart(itemIndex: number): Promise<void> {
@@ -95,13 +82,6 @@ export class CartPage extends BasePage {
   async proceedToCheckout(): Promise<void> {
     Logger.info('Proceeding to checkout');
     await this.proceedToCheckoutButton.click();
-  }
-
-  /**
-   * Click register/login when checkout requires authentication
-   */
-  async goToRegisterLogin(): Promise<void> {
-    await this.registerLoginLink.click();
   }
 
   /**

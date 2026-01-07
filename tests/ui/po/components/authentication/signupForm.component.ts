@@ -14,7 +14,6 @@ export class SignupFormComponent extends BaseComponent {
   constructor(page: Page, container: Locator) {
     super(page);
 
-    // Signup form locators - scoped to container
     this.signupNameInput = container.getByPlaceholder('Name');
     this.signupEmailInput = container.getByRole('textbox', { name: /email address/i });
     this.signupButton = container.getByRole('button', { name: /signup/i });

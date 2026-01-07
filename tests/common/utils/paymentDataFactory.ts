@@ -2,6 +2,13 @@ import { faker } from '@faker-js/faker';
 import { PaymentData } from '../data/types';
 
 /**
+ * Payment test card constants
+ */
+export const PAYMENT_TEST_DATA = {
+  VISA_TEST_CARD: '4111111111111111',
+} as const;
+
+/**
  * Payment Data Factory - Generates test payment data
  * Provides factory methods for creating valid payment information for testing
  */
@@ -14,7 +21,7 @@ export class PaymentDataFactory {
 
     return {
       nameOnCard: faker.person.fullName(),
-      cardNumber: '4111111111111111', // Visa test card number
+      cardNumber: PAYMENT_TEST_DATA.VISA_TEST_CARD,
       cvc: faker.finance.creditCardCVV(),
       expiryMonth: faker.number.int({ min: 1, max: 12 }).toString().padStart(2, '0'),
       expiryYear: (currentYear + faker.number.int({ min: 1, max: 5 })).toString(),

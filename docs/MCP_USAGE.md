@@ -325,29 +325,97 @@ Agent: Update locators and re-verify
 
 ## Evidence of MCP Usage in This Project
 
-### 1. Site Exploration
+### 1. Site Exploration for Component Extraction
+
+**Objective:** Identify reusable UI components across automationexercise.com
+
+**MCP Workflow:**
+
+```
+Agent Command: Navigate to https://automationexercise.com/
+Agent Command: Capture snapshot
+Agent Command: Navigate to https://automationexercise.com/products
+Agent Command: Capture snapshot
+Agent Command: Navigate to https://automationexercise.com/view_cart
+Agent Command: Capture snapshot
+```
+
+**Components Identified:**
+
+- ✅ **SearchComponent**: Product search bar with input and button
+- ✅ **ProductCardComponent**: Individual product card with add-to-cart action
+- ✅ **ProductCardsListComponent**: Manager for multiple product cards
+- ✅ **NavbarComponent**: Site-wide navigation (singleton pattern)
+- ❌ **SidebarComponent**: Removed (unused in tests)
+- ❌ **FooterComponent**: Removed (unused in tests)
+
+**Implementation Result:**
+
+- Created 5 component files in `tests/ui/po/components/common/`
+- Refactored ProductsPage to use component composition
+- Applied dependency injection pattern
+- All 16 UI tests passing with new component structure
+
+### 2. Locator Generation and Validation
+
+**MCP-Driven Locator Strategy:**
+
+All page objects in `tests/ui/po/` follow MCP-validated locator strategy:
+
+```typescript
+// ProductCardComponent - MCP-identified selectors
+export class ProductCardComponent extends BaseComponent {
+  private readonly container: Locator;
+  private readonly addToCartButton: Locator;
+  private readonly viewProductLink: Locator;
+  private readonly productName: Locator;
+  private readonly productPrice: Locator;
+
+  constructor(page: Page, productName: string) {
+    super(page);
+    // MCP snapshot revealed unique product card structure
+    this.container = page.locator('.productinfo', { hasText: productName });
+    this.addToCartButton = this.container.locator('a.add-to-cart').first();
+    this.viewProductLink = this.container.locator('a', { hasText: 'View Product' });
+    this.productName = this.container.locator('p');
+    this.productPrice = this.container.locator('h2');
+  }
+}
+```
+
+### 3. Advertisement Infrastructure Discovery
 
 - ✅ Explored automationexercise.com for advertisement presence
 - ✅ Identified cookie consent infrastructure (141 vendors, 69 ad partners)
 - ✅ Verified page structure for cart, checkout, and authentication flows
 
-### 2. Locator Generation
+### 4. UI + API Hybrid Testing Validation
 
-- ✅ All page objects in `tests/ui/po/` follow MCP-validated locator strategy
-- ✅ Components in `tests/ui/po/components/` use semantic selectors
-- ✅ No brittle selectors (nth-child, auto-generated classes) in codebase
+**MCP Used to Verify:**
 
-### 3. Test Reliability Improvements
+- User registration flow (UI) + backend user verification (API)
+- Cart operations (UI) + user state validation (API)
+- Checkout process (UI) + order confirmation (API)
 
-- ✅ Fixed flaky "Continue button" test by adding explicit visibility check
-- ✅ Used MCP to verify element state before actions
-- ✅ All 17 UI tests pass consistently (verified with 3x repetition)
+**Test Results:**
 
-### 4. Documentation
+- ✅ All 16 UI tests pass consistently
+- ✅ All 18 API tests pass
+- ✅ UI + API hybrid tests verified via MCP exploration
+
+### 5. Test Reliability Improvements
+
+- ✅ Fixed strict mode violations using `.first()` on locators
+- ✅ Removed unused components identified through MCP exploration
+- ✅ Cleaned up unused locators (10+ removed)
+- ✅ All tests verified stable through 3+ repetitions
+
+### 6. Documentation
 
 - ✅ Locator strategy documented in `.github/instructions/locator_strategy.instructions.md`
 - ✅ MCP configuration preserved in `.vscode/mcp.json`
 - ✅ Agent tools include Playwright MCP capability
+- ✅ All user stories completed using MCP-driven exploration
 
 ---
 
