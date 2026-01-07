@@ -14,8 +14,8 @@ export class AuthService extends BaseApiClient {
    * Authenticate and obtain access token
    */
   async createToken(credentials: AuthCredentials): Promise<APIResponse> {
-    return await this.post('/auth', {
-      data: credentials as unknown as Record<string, unknown>,
+    return await this.post<AuthCredentials>('/auth', {
+      data: credentials,
     });
   }
 

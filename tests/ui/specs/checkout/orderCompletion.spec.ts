@@ -1,3 +1,7 @@
+/**
+ * Order Completion Tests
+ * Tests end-to-end purchase flow and order verification
+ */
 import { test, expect } from '../../uiFixtures';
 import { PaymentDataFactory } from '../../../common/utils/paymentDataFactory';
 import { StatusCodes } from 'http-status-codes';
@@ -19,7 +23,6 @@ test.describe('Order Completion - Purchase + Order History @critical @e2e', () =
     await authenticationPage.completeRegistration(uniqueUserData);
     await authenticationPage.continueButton.click();
 
-    // Verify user is logged in
     await expect(authenticationPage.loggedInUserText).toBeVisible();
 
     await expect(authenticationPage.loggedInUserText).toBeVisible();
@@ -88,7 +91,6 @@ test.describe('Order Completion - Purchase + Order History @critical @e2e', () =
     await authenticationPage.completeRegistration(uniqueUserData);
     await authenticationPage.continueButton.click();
 
-    // Verify user is logged in
     await expect(authenticationPage.loggedInUserText).toBeVisible();
 
     await navbar.goToProducts();
@@ -129,7 +131,6 @@ test.describe('Order Completion - Purchase + Order History @critical @e2e', () =
     await authenticationPage.completeRegistration(uniqueUserData);
     await authenticationPage.continueButton.click();
 
-    // Verify user is logged in
     await expect(authenticationPage.loggedInUserText).toBeVisible();
 
     await navbar.goToProducts();

@@ -5,6 +5,7 @@ import { CartPage } from './po/cart/cart.page';
 import { CheckoutPage } from './po/checkout/checkout.page';
 import { NavbarComponent } from './po/components/common/navbar.component';
 import { UserService } from '../api/clients/user.service';
+import { ProductService } from '../api/clients/product.service';
 import { UserDataFactory } from '../common/utils/userDataFactory';
 import type { UserData } from '../common/data/types';
 
@@ -19,6 +20,7 @@ export interface UIFixtures {
   checkoutPage: CheckoutPage;
   navbar: NavbarComponent;
   userService: UserService;
+  productService: ProductService;
   uniqueUserData: UserData;
 }
 
@@ -83,6 +85,10 @@ export const test = baseTest.extend<UIFixtures>({
 
   userService: async ({ request }, use) => {
     await use(new UserService(request));
+  },
+
+  productService: async ({ request }, use) => {
+    await use(new ProductService(request));
   },
 
   uniqueUserData: async ({ page: _page }: { page?: unknown }, use) => {

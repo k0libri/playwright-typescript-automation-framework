@@ -4,8 +4,7 @@ import { StatusCodes } from 'http-status-codes';
 
 /**
  * Authentication API Tests
- * User Story: As a tester, I want to authenticate using the /auth endpoint
- * so that I can obtain a token for subsequent requests
+ * Tests authentication endpoints for token generation and validation
  */
 test.describe('Authentication API @api @standalone @critical', () => {
   test('should successfully authenticate with valid credentials', async ({

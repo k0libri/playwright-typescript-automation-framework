@@ -115,110 +115,56 @@
   },
   "suites": [
     {
-      "title": "tests\\ui\\specs\\authentication\\authentication.spec.ts",
-      "file": "tests/ui/specs/authentication/authentication.spec.ts",
+      "title": "tests\\ui\\specs\\cart\\cartManagement.spec.ts",
+      "file": "tests/ui/specs/cart/cartManagement.spec.ts",
       "column": 0,
       "line": 0,
       "specs": [],
       "suites": [
         {
-          "title": "Authentication @critical",
-          "file": "tests/ui/specs/authentication/authentication.spec.ts",
-          "line": 17,
+          "title": "Cart Management - Login + Cart Verification @critical @regression",
+          "file": "tests/ui/specs/cart/cartManagement.spec.ts",
+          "line": 3,
           "column": 6,
-          "specs": [],
-          "suites": [
+          "specs": [
             {
-              "title": "Positive Test Cases @smoke",
-              "file": "tests/ui/specs/authentication/authentication.spec.ts",
-              "line": 18,
-              "column": 8,
-              "specs": [
+              "title": "should create user via API, login via UI, and manage cart @hybrid @api-to-ui",
+              "ok": true,
+              "tags": [
+                "critical",
+                "regression",
+                "hybrid",
+                "api-to-ui"
+              ],
+              "tests": [
                 {
-                  "title": "should register new user via UI and verify user creation via API",
-                  "ok": false,
-                  "tags": [
-                    "critical",
-                    "smoke"
-                  ],
-                  "tests": [
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "ui",
+                  "projectName": "ui",
+                  "results": [
                     {
-                      "timeout": 60000,
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 8809,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-01-07T11:11:10.575Z",
                       "annotations": [],
-                      "expectedStatus": "passed",
-                      "projectId": "ui",
-                      "projectName": "ui",
-                      "results": [
-                        {
-                          "workerIndex": 0,
-                          "parallelIndex": 0,
-                          "status": "timedOut",
-                          "duration": 73142,
-                          "error": {
-                            "message": "\u001b[31mTest timeout of 60000ms exceeded.\u001b[39m",
-                            "stack": "\u001b[31mTest timeout of 60000ms exceeded.\u001b[39m"
-                          },
-                          "errors": [
-                            {
-                              "message": "\u001b[31mTest timeout of 60000ms exceeded.\u001b[39m"
-                            },
-                            {
-                              "location": {
-                                "file": "C:\\Users\\GergoDobrosi\\Documents\\Course\\code\\playwright-typescript-automation-framework\\tests\\ui\\po\\base\\basePage.page.ts",
-                                "column": 21,
-                                "line": 21
-                              },
-                              "message": "TimeoutError: page.goto: Timeout 60000ms exceeded.\nCall log:\n\u001b[2m  - navigating to \"https://automationexercise.com/login\", waiting until \"domcontentloaded\"\u001b[22m\n\n\n\u001b[90m   at \u001b[39mtests\\ui\\po\\base\\basePage.page.ts:21\n\n\u001b[0m \u001b[90m 19 |\u001b[39m \u001b[90m   */\u001b[39m\n \u001b[90m 20 |\u001b[39m   \u001b[36mpublic\u001b[39m \u001b[36masync\u001b[39m navigateTo(url\u001b[33m:\u001b[39m string)\u001b[33m:\u001b[39m \u001b[33mPromise\u001b[39m\u001b[33m<\u001b[39m\u001b[36mvoid\u001b[39m\u001b[33m>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 21 |\u001b[39m     \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mpage\u001b[33m.\u001b[39mgoto(url\u001b[33m,\u001b[39m { waitUntil\u001b[33m:\u001b[39m \u001b[32m'domcontentloaded'\u001b[39m\u001b[33m,\u001b[39m timeout\u001b[33m:\u001b[39m \u001b[35m60000\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                     \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 22 |\u001b[39m     \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mwaitForPageReady()\u001b[33m;\u001b[39m\n \u001b[90m 23 |\u001b[39m     \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mhandleCookieConsentIfPresent()\u001b[33m;\u001b[39m\n \u001b[90m 24 |\u001b[39m   }\u001b[0m\n\u001b[2m    at AuthenticationPage.navigateTo (C:\\Users\\GergoDobrosi\\Documents\\Course\\code\\playwright-typescript-automation-framework\\tests\\ui\\po\\base\\basePage.page.ts:21:21)\u001b[22m\n\u001b[2m    at AuthenticationPage.navigateToAuthenticationPage (C:\\Users\\GergoDobrosi\\Documents\\Course\\code\\playwright-typescript-automation-framework\\tests\\ui\\po\\authentication\\authentication.page.ts:64:16)\u001b[22m\n\u001b[2m    at C:\\Users\\GergoDobrosi\\Documents\\Course\\code\\playwright-typescript-automation-framework\\tests\\ui\\specs\\authentication\\authentication.spec.ts:29:34\u001b[22m\n\u001b[2m    at C:\\Users\\GergoDobrosi\\Documents\\Course\\code\\playwright-typescript-automation-framework\\tests\\ui\\specs\\authentication\\authentication.spec.ts:28:18\u001b[22m"
-                            }
-                          ],
-                          "stdout": [
-                            {
-                              "text": "Starting User Registration test suite\n"
-                            }
-                          ],
-                          "stderr": [],
-                          "retry": 0,
-                          "steps": [
-                            {
-                              "title": "Navigate to signup/login page",
-                              "duration": 60027,
-                              "error": {
-                                "message": "TimeoutError: page.goto: Timeout 60000ms exceeded.\nCall log:\n\u001b[2m  - navigating to \"https://automationexercise.com/login\", waiting until \"domcontentloaded\"\u001b[22m\n",
-                                "stack": "TimeoutError: page.goto: Timeout 60000ms exceeded.\nCall log:\n\u001b[2m  - navigating to \"https://automationexercise.com/login\", waiting until \"domcontentloaded\"\u001b[22m\n\n    at AuthenticationPage.navigateTo (C:\\Users\\GergoDobrosi\\Documents\\Course\\code\\playwright-typescript-automation-framework\\tests\\ui\\po\\base\\basePage.page.ts:21:21)\n    at AuthenticationPage.navigateToAuthenticationPage (C:\\Users\\GergoDobrosi\\Documents\\Course\\code\\playwright-typescript-automation-framework\\tests\\ui\\po\\authentication\\authentication.page.ts:64:16)\n    at C:\\Users\\GergoDobrosi\\Documents\\Course\\code\\playwright-typescript-automation-framework\\tests\\ui\\specs\\authentication\\authentication.spec.ts:29:34\n    at C:\\Users\\GergoDobrosi\\Documents\\Course\\code\\playwright-typescript-automation-framework\\tests\\ui\\specs\\authentication\\authentication.spec.ts:28:18",
-                                "location": {
-                                  "file": "C:\\Users\\GergoDobrosi\\Documents\\Course\\code\\playwright-typescript-automation-framework\\tests\\ui\\po\\base\\basePage.page.ts",
-                                  "column": 21,
-                                  "line": 21
-                                },
-                                "snippet": "\u001b[90m   at \u001b[39mtests\\ui\\po\\base\\basePage.page.ts:21\n\n\u001b[0m \u001b[90m 19 |\u001b[39m \u001b[90m   */\u001b[39m\n \u001b[90m 20 |\u001b[39m   \u001b[36mpublic\u001b[39m \u001b[36masync\u001b[39m navigateTo(url\u001b[33m:\u001b[39m string)\u001b[33m:\u001b[39m \u001b[33mPromise\u001b[39m\u001b[33m<\u001b[39m\u001b[36mvoid\u001b[39m\u001b[33m>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 21 |\u001b[39m     \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mpage\u001b[33m.\u001b[39mgoto(url\u001b[33m,\u001b[39m { waitUntil\u001b[33m:\u001b[39m \u001b[32m'domcontentloaded'\u001b[39m\u001b[33m,\u001b[39m timeout\u001b[33m:\u001b[39m \u001b[35m60000\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                     \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 22 |\u001b[39m     \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mwaitForPageReady()\u001b[33m;\u001b[39m\n \u001b[90m 23 |\u001b[39m     \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mhandleCookieConsentIfPresent()\u001b[33m;\u001b[39m\n \u001b[90m 24 |\u001b[39m   }\u001b[0m"
-                              }
-                            }
-                          ],
-                          "startTime": "2026-01-05T17:20:43.280Z",
-                          "annotations": [],
-                          "attachments": [
-                            {
-                              "name": "video",
-                              "contentType": "video/webm",
-                              "path": "C:\\Users\\GergoDobrosi\\Documents\\Course\\code\\playwright-typescript-automation-framework\\test-results\\authentication-authenticat-0eecc-erify-user-creation-via-API-ui\\video.webm"
-                            },
-                            {
-                              "name": "trace",
-                              "contentType": "application/zip",
-                              "path": "C:\\Users\\GergoDobrosi\\Documents\\Course\\code\\playwright-typescript-automation-framework\\test-results\\authentication-authenticat-0eecc-erify-user-creation-via-API-ui\\trace.zip"
-                            }
-                          ]
-                        }
-                      ],
-                      "status": "unexpected"
+                      "attachments": []
                     }
                   ],
-                  "id": "a80de8cf7db3da3066d1-51ebdff8be26f3ac2391",
-                  "file": "tests/ui/specs/authentication/authentication.spec.ts",
-                  "line": 23,
-                  "column": 9
+                  "status": "expected"
                 }
-              ]
+              ],
+              "id": "15e0a340eb49224c76d6-55c4c21c41abc4603106",
+              "file": "tests/ui/specs/cart/cartManagement.spec.ts",
+              "line": 4,
+              "column": 7
             }
           ]
         }
@@ -227,11 +173,11 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2026-01-05T17:20:42.117Z",
-    "duration": 74578.68299999999,
-    "expected": 0,
+    "startTime": "2026-01-07T11:11:09.081Z",
+    "duration": 11071.423999999999,
+    "expected": 1,
     "skipped": 0,
-    "unexpected": 1,
+    "unexpected": 0,
     "flaky": 0
   }
 }

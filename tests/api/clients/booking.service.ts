@@ -33,8 +33,8 @@ export class BookingService extends BaseApiClient {
    * Create a new booking
    */
   async createBooking(bookingData: Booking): Promise<APIResponse> {
-    return await this.post('/booking', {
-      data: bookingData as unknown as Record<string, unknown>,
+    return await this.post<Booking>('/booking', {
+      data: bookingData,
     });
   }
 
@@ -46,8 +46,8 @@ export class BookingService extends BaseApiClient {
     bookingData: Booking,
     token: string,
   ): Promise<APIResponse> {
-    return await this.put(`/booking/${bookingId}`, {
-      data: bookingData as unknown as Record<string, unknown>,
+    return await this.put<Booking>(`/booking/${bookingId}`, {
+      data: bookingData,
       headers: {
         Cookie: `token=${token}`,
       },
@@ -62,8 +62,8 @@ export class BookingService extends BaseApiClient {
     bookingData: Partial<Booking>,
     token: string,
   ): Promise<APIResponse> {
-    return await this.patch(`/booking/${bookingId}`, {
-      data: bookingData as unknown as Record<string, unknown>,
+    return await this.patch<Partial<Booking>>(`/booking/${bookingId}`, {
+      data: bookingData,
       headers: {
         Cookie: `token=${token}`,
       },

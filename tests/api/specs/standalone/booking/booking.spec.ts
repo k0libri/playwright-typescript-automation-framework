@@ -9,10 +9,6 @@ import { BookingDataFactory } from '../../../data/bookingDataFactory';
 test.describe('Booking API @api @standalone @critical', () => {
   let createdBookingId: number;
 
-  /**
-   * User Story: As a tester, I want to create a new booking
-   * and verify the booking details via GET requests
-   */
   test('should create a new booking and verify details', async ({
     bookingService,
     uniqueBooking,
@@ -75,10 +71,6 @@ test.describe('Booking API @api @standalone @critical', () => {
     expect(foundBooking).toBeDefined();
   });
 
-  /**
-   * User Story: As a tester, I want to update an existing booking
-   * and validate the changes
-   */
   test('should update an existing booking', async ({
     bookingService,
     uniqueBooking,
@@ -137,10 +129,6 @@ test.describe('Booking API @api @standalone @critical', () => {
     expect(updatedData.totalprice).toBe(uniqueBooking.totalprice);
   });
 
-  /**
-   * User Story: As a tester, I want to delete a booking
-   * and confirm it is no longer retrievable
-   */
   test('should delete a booking and verify deletion', async ({
     bookingService,
     uniqueBooking,
@@ -159,10 +147,6 @@ test.describe('Booking API @api @standalone @critical', () => {
     expect(getResponse.status()).toBe(StatusCodes.NOT_FOUND);
   });
 
-  /**
-   * User Story: As a tester, I want to verify that unauthorized requests
-   * are rejected with appropriate error codes
-   */
   test('should reject update without authentication token', async ({
     bookingService,
     uniqueBooking,

@@ -1,3 +1,7 @@
+/**
+ * Authentication Tests
+ * Tests user registration, login, and error handling scenarios
+ */
 import { test, expect } from '../../uiFixtures';
 import { UserDataFactory } from '../../../common/utils/userDataFactory';
 import { StatusCodes } from 'http-status-codes';

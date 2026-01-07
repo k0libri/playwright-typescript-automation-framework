@@ -68,7 +68,15 @@ jobs:
           echo "🧹 Sunday cleanup: Clearing Allure history..."
           rm -rf allure-results allure-report
 
-      # Step 7: Run tests
+      # Step 7: Run ESLint
+      - name: Run ESLint
+        run: npm run lint
+
+      # Step 8: Check code formatting
+      - name: Check code formatting
+        run: npm run format
+
+      # Step 9: Run tests
       - name: Run Playwright tests
         run: npx playwright test
         continue-on-error: true

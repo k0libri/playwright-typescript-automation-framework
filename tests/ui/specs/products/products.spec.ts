@@ -1,3 +1,7 @@
+/**
+ * Products Tests
+ * Tests product search and validation scenarios
+ */
 import { test, expect } from '../../uiFixtures';
 import { faker } from '@faker-js/faker';
 
