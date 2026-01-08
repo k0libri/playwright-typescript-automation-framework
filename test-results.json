@@ -155,12 +155,12 @@
                           "workerIndex": 0,
                           "parallelIndex": 0,
                           "status": "passed",
-                          "duration": 599,
+                          "duration": 990,
                           "errors": [],
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2026-01-08T12:54:19.563Z",
+                          "startTime": "2026-01-08T12:56:44.314Z",
                           "annotations": [],
                           "attachments": []
                         }
@@ -202,12 +202,12 @@
                           "workerIndex": 1,
                           "parallelIndex": 1,
                           "status": "passed",
-                          "duration": 505,
+                          "duration": 992,
                           "errors": [],
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2026-01-08T12:54:19.600Z",
+                          "startTime": "2026-01-08T12:56:44.343Z",
                           "annotations": [],
                           "attachments": []
                         }
@@ -241,12 +241,12 @@
                           "workerIndex": 2,
                           "parallelIndex": 2,
                           "status": "passed",
-                          "duration": 542,
+                          "duration": 961,
                           "errors": [],
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2026-01-08T12:54:19.610Z",
+                          "startTime": "2026-01-08T12:56:44.363Z",
                           "annotations": [],
                           "attachments": []
                         }
@@ -280,12 +280,12 @@
                           "workerIndex": 3,
                           "parallelIndex": 3,
                           "status": "passed",
-                          "duration": 547,
+                          "duration": 1020,
                           "errors": [],
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2026-01-08T12:54:19.599Z",
+                          "startTime": "2026-01-08T12:56:44.316Z",
                           "annotations": [],
                           "attachments": []
                         }
@@ -342,15 +342,15 @@
                       "projectName": "api-standalone",
                       "results": [
                         {
-                          "workerIndex": 0,
-                          "parallelIndex": 0,
+                          "workerIndex": 3,
+                          "parallelIndex": 3,
                           "status": "passed",
-                          "duration": 255,
+                          "duration": 265,
                           "errors": [],
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2026-01-08T12:54:20.211Z",
+                          "startTime": "2026-01-08T12:56:45.385Z",
                           "annotations": [],
                           "attachments": []
                         }
@@ -381,15 +381,15 @@
                       "projectName": "api-standalone",
                       "results": [
                         {
-                          "workerIndex": 0,
-                          "parallelIndex": 0,
+                          "workerIndex": 3,
+                          "parallelIndex": 3,
                           "status": "passed",
-                          "duration": 246,
+                          "duration": 366,
                           "errors": [],
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2026-01-08T12:54:21.328Z",
+                          "startTime": "2026-01-08T12:56:46.276Z",
                           "annotations": [],
                           "attachments": []
                         }
@@ -399,7 +399,7 @@
                   ],
                   "id": "7c4e98a200268f243ad4-135e490deb5e4302b4af",
                   "file": "tests/api/specs/standalone/booking/booking.spec.ts",
-                  "line": 68,
+                  "line": 73,
                   "column": 9
                 },
                 {
@@ -423,12 +423,12 @@
                           "workerIndex": 1,
                           "parallelIndex": 1,
                           "status": "passed",
-                          "duration": 118,
+                          "duration": 129,
                           "errors": [],
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2026-01-08T12:54:20.599Z",
+                          "startTime": "2026-01-08T12:56:45.521Z",
                           "annotations": [],
                           "attachments": []
                         }
@@ -438,7 +438,7 @@
                   ],
                   "id": "7c4e98a200268f243ad4-53b27196013d95fe5a59",
                   "file": "tests/api/specs/standalone/booking/booking.spec.ts",
-                  "line": 78,
+                  "line": 83,
                   "column": 9
                 },
                 {
@@ -462,12 +462,12 @@
                           "workerIndex": 1,
                           "parallelIndex": 1,
                           "status": "passed",
-                          "duration": 457,
+                          "duration": 500,
                           "errors": [],
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2026-01-08T12:54:21.331Z",
+                          "startTime": "2026-01-08T12:56:46.302Z",
                           "annotations": [],
                           "attachments": []
                         }
@@ -477,7 +477,7 @@
                   ],
                   "id": "7c4e98a200268f243ad4-5a8c5728dac2cabb26e7",
                   "file": "tests/api/specs/standalone/booking/booking.spec.ts",
-                  "line": 94,
+                  "line": 99,
                   "column": 9
                 },
                 {
@@ -498,15 +498,15 @@
                       "projectName": "api-standalone",
                       "results": [
                         {
-                          "workerIndex": 2,
-                          "parallelIndex": 2,
+                          "workerIndex": 0,
+                          "parallelIndex": 0,
                           "status": "passed",
-                          "duration": 372,
+                          "duration": 353,
                           "errors": [],
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2026-01-08T12:54:20.612Z",
+                          "startTime": "2026-01-08T12:56:45.616Z",
                           "annotations": [],
                           "attachments": []
                         }
@@ -516,7 +516,7 @@
                   ],
                   "id": "7c4e98a200268f243ad4-602422894bceb1e57ee5",
                   "file": "tests/api/specs/standalone/booking/booking.spec.ts",
-                  "line": 120,
+                  "line": 129,
                   "column": 9
                 },
                 {
@@ -537,15 +537,15 @@
                       "projectName": "api-standalone",
                       "results": [
                         {
-                          "workerIndex": 2,
-                          "parallelIndex": 2,
+                          "workerIndex": 0,
+                          "parallelIndex": 0,
                           "status": "passed",
-                          "duration": 487,
+                          "duration": 473,
                           "errors": [],
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2026-01-08T12:54:21.621Z",
+                          "startTime": "2026-01-08T12:56:46.610Z",
                           "annotations": [],
                           "attachments": []
                         }
@@ -555,7 +555,7 @@
                   ],
                   "id": "7c4e98a200268f243ad4-a559220348e96cc120ef",
                   "file": "tests/api/specs/standalone/booking/booking.spec.ts",
-                  "line": 141,
+                  "line": 154,
                   "column": 9
                 }
               ]
@@ -563,7 +563,7 @@
             {
               "title": "Negative Test Cases @negative",
               "file": "tests/api/specs/standalone/booking/booking.spec.ts",
-              "line": 163,
+              "line": 176,
               "column": 8,
               "specs": [
                 {
@@ -584,15 +584,15 @@
                       "projectName": "api-standalone",
                       "results": [
                         {
-                          "workerIndex": 1,
-                          "parallelIndex": 1,
+                          "workerIndex": 0,
+                          "parallelIndex": 0,
                           "status": "passed",
-                          "duration": 446,
+                          "duration": 262,
                           "errors": [],
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2026-01-08T12:54:20.140Z",
+                          "startTime": "2026-01-08T12:56:45.341Z",
                           "annotations": [],
                           "attachments": []
                         }
@@ -602,7 +602,7 @@
                   ],
                   "id": "7c4e98a200268f243ad4-5c6a15febe25f616afc4",
                   "file": "tests/api/specs/standalone/booking/booking.spec.ts",
-                  "line": 164,
+                  "line": 177,
                   "column": 9
                 },
                 {
@@ -623,15 +623,15 @@
                       "projectName": "api-standalone",
                       "results": [
                         {
-                          "workerIndex": 3,
-                          "parallelIndex": 3,
+                          "workerIndex": 2,
+                          "parallelIndex": 2,
                           "status": "passed",
-                          "duration": 529,
+                          "duration": 261,
                           "errors": [],
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2026-01-08T12:54:20.181Z",
+                          "startTime": "2026-01-08T12:56:45.363Z",
                           "annotations": [],
                           "attachments": []
                         }
@@ -641,7 +641,7 @@
                   ],
                   "id": "7c4e98a200268f243ad4-7b24b3108b4a7b994f5d",
                   "file": "tests/api/specs/standalone/booking/booking.spec.ts",
-                  "line": 179,
+                  "line": 192,
                   "column": 9
                 },
                 {
@@ -662,15 +662,15 @@
                       "projectName": "api-standalone",
                       "results": [
                         {
-                          "workerIndex": 2,
-                          "parallelIndex": 2,
+                          "workerIndex": 1,
+                          "parallelIndex": 1,
                           "status": "passed",
-                          "duration": 392,
+                          "duration": 127,
                           "errors": [],
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2026-01-08T12:54:20.203Z",
+                          "startTime": "2026-01-08T12:56:45.381Z",
                           "annotations": [],
                           "attachments": []
                         }
@@ -680,7 +680,7 @@
                   ],
                   "id": "7c4e98a200268f243ad4-fd91781e2d142393ba4f",
                   "file": "tests/api/specs/standalone/booking/booking.spec.ts",
-                  "line": 192,
+                  "line": 205,
                   "column": 9
                 }
               ]
@@ -730,12 +730,12 @@
                           "workerIndex": 6,
                           "parallelIndex": 1,
                           "status": "passed",
-                          "duration": 4,
+                          "duration": 5,
                           "errors": [],
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2026-01-08T12:54:23.102Z",
+                          "startTime": "2026-01-08T12:56:48.091Z",
                           "annotations": [],
                           "attachments": []
                         }
@@ -766,15 +766,15 @@
                       "projectName": "api-backend",
                       "results": [
                         {
-                          "workerIndex": 4,
-                          "parallelIndex": 3,
+                          "workerIndex": 7,
+                          "parallelIndex": 0,
                           "status": "passed",
-                          "duration": 206,
+                          "duration": 281,
                           "errors": [],
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2026-01-08T12:54:21.931Z",
+                          "startTime": "2026-01-08T12:56:48.431Z",
                           "annotations": [],
                           "attachments": []
                         }
@@ -805,15 +805,15 @@
                       "projectName": "api-backend",
                       "results": [
                         {
-                          "workerIndex": 7,
+                          "workerIndex": 4,
                           "parallelIndex": 2,
                           "status": "passed",
-                          "duration": 384,
+                          "duration": 211,
                           "errors": [],
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2026-01-08T12:54:23.354Z",
+                          "startTime": "2026-01-08T12:56:47.269Z",
                           "annotations": [],
                           "attachments": []
                         }
@@ -853,14 +853,14 @@
                       "results": [
                         {
                           "workerIndex": 4,
-                          "parallelIndex": 3,
+                          "parallelIndex": 2,
                           "status": "passed",
-                          "duration": 283,
+                          "duration": 747,
                           "errors": [],
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2026-01-08T12:54:21.623Z",
+                          "startTime": "2026-01-08T12:56:46.498Z",
                           "annotations": [],
                           "attachments": []
                         }
@@ -892,14 +892,14 @@
                       "results": [
                         {
                           "workerIndex": 5,
-                          "parallelIndex": 0,
+                          "parallelIndex": 3,
                           "status": "passed",
-                          "duration": 766,
+                          "duration": 769,
                           "errors": [],
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2026-01-08T12:54:22.937Z",
+                          "startTime": "2026-01-08T12:56:48.016Z",
                           "annotations": [],
                           "attachments": []
                         }
@@ -917,13 +917,701 @@
           ]
         }
       ]
+    },
+    {
+      "title": "tests\\ui\\specs\\authentication\\authentication.spec.ts",
+      "file": "tests/ui/specs/authentication/authentication.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Authentication @critical",
+          "file": "tests/ui/specs/authentication/authentication.spec.ts",
+          "line": 10,
+          "column": 6,
+          "specs": [],
+          "suites": [
+            {
+              "title": "Positive Test Cases @smoke",
+              "file": "tests/ui/specs/authentication/authentication.spec.ts",
+              "line": 11,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "should register new user via UI and verify user creation via API",
+                  "ok": true,
+                  "tags": [
+                    "critical",
+                    "smoke"
+                  ],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "ui",
+                      "projectName": "ui",
+                      "results": [
+                        {
+                          "workerIndex": 8,
+                          "parallelIndex": 2,
+                          "status": "passed",
+                          "duration": 8290,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2026-01-08T12:56:49.464Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "a80de8cf7db3da3066d1-51ebdff8be26f3ac2391",
+                  "file": "tests/ui/specs/authentication/authentication.spec.ts",
+                  "line": 12,
+                  "column": 9
+                },
+                {
+                  "title": "should display error for duplicate email registration",
+                  "ok": true,
+                  "tags": [
+                    "critical",
+                    "smoke"
+                  ],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "ui",
+                      "projectName": "ui",
+                      "results": [
+                        {
+                          "workerIndex": 8,
+                          "parallelIndex": 2,
+                          "status": "passed",
+                          "duration": 5972,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2026-01-08T12:56:57.944Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "a80de8cf7db3da3066d1-177044cea4bd42003e7c",
+                  "file": "tests/ui/specs/authentication/authentication.spec.ts",
+                  "line": 42,
+                  "column": 9
+                }
+              ]
+            },
+            {
+              "title": "Negative Test Cases @negative",
+              "file": "tests/ui/specs/authentication/authentication.spec.ts",
+              "line": 56,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "should display error for invalid login credentials via UI and verify via API",
+                  "ok": true,
+                  "tags": [
+                    "critical",
+                    "negative"
+                  ],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "ui",
+                      "projectName": "ui",
+                      "results": [
+                        {
+                          "workerIndex": 8,
+                          "parallelIndex": 2,
+                          "status": "passed",
+                          "duration": 2187,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2026-01-08T12:57:03.933Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "a80de8cf7db3da3066d1-76b3a5031f8d36ffa22b",
+                  "file": "tests/ui/specs/authentication/authentication.spec.ts",
+                  "line": 71,
+                  "column": 9
+                },
+                {
+                  "title": "should handle invalid email format during registration",
+                  "ok": true,
+                  "tags": [
+                    "critical",
+                    "negative"
+                  ],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "ui",
+                      "projectName": "ui",
+                      "results": [
+                        {
+                          "workerIndex": 8,
+                          "parallelIndex": 2,
+                          "status": "passed",
+                          "duration": 1782,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2026-01-08T12:57:06.648Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "a80de8cf7db3da3066d1-bfc6aac9e311b95cc99d",
+                  "file": "tests/ui/specs/authentication/authentication.spec.ts",
+                  "line": 86,
+                  "column": 9
+                },
+                {
+                  "title": "should handle empty required fields during registration",
+                  "ok": true,
+                  "tags": [
+                    "critical",
+                    "negative"
+                  ],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "ui",
+                      "projectName": "ui",
+                      "results": [
+                        {
+                          "workerIndex": 8,
+                          "parallelIndex": 2,
+                          "status": "passed",
+                          "duration": 2748,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2026-01-08T12:57:08.438Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "a80de8cf7db3da3066d1-694db78cdf035995c972",
+                  "file": "tests/ui/specs/authentication/authentication.spec.ts",
+                  "line": 96,
+                  "column": 9
+                },
+                {
+                  "title": "should validate login with non-existent user via UI and API",
+                  "ok": true,
+                  "tags": [
+                    "critical",
+                    "negative"
+                  ],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "ui",
+                      "projectName": "ui",
+                      "results": [
+                        {
+                          "workerIndex": 8,
+                          "parallelIndex": 2,
+                          "status": "passed",
+                          "duration": 2278,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2026-01-08T12:57:11.196Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "a80de8cf7db3da3066d1-3f7202684115bffb8060",
+                  "file": "tests/ui/specs/authentication/authentication.spec.ts",
+                  "line": 120,
+                  "column": 9
+                },
+                {
+                  "title": "should handle invalid user data during API registration",
+                  "ok": true,
+                  "tags": [
+                    "critical",
+                    "negative"
+                  ],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "ui",
+                      "projectName": "ui",
+                      "results": [
+                        {
+                          "workerIndex": 8,
+                          "parallelIndex": 2,
+                          "status": "passed",
+                          "duration": 0,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2026-01-08T12:57:13.486Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "a80de8cf7db3da3066d1-6cfee1d01bb7aefb1660",
+                  "file": "tests/ui/specs/authentication/authentication.spec.ts",
+                  "line": 135,
+                  "column": 9
+                },
+                {
+                  "title": "should handle API errors gracefully",
+                  "ok": true,
+                  "tags": [
+                    "critical",
+                    "negative"
+                  ],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "ui",
+                      "projectName": "ui",
+                      "results": [
+                        {
+                          "workerIndex": 8,
+                          "parallelIndex": 2,
+                          "status": "passed",
+                          "duration": 1,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2026-01-08T12:57:13.493Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "a80de8cf7db3da3066d1-dc5149ab395984fc2c17",
+                  "file": "tests/ui/specs/authentication/authentication.spec.ts",
+                  "line": 139,
+                  "column": 9
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "tests\\ui\\specs\\cart\\cartManagement.spec.ts",
+      "file": "tests/ui/specs/cart/cartManagement.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Cart Management - Login + Cart Verification @critical @regression",
+          "file": "tests/ui/specs/cart/cartManagement.spec.ts",
+          "line": 8,
+          "column": 6,
+          "specs": [
+            {
+              "title": "should create user via API, login via UI, and manage cart @hybrid @api-to-ui",
+              "ok": true,
+              "tags": [
+                "critical",
+                "regression",
+                "hybrid",
+                "api-to-ui"
+              ],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "ui",
+                  "projectName": "ui",
+                  "results": [
+                    {
+                      "workerIndex": 9,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 10389,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-01-08T12:56:49.862Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "15e0a340eb49224c76d6-55c4c21c41abc4603106",
+              "file": "tests/ui/specs/cart/cartManagement.spec.ts",
+              "line": 9,
+              "column": 7
+            },
+            {
+              "title": "should login via UI, add products to cart, and verify user state via API",
+              "ok": true,
+              "tags": [
+                "critical",
+                "regression"
+              ],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "ui",
+                  "projectName": "ui",
+                  "results": [
+                    {
+                      "workerIndex": 9,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 7551,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-01-08T12:57:00.390Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "15e0a340eb49224c76d6-28ff084fc9fdaf4c9133",
+              "file": "tests/ui/specs/cart/cartManagement.spec.ts",
+              "line": 59,
+              "column": 7
+            },
+            {
+              "title": "should handle basic cart operations without login",
+              "ok": true,
+              "tags": [
+                "critical",
+                "regression"
+              ],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "ui",
+                  "projectName": "ui",
+                  "results": [
+                    {
+                      "workerIndex": 9,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 4658,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-01-08T12:57:07.956Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "15e0a340eb49224c76d6-ac09f9666d78e3698a5a",
+              "file": "tests/ui/specs/cart/cartManagement.spec.ts",
+              "line": 114,
+              "column": 7
+            },
+            {
+              "title": "should require login for checkout process",
+              "ok": true,
+              "tags": [
+                "critical",
+                "regression"
+              ],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "ui",
+                  "projectName": "ui",
+                  "results": [
+                    {
+                      "workerIndex": 9,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 4263,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-01-08T12:57:12.625Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "15e0a340eb49224c76d6-6b585c05fb7af5696074",
+              "file": "tests/ui/specs/cart/cartManagement.spec.ts",
+              "line": 151,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "tests\\ui\\specs\\checkout\\orderCompletion.spec.ts",
+      "file": "tests/ui/specs/checkout/orderCompletion.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Order Completion - Purchase + Order History @critical @e2e",
+          "file": "tests/ui/specs/checkout/orderCompletion.spec.ts",
+          "line": 9,
+          "column": 6,
+          "specs": [
+            {
+              "title": "should complete purchase flow and verify order confirmation and user via API",
+              "ok": true,
+              "tags": [
+                "critical",
+                "e2e"
+              ],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "ui",
+                  "projectName": "ui",
+                  "results": [
+                    {
+                      "workerIndex": 10,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 16017,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-01-08T12:56:50.221Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "a704d7ddb343df3f518f-61bb32d3002d6d04b8c3",
+              "file": "tests/ui/specs/checkout/orderCompletion.spec.ts",
+              "line": 10,
+              "column": 7
+            },
+            {
+              "title": "should handle checkout with single product",
+              "ok": true,
+              "tags": [
+                "critical",
+                "e2e"
+              ],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "ui",
+                  "projectName": "ui",
+                  "results": [
+                    {
+                      "workerIndex": 10,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 11299,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-01-08T12:57:06.375Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "a704d7ddb343df3f518f-532cd70ee54686150aba",
+              "file": "tests/ui/specs/checkout/orderCompletion.spec.ts",
+              "line": 82,
+              "column": 7
+            },
+            {
+              "title": "should validate order details match cart contents",
+              "ok": true,
+              "tags": [
+                "critical",
+                "e2e"
+              ],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "ui",
+                  "projectName": "ui",
+                  "results": [
+                    {
+                      "workerIndex": 10,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 5573,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-01-08T12:57:17.684Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "a704d7ddb343df3f518f-f7f750dcd032fb535093",
+              "file": "tests/ui/specs/checkout/orderCompletion.spec.ts",
+              "line": 120,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "tests\\ui\\specs\\products\\products.spec.ts",
+      "file": "tests/ui/specs/products/products.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Products @regression",
+          "file": "tests/ui/specs/products/products.spec.ts",
+          "line": 8,
+          "column": 6,
+          "specs": [],
+          "suites": [
+            {
+              "title": "Negative Test Cases @negative",
+              "file": "tests/ui/specs/products/products.spec.ts",
+              "line": 9,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "should validate product search with invalid terms",
+                  "ok": true,
+                  "tags": [
+                    "regression",
+                    "negative"
+                  ],
+                  "tests": [
+                    {
+                      "timeout": 90000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "ui",
+                      "projectName": "ui",
+                      "results": [
+                        {
+                          "workerIndex": 11,
+                          "parallelIndex": 0,
+                          "status": "passed",
+                          "duration": 5300,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2026-01-08T12:56:50.749Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "05639c743d7c8d7016af-88a26bb0f47e32bb510d",
+                  "file": "tests/ui/specs/products/products.spec.ts",
+                  "line": 10,
+                  "column": 9
+                }
+              ]
+            }
+          ]
+        }
+      ]
     }
   ],
   "errors": [],
   "stats": {
-    "startTime": "2026-01-08T12:54:18.414Z",
-    "duration": 5964.835,
-    "expected": 18,
+    "startTime": "2026-01-08T12:56:43.103Z",
+    "duration": 40295.167,
+    "expected": 34,
     "skipped": 0,
     "unexpected": 0,
     "flaky": 0

@@ -13,28 +13,19 @@ test.describe('Booking API @api @standalone @critical', () => {
     let sharedBookingId: number;
     let authToken: string;
 
-    test.beforeAll(async ({ request }) => {
-      // Generate unique booking for shared tests
+    test.beforeAll(async ({ authService, defaultCredentials }) => {
       sharedBooking = BookingDataFactory.generateBooking();
 
-      // Create booking using ServiceFactory
       const createResponse = await ServiceFactory.booking.createBooking(sharedBooking);
       const createBody = await createResponse.json();
       sharedBookingId = createBody.bookingid;
 
-      // Get auth token for cleanup
-      const authResponse = await request.post('/auth', {
-        data: {
-          username: process.env['RESTFUL_BOOKER_USERNAME'] ?? 'admin',
-          password: process.env['RESTFUL_BOOKER_PASSWORD'] ?? 'password123',
-        },
-      });
+      const authResponse = await authService.createToken(defaultCredentials);
       const authBody = await authResponse.json();
       authToken = authBody.token;
     });
 
     test.afterAll(async () => {
-      // Cleanup: Delete shared booking
       if (sharedBookingId && authToken) {
         await ServiceFactory.booking.deleteBooking(sharedBookingId, authToken);
       }
