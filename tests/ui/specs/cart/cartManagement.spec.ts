@@ -3,6 +3,7 @@
  * Tests cart functionality with user authentication and product management
  */
 import { test, expect } from '../../uiFixtures';
+import { StatusCodes } from 'http-status-codes';
 
 test.describe('Cart Management - Login + Cart Verification @critical @regression', () => {
   test('should create user via API, login via UI, and manage cart @hybrid @api-to-ui', async ({
@@ -17,12 +18,12 @@ test.describe('Cart Management - Login + Cart Verification @critical @regression
     test.setTimeout(90000);
 
     const createUserResponse = await userService.createUser(uniqueUserData);
-    expect(createUserResponse.status()).toBe(200);
+    expect(createUserResponse.status()).toBe(StatusCodes.OK);
     const createUserJson = await createUserResponse.json();
-    expect(createUserJson.responseCode).toBe(201);
+    expect(createUserJson.responseCode).toBe(StatusCodes.CREATED);
 
     const productsResponse = await productService.getAllProducts();
-    expect(productsResponse.status()).toBe(200);
+    expect(productsResponse.status()).toBe(StatusCodes.OK);
     const productsData = await productsResponse.json();
     expect(productsData.products).toBeDefined();
     expect(productsData.products.length).toBeGreaterThan(0);
@@ -101,7 +102,7 @@ test.describe('Cart Management - Login + Cart Verification @critical @regression
     expect.soft(isEmpty).toBe(false);
 
     const userResponse = await userService.getUserByEmail(uniqueUserData.email);
-    expect.soft(userResponse.status()).toBe(200);
+    expect.soft(userResponse.status()).toBe(StatusCodes.OK);
     const userData = await userResponse.json();
     expect.soft(userData).toHaveProperty('user');
     expect.soft(userData.user.email).toBe(uniqueUserData.email);
