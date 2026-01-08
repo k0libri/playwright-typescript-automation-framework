@@ -12,6 +12,8 @@ export class AuthService extends BaseApiClient {
 
   /**
    * Authenticate and obtain access token
+   * @param credentials - Object containing username and password
+   * @returns Promise<APIResponse> - Playwright API Response with token
    */
   async createToken(credentials: AuthCredentials): Promise<APIResponse> {
     return await this.post<AuthCredentials>('/auth', {
@@ -21,6 +23,8 @@ export class AuthService extends BaseApiClient {
 
   /**
    * Extract token from authentication response
+   * @param response - The API response from createToken
+   * @returns Promise<string> - The authentication token string
    */
   async getTokenFromResponse(response: APIResponse): Promise<string> {
     const data = await this.parseJson<AuthResponse>(response);

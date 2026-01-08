@@ -21,6 +21,8 @@ export class UserService extends BaseApiClient {
 
   /**
    * Create a new user account via API
+   * @param userData - Object containing all required user registration fields (name, email, password, addresses, etc.)
+   * @returns Promise<APIResponse> - Playwright API Response with user creation result
    */
   async createUser(userData: {
     name: string;
@@ -57,7 +59,9 @@ export class UserService extends BaseApiClient {
   }
 
   /**
-   * Get user details by email
+   * Get user details by email address
+   * @param email - The email address of the user to retrieve
+   * @returns Promise<APIResponse> - Playwright API Response containing user details
    */
   async getUserByEmail(email: string): Promise<APIResponse> {
     Logger.info(`API: Fetching user details for ${email}`);
@@ -67,7 +71,10 @@ export class UserService extends BaseApiClient {
   }
 
   /**
-   * Verify login with email and password
+   * Verify login credentials for a user
+   * @param email - The user's email address
+   * @param password - The user's password
+   * @returns Promise<APIResponse> - Playwright API Response with login verification result
    */
   async verifyLogin(email: string, password: string): Promise<APIResponse> {
     Logger.info(`API: Verifying login for ${email}`);
@@ -83,6 +90,9 @@ export class UserService extends BaseApiClient {
 
   /**
    * Delete user account
+   * @param email - The user's email address
+   * @param password - The user's password for authentication
+   * @returns Promise<APIResponse> - Playwright API Response with deletion result
    */
   async deleteUser(email: string, password: string): Promise<APIResponse> {
     Logger.info(`API: Deleting user account for ${email}`);
@@ -97,8 +107,10 @@ export class UserService extends BaseApiClient {
   }
 
   /**
-   * Cleanup: Delete user account with error handling
-   * Safe to call even if deletion fails
+   * Cleanup: Delete user account with error handling (safe to call even if deletion fails)
+   * @param email - The user's email address
+   * @param password - The user's password
+   * @returns Promise<void> - Resolves when cleanup attempt completes (doesn't throw on failure)
    */
   async cleanupUser(email: string, password: string): Promise<void> {
     try {
@@ -110,8 +122,9 @@ export class UserService extends BaseApiClient {
   }
 
   /**
-   * Safely get user details by email with error handling
-   * Returns null if the request fails (e.g., empty email)
+   * Safely get user details with error handling (returns null body if request fails)
+   * @param email - The user's email address
+   * @returns Promise<{status: number, body: any | null}> - Object with HTTP status and response body (null if error)
    */
   async safeGetUserByEmail(email: string): Promise<{ status: number; body: any | null }> {
     try {

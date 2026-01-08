@@ -15,6 +15,8 @@ const API_BASE_URL =
 export const BookingServiceFactory = {
   /**
    * Create a new booking
+   * @param bookingData - Booking object containing guest details, dates, and pricing information
+   * @returns Promise<Response> - Fetch Response object with created booking details and ID
    */
   async createBooking(bookingData: Booking): Promise<Response> {
     const payload = buildCreateBookingPayload(bookingData);
@@ -29,7 +31,9 @@ export const BookingServiceFactory = {
   },
 
   /**
-   * Get booking by ID
+   * Get booking details by ID
+   * @param bookingId - The unique identifier of the booking to retrieve
+   * @returns Promise<Response> - Fetch Response object containing booking details
    */
   async getBookingById(bookingId: number): Promise<Response> {
     return fetch(`${API_BASE_URL}/booking/${bookingId}`, {
@@ -41,7 +45,9 @@ export const BookingServiceFactory = {
   },
 
   /**
-   * Get all booking IDs
+   * Get all booking IDs with optional filtering
+   * @param params - Optional filter parameters (firstname, lastname, checkin, checkout dates)
+   * @returns Promise<Response> - Fetch Response object with array of booking IDs
    */
   async getAllBookingIds(params?: {
     firstname?: string;
@@ -73,7 +79,11 @@ export const BookingServiceFactory = {
   },
 
   /**
-   * Update an existing booking
+   * Update an existing booking (full update)
+   * @param bookingId - The unique identifier of the booking to update
+   * @param bookingData - Complete booking data object with all fields
+   * @param token - Authentication token for authorization
+   * @returns Promise<Response> - Fetch Response object with updated booking details
    */
   async updateBooking(bookingId: number, bookingData: Booking, token: string): Promise<Response> {
     const payload = buildUpdateBookingPayload(bookingData);
@@ -90,7 +100,11 @@ export const BookingServiceFactory = {
   },
 
   /**
-   * Partially update a booking
+   * Partially update a booking (PATCH)
+   * @param bookingId - The unique identifier of the booking to update
+   * @param partialBooking - Partial booking object containing only fields to update
+   * @param token - Authentication token for authorization
+   * @returns Promise<Response> - Fetch Response object with updated booking details
    */
   async partialUpdateBooking(
     bookingId: number,
@@ -112,6 +126,9 @@ export const BookingServiceFactory = {
 
   /**
    * Delete a booking
+   * @param bookingId - The unique identifier of the booking to delete
+   * @param token - Authentication token for authorization
+   * @returns Promise<Response> - Fetch Response object with deletion result
    */
   async deleteBooking(bookingId: number, token: string): Promise<Response> {
     return fetch(`${API_BASE_URL}/booking/${bookingId}`, {

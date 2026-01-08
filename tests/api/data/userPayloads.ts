@@ -5,7 +5,9 @@ import type { UserData } from '../../common/data/types';
  */
 
 /**
- * Build create user payload object
+ * Build create user payload object from UserData
+ * @param userData - User data object containing all registration fields
+ * @returns Payload object formatted for user creation API request
  */
 export function buildCreateUserPayload(userData: UserData) {
   return {
@@ -31,6 +33,9 @@ export function buildCreateUserPayload(userData: UserData) {
 
 /**
  * Build login payload object
+ * @param email - The user's email address
+ * @param password - The user's password
+ * @returns Payload object formatted for login verification API request
  */
 export function buildLoginPayload(email: string, password: string) {
   return {
@@ -41,6 +46,9 @@ export function buildLoginPayload(email: string, password: string) {
 
 /**
  * Build delete user payload object
+ * @param email - The user's email address
+ * @param password - The user's password for authentication
+ * @returns Payload object formatted for user deletion API request
  */
 export function buildDeleteUserPayload(email: string, password: string) {
   return {

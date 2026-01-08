@@ -12,13 +12,16 @@ export class ProductService extends BaseApiClient {
 
   /**
    * Get all products list
+   * @returns Promise<APIResponse> - Playwright API Response containing array of all products
    */
   async getAllProducts(): Promise<APIResponse> {
     return await this.get('/productsList');
   }
 
   /**
-   * Search for products
+   * Search for products by term
+   * @param searchTerm - The search query string to filter products
+   * @returns Promise<APIResponse> - Playwright API Response containing matching products
    */
   async searchProduct(searchTerm: string): Promise<APIResponse> {
     return await this.post('/searchProduct', {
@@ -29,6 +32,7 @@ export class ProductService extends BaseApiClient {
 
   /**
    * Get all brands list
+   * @returns Promise<APIResponse> - Playwright API Response containing array of all brands
    */
   async getAllBrands(): Promise<APIResponse> {
     return await this.get('/brandsList');

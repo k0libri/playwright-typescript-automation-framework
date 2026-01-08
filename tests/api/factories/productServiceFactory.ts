@@ -9,7 +9,8 @@ const BACKEND_API_BASE_URL =
  */
 export const ProductServiceFactory = {
   /**
-   * Get all products
+   * Get all available products
+   * @returns Promise<Response> - Fetch Response object containing array of all products
    */
   async getAllProducts(): Promise<Response> {
     return fetch(`${BACKEND_API_BASE_URL}/productsList`);
@@ -17,6 +18,8 @@ export const ProductServiceFactory = {
 
   /**
    * Search products by search term
+   * @param searchTerm - The search query string to filter products
+   * @returns Promise<Response> - Fetch Response object containing array of matching products
    */
   async searchProducts(searchTerm: string): Promise<Response> {
     const formData = new FormData();

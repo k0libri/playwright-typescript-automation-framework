@@ -5,7 +5,9 @@ import type { Booking } from './types';
  */
 
 /**
- * Build create booking payload
+ * Build create booking payload from booking data
+ * @param booking - Booking object containing guest info, dates, and pricing
+ * @returns Formatted Booking payload for API request
  */
 export function buildCreateBookingPayload(booking: Booking): Booking {
   return {
@@ -22,7 +24,9 @@ export function buildCreateBookingPayload(booking: Booking): Booking {
 }
 
 /**
- * Build update booking payload
+ * Build update booking payload (uses same structure as create)
+ * @param booking - Complete booking object with all fields
+ * @returns Formatted Booking payload for update API request
  */
 export function buildUpdateBookingPayload(booking: Booking): Booking {
   return buildCreateBookingPayload(booking);
@@ -30,13 +34,17 @@ export function buildUpdateBookingPayload(booking: Booking): Booking {
 
 /**
  * Build partial update booking payload
+ * @param partialBooking - Partial booking object containing only fields to update
+ * @returns Formatted partial Booking payload for PATCH API request
  */
 export function buildPartialUpdatePayload(partialBooking: Partial<Booking>): Partial<Booking> {
   return { ...partialBooking };
 }
 
 /**
- * Build booking filter parameters
+ * Build booking filter parameters for search
+ * @param params - Object with optional filter fields (firstname, lastname, checkin, checkout)
+ * @returns Filter parameters object for query string
  */
 export function buildBookingFilterParams(params: {
   firstname?: string;

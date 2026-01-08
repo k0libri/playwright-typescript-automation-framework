@@ -3,7 +3,9 @@
  */
 
 /**
- * Build search product payload object
+ * Build search product payload from search term
+ * @param searchTerm - The search query string
+ * @returns Payload object formatted for product search API request
  */
 export function buildSearchProductPayload(searchTerm: string) {
   return {

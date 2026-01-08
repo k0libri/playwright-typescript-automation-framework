@@ -11,7 +11,9 @@ export class BookingService extends BaseApiClient {
   }
 
   /**
-   * Get all booking IDs
+   * Get all booking IDs with optional filtering
+   * @param params - Optional filter object (firstname, lastname, checkin, checkout dates)
+   * @returns Promise<APIResponse> - Playwright API Response containing array of booking IDs
    */
   async getAllBookingIds(params?: {
     firstname?: string;
@@ -23,7 +25,9 @@ export class BookingService extends BaseApiClient {
   }
 
   /**
-   * Get booking by ID
+   * Get booking details by ID
+   * @param bookingId - The unique identifier of the booking
+   * @returns Promise<APIResponse> - Playwright API Response containing booking details
    */
   async getBookingById(bookingId: number): Promise<APIResponse> {
     return await this.get(`/booking/${bookingId}`);
@@ -31,6 +35,8 @@ export class BookingService extends BaseApiClient {
 
   /**
    * Create a new booking
+   * @param bookingData - Complete booking object with guest details, dates, and pricing
+   * @returns Promise<APIResponse> - Playwright API Response with created booking and ID
    */
   async createBooking(bookingData: Booking): Promise<APIResponse> {
     return await this.post<Booking>('/booking', {
@@ -39,7 +45,11 @@ export class BookingService extends BaseApiClient {
   }
 
   /**
-   * Update an existing booking (requires authentication token)
+   * Update an existing booking (full update, requires authentication)
+   * @param bookingId - The unique identifier of the booking to update
+   * @param bookingData - Complete booking data with all fields
+   * @param token - Optional authentication token (required for authorization)
+   * @returns Promise<APIResponse> - Playwright API Response with updated booking
    */
   async updateBooking(
     bookingId: number,
@@ -57,7 +67,11 @@ export class BookingService extends BaseApiClient {
   }
 
   /**
-   * Partially update a booking (requires authentication token)
+   * Partially update a booking (PATCH, requires authentication)
+   * @param bookingId - The unique identifier of the booking to update
+   * @param bookingData - Partial booking object with only fields to update
+   * @param token - Optional authentication token (required for authorization)
+   * @returns Promise<APIResponse> - Playwright API Response with updated booking
    */
   async partialUpdateBooking(
     bookingId: number,
@@ -75,7 +89,10 @@ export class BookingService extends BaseApiClient {
   }
 
   /**
-   * Delete a booking (requires authentication token)
+   * Delete a booking (requires authentication)
+   * @param bookingId - The unique identifier of the booking to delete
+   * @param token - Optional authentication token (required for authorization)
+   * @returns Promise<APIResponse> - Playwright API Response with deletion result
    */
   async deleteBooking(bookingId: number, token?: string): Promise<APIResponse> {
     return await this.delete(`/booking/${bookingId}`, {
@@ -88,7 +105,9 @@ export class BookingService extends BaseApiClient {
   }
 
   /**
-   * Extract booking ID from create response
+   * Extract booking ID from create booking response
+   * @param response - The API response from createBooking
+   * @returns Promise<number> - The booking ID number
    */
   async getBookingIdFromResponse(response: APIResponse): Promise<number> {
     const data = await this.parseJson<BookingResponse>(response);
@@ -96,7 +115,9 @@ export class BookingService extends BaseApiClient {
   }
 
   /**
-   * Extract booking data from response
+   * Extract booking data from API response
+   * @param response - The API response containing booking data
+   * @returns Promise<Booking> - The booking object
    */
   async getBookingDataFromResponse(response: APIResponse): Promise<Booking> {
     return await this.parseJson<Booking>(response);
