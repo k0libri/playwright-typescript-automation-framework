@@ -181,11 +181,138 @@ export async function getTeams({ slug, authToken }: GetTeamsParams): Promise<Tea
 
 ---
 
+## Service Factory Pattern for beforeAll/afterAll Hooks
+
+When tests need to create shared test data in `beforeAll` hooks, use the **Service Factory** pattern instead of fixture-based services. Service factories use native `fetch` and don't require Playwright's fixture context.
+
+### Service Factory Structure
+
+```ts
+// tests/api/factories/userServiceFactory.ts
+export const UserServiceFactory = {
+  async createUser(userData: UserData): Promise<Response> {
+    const formData = new FormData();
+    const payload = buildCreateUserPayload(userData);
+
+    Object.entries(payload).forEach(([key, value]) => {
+      if (value !== undefined) formData.append(key, value);
+    });
+
+    return fetch(`${API_BASE_URL}/createAccount`, {
+      method: 'POST',
+      body: formData,
+    });
+  },
+
+  async deleteUser(email: string, password: string): Promise<Response> {
+    // ... implementation
+  },
+};
+```
+
+### Centralized Export
+
+```ts
+// tests/api/factories/serviceFactory.ts
+import { UserServiceFactory } from './userServiceFactory';
+import { ProductServiceFactory } from './productServiceFactory';
+
+export const ServiceFactory = {
+  user: UserServiceFactory,
+  product: ProductServiceFactory,
+};
+```
+
+---
+
+## Test Organization Pattern
+
+Organize tests into **Positive** and **Negative** test suites with shared test data setup:
+
+### Recommended Structure
+
+```ts
+import { test, expect } from '../../fixtures/backendFixtures';
+import { StatusCodes } from 'http-status-codes';
+import { ServiceFactory } from '../../factories/serviceFactory';
+import { UserDataFactory } from '../../../common/utils/userDataFactory';
+
+test.describe('User Backend API @api @backend @critical', () => {
+  test.describe('Positive Test Cases @smoke', () => {
+    let testUser: ReturnType<typeof UserDataFactory.generateUserData>;
+    let createdUserResponse: { status: number; responseCode: number; message: string };
+
+    test.beforeAll(async () => {
+      // Create shared test data using ServiceFactory (no fixtures needed)
+      testUser = UserDataFactory.generateUserData();
+      const response = await ServiceFactory.user.createUser(testUser);
+      const responseJson = await response.json();
+      createdUserResponse = {
+        status: response.status,
+        responseCode: responseJson.responseCode,
+        message: responseJson.message,
+      };
+    });
+
+    test.afterAll(async () => {
+      // Cleanup shared test data
+      await ServiceFactory.user.deleteUser(testUser.email, testUser.password);
+    });
+
+    test('should create user account via API', async () => {
+      // Validate creation response stored in beforeAll
+      expect.soft(createdUserResponse.status).toBe(StatusCodes.OK);
+      expect.soft(createdUserResponse.responseCode).toBe(StatusCodes.CREATED);
+      expect(createdUserResponse.message).toContain('User created!');
+    });
+
+    test('should verify login with valid credentials', async ({ userService }) => {
+      // Use fixture-based service for test-specific operations
+      const loginResponse = await userService.verifyLogin(testUser.email, testUser.password);
+      expect.soft(loginResponse.status()).toBe(StatusCodes.OK);
+
+      const loginResponseJson = await loginResponse.json();
+      expect.soft(loginResponseJson.responseCode).toBe(StatusCodes.OK);
+      expect(loginResponseJson.message).toContain('User exists!');
+    });
+  });
+
+  test.describe('Negative Test Cases @negative', () => {
+    test('should return error for invalid login credentials', async ({ userService }) => {
+      const loginResponse = await userService.verifyLogin(
+        faker.internet.email(),
+        faker.internet.password(),
+      );
+      expect.soft(loginResponse.status()).toBe(StatusCodes.OK);
+
+      const responseJson = await loginResponse.json();
+      expect.soft(responseJson.responseCode).toBe(StatusCodes.NOT_FOUND);
+      expect(responseJson.message).toContain('User not found!');
+    });
+  });
+});
+```
+
+### Key Benefits
+
+1. **Separation of Concerns**: Positive tests share one user, negative tests run independently
+2. **Performance**: Create test data once in `beforeAll` instead of per-test
+3. **No Fixture Dependencies**: `ServiceFactory` works without Playwright fixtures
+4. **Clear Organization**: `@smoke` for positive flows, `@negative` for error cases
+5. **Automatic Cleanup**: `afterAll` ensures no test data pollution
+
+---
+
 ## Recommended Test Structure
 
-1. **Setup**
-   - Resolve authentication.
-   - Generate data via factories.
+1. **Setup (beforeAll)**
+   - Create shared test data using `ServiceFactory`
+   - Store responses in variables for validation
+
+## Recommended Test Structure
+
+- Resolve authentication.
+- Generate data via factories.
 
 2. **Schema Validation**
    - Validate response schema immediately after the call returns.
@@ -239,11 +366,14 @@ apiTest.describe('API | Teams', () => {
 ## Checklist
 
 - [ ] Does the test validate the response schema before business assertions?
-- [ ] Are status codes asserted via shared constants/enums (when checking raw responses)?
+- [ ] Are status codes asserted via shared constants/enums (e.g., `StatusCodes.OK`)?
 - [ ] Do positive scenarios verify all required fields?
 - [ ] Do negative scenarios confirm error status/payload?
 - [ ] Do service functions reuse the shared `baseApiRequest` helper?
 - [ ] Is authentication resolved dynamically (no hardcoded tokens)?
+- [ ] Are tests organized into Positive (@smoke) and Negative (@negative) test suites?
+- [ ] Is `ServiceFactory` used in `beforeAll` for shared test data creation?
+- [ ] Is cleanup performed in `afterAll` using `ServiceFactory`?
 - [ ] Can tests run repeatedly without polluting state?
 - [ ] Are failures logged and attached to Allure?
 

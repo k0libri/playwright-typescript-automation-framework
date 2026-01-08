@@ -1,86 +1,80 @@
 import { test, expect } from '../../fixtures/backendFixtures';
 import { StatusCodes } from 'http-status-codes';
 import { faker } from '@faker-js/faker';
+import { ServiceFactory } from '../../factories/serviceFactory';
+import { UserDataFactory } from '../../../common/utils/userDataFactory';
 
 /**
  * User API Tests - Backend API validation for UI testing
  * Tests user-related API endpoints for automationexercise.com
  */
 test.describe('User Backend API @api @backend @critical', () => {
-  test('should create user account via API', async ({ userService, uniqueUserData }) => {
-    const response = await userService.createUser(uniqueUserData);
+  test.describe('Positive Test Cases @smoke', () => {
+    let testUser: ReturnType<typeof UserDataFactory.generateUserData>;
+    let createdUserResponse: { status: number; responseCode: number; message: string };
 
-    expect.soft(response.status()).toBe(StatusCodes.OK);
+    test.beforeAll(async () => {
+      testUser = UserDataFactory.generateUserData();
+      const response = await ServiceFactory.user.createUser(testUser);
+      const responseJson = await response.json();
+      createdUserResponse = {
+        status: response.status,
+        responseCode: responseJson.responseCode,
+        message: responseJson.message,
+      };
+    });
 
-    const responseJson = await response.json();
-    expect.soft(responseJson.responseCode).toBe(StatusCodes.CREATED);
-    expect(responseJson.message).toContain('User created!');
+    test.afterAll(async () => {
+      await ServiceFactory.user.deleteUser(testUser.email, testUser.password);
+    });
 
-    const getUserResponse = await userService.getUserByEmail(uniqueUserData.email);
-    expect.soft(getUserResponse.status()).toBe(StatusCodes.OK);
+    test('should create user account via API', async () => {
+      expect.soft(createdUserResponse.status).toBe(StatusCodes.OK);
+      expect.soft(createdUserResponse.responseCode).toBe(StatusCodes.CREATED);
+      expect(createdUserResponse.message).toContain('User created!');
+    });
 
-    const userData = await getUserResponse.json();
-    expect.soft(userData.user.email).toBe(uniqueUserData.email);
-    expect(userData.user.name).toBe(uniqueUserData.name);
+    test('should verify login with valid credentials', async ({ userService }) => {
+      const loginResponse = await userService.verifyLogin(testUser.email, testUser.password);
+      expect.soft(loginResponse.status()).toBe(StatusCodes.OK);
 
-    await userService.cleanupUser(uniqueUserData.email, uniqueUserData.password);
+      const loginResponseJson = await loginResponse.json();
+      expect.soft(loginResponseJson.responseCode).toBe(StatusCodes.OK);
+      expect(loginResponseJson.message).toContain('User exists!');
+    });
+
+    test('should get user details by email', async ({ userService }) => {
+      const getUserResponse = await userService.getUserByEmail(testUser.email);
+      expect.soft(getUserResponse.status()).toBe(StatusCodes.OK);
+
+      const userData = await getUserResponse.json();
+      expect.soft(userData.user.email).toBe(testUser.email);
+      expect.soft(userData.user.name).toBe(testUser.name);
+      expect.soft(userData.user.first_name).toBe(testUser.firstname);
+      expect(userData.user.last_name).toBe(testUser.lastname);
+    });
   });
 
-  test('should verify login with valid credentials', async ({ userService, uniqueUserData }) => {
-    const response = await userService.createUser(uniqueUserData);
-    expect.soft(response.status()).toBe(StatusCodes.OK);
-    const responseJson = await response.json();
-    expect(responseJson.responseCode).toBe(StatusCodes.CREATED);
+  test.describe('Negative Test Cases @negative', () => {
+    test('should return error for invalid login credentials', async ({ userService }) => {
+      const loginResponse = await userService.verifyLogin(
+        faker.internet.email(),
+        faker.internet.password(),
+      );
+      expect.soft(loginResponse.status()).toBe(StatusCodes.OK);
 
-    const loginResponse = await userService.verifyLogin(
-      uniqueUserData.email,
-      uniqueUserData.password,
-    );
-    expect.soft(loginResponse.status()).toBe(StatusCodes.OK);
+      const responseJson = await loginResponse.json();
+      expect.soft(responseJson.responseCode).toBe(StatusCodes.NOT_FOUND);
+      expect(responseJson.message).toContain('User not found!');
+    });
 
-    const loginResponseJson = await loginResponse.json();
-    expect.soft(loginResponseJson.responseCode).toBe(StatusCodes.OK);
-    expect(loginResponseJson.message).toContain('User exists!');
+    test('should return error for non-existent user email', async ({ userService }) => {
+      const getUserResponse = await userService.getUserByEmail(faker.internet.email());
+      expect.soft(getUserResponse.status()).toBe(StatusCodes.OK);
 
-    await userService.cleanupUser(uniqueUserData.email, uniqueUserData.password);
-  });
-
-  test('should return error for invalid login credentials', async ({ userService }) => {
-    const loginResponse = await userService.verifyLogin(
-      faker.internet.email(),
-      faker.internet.password(),
-    );
-    expect.soft(loginResponse.status()).toBe(StatusCodes.OK);
-
-    const responseJson = await loginResponse.json();
-    expect.soft(responseJson.responseCode).toBe(StatusCodes.NOT_FOUND);
-    expect(responseJson.message).toContain('User not found!');
-  });
-
-  test('should get user details by email', async ({ userService, uniqueUserData }) => {
-    const response = await userService.createUser(uniqueUserData);
-    expect.soft(response.status()).toBe(StatusCodes.OK);
-    const responseJson = await response.json();
-    expect(responseJson.responseCode).toBe(StatusCodes.CREATED);
-
-    const getUserResponse = await userService.getUserByEmail(uniqueUserData.email);
-    expect.soft(getUserResponse.status()).toBe(StatusCodes.OK);
-
-    const userData = await getUserResponse.json();
-    expect.soft(userData.user.email).toBe(uniqueUserData.email);
-    expect.soft(userData.user.name).toBe(uniqueUserData.name);
-    expect.soft(userData.user.first_name).toBe(uniqueUserData.firstname);
-    expect(userData.user.last_name).toBe(uniqueUserData.lastname);
-
-    await userService.cleanupUser(uniqueUserData.email, uniqueUserData.password);
-  });
-
-  test('should return error for non-existent user email', async ({ userService }) => {
-    const getUserResponse = await userService.getUserByEmail(faker.internet.email());
-    expect.soft(getUserResponse.status()).toBe(StatusCodes.OK);
-
-    const responseJson = await getUserResponse.json();
-    expect.soft(responseJson.responseCode).toBe(StatusCodes.NOT_FOUND);
-    expect(responseJson.message).toContain('Account not found');
+      const responseJson = await getUserResponse.json();
+      expect.soft(responseJson.responseCode).toBe(StatusCodes.NOT_FOUND);
+      expect(responseJson.message).toContain('Account not found');
+    });
   });
 });
