@@ -44,6 +44,9 @@ export abstract class BaseApiClient {
 
   /**
    * Perform GET request
+   * @param endpoint - API endpoint path (relative to baseUrl)
+   * @param options - Optional request options (headers, query params)
+   * @returns Promise<APIResponse> - Playwright API Response
    */
   protected async get(endpoint: string, options?: RequestOptions): Promise<APIResponse> {
     return await this.executeRequest('get', endpoint, options);
@@ -51,6 +54,9 @@ export abstract class BaseApiClient {
 
   /**
    * Perform POST request
+   * @param endpoint - API endpoint path (relative to baseUrl)
+   * @param options - Optional request options (data payload, headers, query params)
+   * @returns Promise<APIResponse> - Playwright API Response
    */
   protected async post<TData = string>(
     endpoint: string,
@@ -61,6 +67,9 @@ export abstract class BaseApiClient {
 
   /**
    * Perform PUT request
+   * @param endpoint - API endpoint path (relative to baseUrl)
+   * @param options - Optional request options (data payload, headers, query params)
+   * @returns Promise<APIResponse> - Playwright API Response
    */
   protected async put<TData = string>(
     endpoint: string,
@@ -71,6 +80,9 @@ export abstract class BaseApiClient {
 
   /**
    * Perform PATCH request
+   * @param endpoint - API endpoint path (relative to baseUrl)
+   * @param options - Optional request options (data payload, headers, query params)
+   * @returns Promise<APIResponse> - Playwright API Response
    */
   protected async patch<TData = string>(
     endpoint: string,
@@ -81,6 +93,9 @@ export abstract class BaseApiClient {
 
   /**
    * Perform DELETE request
+   * @param endpoint - API endpoint path (relative to baseUrl)
+   * @param options - Optional request options (data payload, headers, query params)
+   * @returns Promise<APIResponse> - Playwright API Response
    */
   protected async delete<TData = string>(
     endpoint: string,

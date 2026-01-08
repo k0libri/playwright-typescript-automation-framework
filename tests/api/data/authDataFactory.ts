@@ -18,6 +18,7 @@ export const AUTH_VALIDATION = {
 
 /**
  * Generate invalid auth credentials for negative testing
+ * @returns AuthCredentials - Object with random invalid username and password
  */
 export function generateInvalidCredentials(): AuthCredentials {
   return {
@@ -28,6 +29,7 @@ export function generateInvalidCredentials(): AuthCredentials {
 
 /**
  * Generate credentials with missing username
+ * @returns AuthCredentials - Object with empty username and random password
  */
 export function generateMissingUsernameCredentials(): AuthCredentials {
   return {
@@ -38,6 +40,7 @@ export function generateMissingUsernameCredentials(): AuthCredentials {
 
 /**
  * Generate credentials with missing password
+ * @returns AuthCredentials - Object with random username and empty password
  */
 export function generateMissingPasswordCredentials(): AuthCredentials {
   return {

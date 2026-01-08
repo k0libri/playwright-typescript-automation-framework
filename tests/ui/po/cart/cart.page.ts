@@ -27,6 +27,7 @@ export class CartPage extends BasePage {
 
   /**
    * Navigate to cart page
+   * @returns Promise<void>
    */
   async navigateToCart(): Promise<void> {
     Logger.info('Navigating to cart page');
@@ -35,6 +36,7 @@ export class CartPage extends BasePage {
 
   /**
    * Check if cart is empty
+   * @returns Promise<boolean> - True if cart contains no items, false otherwise
    */
   async isCartEmpty(): Promise<boolean> {
     return (await this.cartItems.count()) === 0;
@@ -42,6 +44,7 @@ export class CartPage extends BasePage {
 
   /**
    * Get cart items details
+   * @returns Promise<Array<{name: string, price: string, quantity: string, total: string}>> - Array of cart items with details
    */
   async getCartItems(): Promise<
     Array<{
@@ -68,6 +71,8 @@ export class CartPage extends BasePage {
 
   /**
    * Remove item from cart by index
+   * @param itemIndex - Zero-based index of the item to remove
+   * @returns Promise<void>
    */
   async removeItemFromCart(itemIndex: number): Promise<void> {
     Logger.info(`Removing item at index ${itemIndex} from cart`);
@@ -78,6 +83,7 @@ export class CartPage extends BasePage {
 
   /**
    * Proceed to checkout
+   * @returns Promise<void>
    */
   async proceedToCheckout(): Promise<void> {
     Logger.info('Proceeding to checkout');
@@ -86,6 +92,7 @@ export class CartPage extends BasePage {
 
   /**
    * Get number of items in cart
+   * @returns Promise<number> - Total count of items in the cart
    */
   async getCartItemCount(): Promise<number> {
     return await this.cartItems.count();

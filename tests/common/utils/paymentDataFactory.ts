@@ -15,6 +15,7 @@ export const PAYMENT_TEST_DATA = {
 export class PaymentDataFactory {
   /**
    * Generate valid test payment data
+   * @returns PaymentData - Complete payment information with valid test card number and future expiry date
    */
   static generatePaymentData(): PaymentData {
     const currentYear = new Date().getFullYear();
@@ -30,6 +31,7 @@ export class PaymentDataFactory {
 
   /**
    * Generate invalid payment data for negative testing
+   * @returns Partial<PaymentData> - Incomplete payment data with invalid card number, CVV, and expired date
    */
   static generateInvalidPaymentData(): Partial<PaymentData> {
     return {

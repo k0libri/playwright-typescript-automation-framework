@@ -23,6 +23,9 @@ export class LoginFormComponent extends BaseComponent {
 
   /**
    * Perform user login
+   * @param email - User's email address
+   * @param password - User's password
+   * @returns Promise<void>
    */
   async login(email: string, password: string): Promise<void> {
     Logger.info('Filling login credentials');
@@ -33,6 +36,7 @@ export class LoginFormComponent extends BaseComponent {
 
   /**
    * Check if login error message is visible
+   * @returns Promise<boolean> - True if login error message is displayed, false otherwise
    */
   async isLoginErrorVisible(): Promise<boolean> {
     return await this.isVisible(this.loginErrorMessage);

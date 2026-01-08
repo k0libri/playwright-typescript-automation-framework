@@ -15,6 +15,7 @@ export const BOOKING_VALIDATION = {
 export class BookingDataFactory {
   /**
    * Generate random booking dates (checkin today, checkout in 7 days)
+   * @returns BookingDates - Object with checkin and checkout dates in YYYY-MM-DD format
    */
   static generateBookingDates(): BookingDates {
     const checkin = faker.date.soon({ days: 1 }).toISOString().split('T')[0] ?? '';
@@ -29,6 +30,8 @@ export class BookingDataFactory {
 
   /**
    * Generate complete booking data with randomized values
+   * @param overrides - Optional partial booking data to override default generated values
+   * @returns Booking - Complete booking object with random guest information and dates
    */
   static generateBooking(overrides?: Partial<Booking>): Booking {
     return {
@@ -50,6 +53,8 @@ export class BookingDataFactory {
 
   /**
    * Generate booking data for update scenarios
+   * @param original - The original booking object to base updates on
+   * @returns Booking - Updated booking with increased price and changed additional needs
    */
   static generateUpdatedBooking(original: Booking): Booking {
     const PRICE_INCREASE = 50;
@@ -66,6 +71,7 @@ export class BookingDataFactory {
 
   /**
    * Generate partial booking update (only firstname and lastname)
+   * @returns Partial<Booking> - Partial booking object containing only updated first and last names
    */
   static generatePartialUpdate(): Partial<Booking> {
     return {
@@ -76,6 +82,7 @@ export class BookingDataFactory {
 
   /**
    * Generate a non-existent booking ID for negative testing
+   * @returns number - Random booking ID in range 900000000-999999999 (unlikely to exist)
    */
   static generateNonExistentBookingId(): number {
     return faker.number.int({ min: 900000000, max: 999999999 });

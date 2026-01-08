@@ -40,6 +40,7 @@ export class AuthenticationPage extends BasePage {
 
   /**
    * Navigate to authentication page
+   * @returns Promise<void>
    */
   async navigateToAuthenticationPage(): Promise<void> {
     Logger.info('Navigating to authentication page');
@@ -48,6 +49,9 @@ export class AuthenticationPage extends BasePage {
 
   /**
    * Perform user login
+   * @param email - User's email address
+   * @param password - User's password
+   * @returns Promise<void>
    */
   async login(email: string, password: string): Promise<void> {
     Logger.info(`Logging in user: ${email}`);
@@ -56,6 +60,9 @@ export class AuthenticationPage extends BasePage {
 
   /**
    * Start signup process with name and email
+   * @param name - User's full name
+   * @param email - User's email address
+   * @returns Promise<void>
    */
   async startSignup(name: string, email: string): Promise<void> {
     Logger.info(`Starting signup for: ${email}`);
@@ -64,6 +71,23 @@ export class AuthenticationPage extends BasePage {
 
   /**
    * Complete registration form
+   * @param userData - User registration data object
+   * @param userData.title - User's title (Mr./Mrs.)
+   * @param userData.password - User's password
+   * @param userData.birth_date - Birth date
+   * @param userData.birth_month - Birth month
+   * @param userData.birth_year - Birth year
+   * @param userData.firstname - User's first name
+   * @param userData.lastname - User's last name
+   * @param userData.company - Company name
+   * @param userData.address1 - Primary address
+   * @param userData.address2 - Secondary address (optional)
+   * @param userData.country - Country
+   * @param userData.state - State/Province
+   * @param userData.city - City
+   * @param userData.zipcode - Postal/Zip code
+   * @param userData.mobile_number - Mobile phone number
+   * @returns Promise<void>
    */
   async completeRegistration(userData: {
     title: string;
@@ -87,6 +111,7 @@ export class AuthenticationPage extends BasePage {
 
   /**
    * Get logged in username
+   * @returns Promise<string> - The username of the currently logged-in user
    */
   async getLoggedInUsername(): Promise<string> {
     const fullText = await this.loggedInUserText.textContent();
@@ -96,6 +121,26 @@ export class AuthenticationPage extends BasePage {
   /**
    * Attempt to create user and logout, handling case where user might already exist
    * Returns true if user was created, false if user already exists
+   * @param userData - Complete user registration data
+   * @param userData.name - User's full name
+   * @param userData.email - User's email address
+   * @param userData.title - User's title (Mr./Mrs.)
+   * @param userData.password - User's password
+   * @param userData.birth_date - Birth date
+   * @param userData.birth_month - Birth month
+   * @param userData.birth_year - Birth year
+   * @param userData.firstname - User's first name
+   * @param userData.lastname - User's last name
+   * @param userData.company - Company name
+   * @param userData.address1 - Primary address
+   * @param userData.address2 - Secondary address (optional)
+   * @param userData.country - Country
+   * @param userData.state - State/Province
+   * @param userData.city - City
+   * @param userData.zipcode - Postal/Zip code
+   * @param userData.mobile_number - Mobile phone number
+   * @param page - Playwright Page object for navigation
+   * @returns Promise<boolean> - True if user was created successfully, false if user already exists
    */
   async tryCreateUserAndLogout(
     userData: {
@@ -135,6 +180,8 @@ export class AuthenticationPage extends BasePage {
 
   /**
    * Verify duplicate email error is displayed or user stays on login page
+   * @param page - Playwright Page object for navigation and verification
+   * @returns Promise<void>
    */
   async verifyDuplicateEmailHandling(page: Page): Promise<void> {
     const duplicateError = page.getByText('Email Address already exist');
@@ -153,6 +200,26 @@ export class AuthenticationPage extends BasePage {
 
   /**
    * Facade: Complete user registration (signup + registration form + verification)
+   * @param userData - Complete user registration data
+   * @param userData.name - User's full name
+   * @param userData.email - User's email address
+   * @param userData.title - User's title (Mr./Mrs.)
+   * @param userData.password - User's password
+   * @param userData.birth_date - Birth date
+   * @param userData.birth_month - Birth month
+   * @param userData.birth_year - Birth year
+   * @param userData.firstname - User's first name
+   * @param userData.lastname - User's last name
+   * @param userData.company - Company name
+   * @param userData.address1 - Primary address
+   * @param userData.address2 - Secondary address (optional)
+   * @param userData.country - Country
+   * @param userData.state - State/Province
+   * @param userData.city - City
+   * @param userData.zipcode - Postal/Zip code
+   * @param userData.mobile_number - Mobile phone number
+   * @param shouldLogout - Whether to logout after registration (default: false)
+   * @returns Promise<void>
    */
   async registerUser(
     userData: {

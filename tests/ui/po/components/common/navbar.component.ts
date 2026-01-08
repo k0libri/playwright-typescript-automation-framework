@@ -33,6 +33,7 @@ export class NavbarComponent extends BaseComponent {
 
   /**
    * Navigate to home page
+   * @returns Promise<void>
    */
   async goToHome(): Promise<void> {
     Logger.info('Navigating to home via navbar');
@@ -41,6 +42,7 @@ export class NavbarComponent extends BaseComponent {
 
   /**
    * Navigate to products page
+   * @returns Promise<void>
    */
   async goToProducts(): Promise<void> {
     Logger.info('Navigating to products via navbar');
@@ -49,6 +51,7 @@ export class NavbarComponent extends BaseComponent {
 
   /**
    * Navigate to cart page
+   * @returns Promise<void>
    */
   async goToCart(): Promise<void> {
     Logger.info('Navigating to cart via navbar');
@@ -57,6 +60,7 @@ export class NavbarComponent extends BaseComponent {
 
   /**
    * Navigate to signup/login page
+   * @returns Promise<void>
    */
   async goToSignupLogin(): Promise<void> {
     Logger.info('Navigating to signup/login via navbar');
@@ -65,6 +69,7 @@ export class NavbarComponent extends BaseComponent {
 
   /**
    * Logout user
+   * @returns Promise<void>
    */
   async logout(): Promise<void> {
     Logger.info('Logging out user');
@@ -73,6 +78,7 @@ export class NavbarComponent extends BaseComponent {
 
   /**
    * Check if user is logged in (logout link is visible)
+   * @returns Promise<boolean> - True if logout link is visible (user logged in), false otherwise
    */
   async isUserLoggedIn(): Promise<boolean> {
     return await this.isVisible(this.logoutLink);

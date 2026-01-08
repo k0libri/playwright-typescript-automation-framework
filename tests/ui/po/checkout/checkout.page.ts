@@ -45,6 +45,7 @@ export class CheckoutPage extends BasePage {
 
   /**
    * Review order details
+   * @returns Promise<Array<{name: string, price: string, quantity: string, total: string}>> - Array of order items with details
    */
   async getOrderItems(): Promise<
     Array<{
@@ -80,6 +81,8 @@ export class CheckoutPage extends BasePage {
 
   /**
    * Add order comment
+   * @param comment - The comment text to include with the order
+   * @returns Promise<void>
    */
   async addOrderComment(comment: string): Promise<void> {
     await this.commentTextArea.fill(comment);
@@ -87,6 +90,7 @@ export class CheckoutPage extends BasePage {
 
   /**
    * Place order
+   * @returns Promise<void>
    */
   async placeOrder(): Promise<void> {
     Logger.info('Placing order');
@@ -97,6 +101,13 @@ export class CheckoutPage extends BasePage {
 
   /**
    * Fill payment details and confirm order
+   * @param paymentData - Payment information object containing card details
+   * @param paymentData.nameOnCard - Cardholder name
+   * @param paymentData.cardNumber - Card number
+   * @param paymentData.cvc - Card CVV/CVC security code
+   * @param paymentData.expiryMonth - Card expiry month
+   * @param paymentData.expiryYear - Card expiry year
+   * @returns Promise<void>
    */
   async completePayment(paymentData: {
     nameOnCard: string;
@@ -117,6 +128,7 @@ export class CheckoutPage extends BasePage {
 
   /**
    * Check if order is confirmed
+   * @returns Promise<boolean> - True if order confirmation message is visible, false otherwise
    */
   async isOrderConfirmed(): Promise<boolean> {
     try {
@@ -129,6 +141,7 @@ export class CheckoutPage extends BasePage {
 
   /**
    * Get order confirmation details
+   * @returns Promise<string> - The order confirmation message text
    */
   async getOrderConfirmationMessage(): Promise<string> {
     return (await this.orderConfirmationMessage.textContent()) ?? '';
@@ -136,6 +149,7 @@ export class CheckoutPage extends BasePage {
 
   /**
    * Continue after order confirmation
+   * @returns Promise<void>
    */
   async continueAfterOrder(): Promise<void> {
     await this.continueButton.click();
@@ -143,6 +157,9 @@ export class CheckoutPage extends BasePage {
 
   /**
    * Facade: Complete entire checkout flow (place order + payment)
+   * @param paymentData - Payment information object containing card details
+   * @param comment - Optional order comment to include (default: undefined)
+   * @returns Promise<void>
    */
   async completeCheckout(
     paymentData: {

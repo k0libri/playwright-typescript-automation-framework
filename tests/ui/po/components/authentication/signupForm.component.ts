@@ -21,6 +21,9 @@ export class SignupFormComponent extends BaseComponent {
 
   /**
    * Start signup process with name and email
+   * @param name - User's full name
+   * @param email - User's email address
+   * @returns Promise<void>
    */
   async startSignup(name: string, email: string): Promise<void> {
     Logger.info('Filling signup form');

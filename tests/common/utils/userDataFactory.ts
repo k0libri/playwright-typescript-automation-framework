@@ -8,6 +8,7 @@ import { UserData } from '../data/types';
 export class UserDataFactory {
   /**
    * Generate unique email address with UUID
+   * @returns string - Unique email address in format: username_uuid@automation.test
    */
   static generateUniqueEmail(): string {
     const uniqueId = faker.string.uuid();
@@ -17,6 +18,7 @@ export class UserDataFactory {
 
   /**
    * Generate complete user data with unique identifiers
+   * @returns UserData - Complete user registration data object with unique email and realistic values
    */
   static generateUserData(): UserData {
     const firstName = faker.person.firstName();
@@ -50,6 +52,7 @@ export class UserDataFactory {
 
   /**
    * Generate invalid user data for negative testing
+   * @returns Partial<UserData> - Incomplete user data with invalid values for negative test scenarios
    */
   static generateInvalidUserData(): Partial<UserData> {
     return {
@@ -60,6 +63,10 @@ export class UserDataFactory {
     };
   }
 
+  /**
+   * Generate complete but invalid user data for negative testing
+   * @returns UserData - Complete user data object with invalid field values
+   */
   static generateCompleteInvalidUserData(): UserData {
     return {
       name: '',

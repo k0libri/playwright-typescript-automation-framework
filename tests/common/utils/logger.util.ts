@@ -8,6 +8,9 @@ export class Logger {
 
   /**
    * Log informational messages (only when DEBUG_LOGGING=true)
+   * @param message - The informational message to log
+   * @param data - Optional additional data to include in the log
+   * @returns void
    */
   static info(message: string, data?: unknown): void {
     if (this.isDebugEnabled) {
@@ -17,6 +20,9 @@ export class Logger {
 
   /**
    * Log error messages (always logged)
+   * @param message - The error message to log
+   * @param data - Optional error data or stack trace to include
+   * @returns void
    */
   static error(message: string, data?: unknown): void {
     console.error('[ERROR]', message, data ?? '');
@@ -24,6 +30,9 @@ export class Logger {
 
   /**
    * Log warning messages (only when DEBUG_LOGGING=true)
+   * @param message - The warning message to log
+   * @param data - Optional additional data to include
+   * @returns void
    */
   static warn(message: string, data?: unknown): void {
     if (this.isDebugEnabled) {
@@ -33,6 +42,9 @@ export class Logger {
 
   /**
    * Log debug messages (only when DEBUG_LOGGING=true)
+   * @param message - The debug message to log
+   * @param data - Optional debug data to include
+   * @returns void
    */
   static debug(message: string, data?: unknown): void {
     if (this.isDebugEnabled) {
@@ -42,6 +54,8 @@ export class Logger {
 
   /**
    * Log test step information (only when DEBUG_LOGGING=true)
+   * @param message - The test step description to log
+   * @returns void
    */
   static step(message: string): void {
     if (this.isDebugEnabled) {

@@ -32,6 +32,23 @@ export class RegistrationFormComponent extends BaseComponent {
 
   /**
    * Complete registration form
+   * @param userData - User registration data object
+   * @param userData.title - User's title (Mr./Mrs.)
+   * @param userData.password - User's password
+   * @param userData.birth_date - Birth date
+   * @param userData.birth_month - Birth month
+   * @param userData.birth_year - Birth year
+   * @param userData.firstname - User's first name
+   * @param userData.lastname - User's last name
+   * @param userData.company - Company name
+   * @param userData.address1 - Primary address
+   * @param userData.address2 - Secondary address (optional)
+   * @param userData.country - Country
+   * @param userData.state - State/Province
+   * @param userData.city - City
+   * @param userData.zipcode - Postal/Zip code
+   * @param userData.mobile_number - Mobile phone number
+   * @returns Promise<void>
    */
   async completeRegistration(userData: {
     title: string;
@@ -81,6 +98,7 @@ export class RegistrationFormComponent extends BaseComponent {
 
   /**
    * Check if account created message is visible
+   * @returns Promise<boolean> - True if account created message is displayed, false otherwise
    */
   async isAccountCreatedMessageVisible(): Promise<boolean> {
     return await this.isVisible(this.accountCreatedMessage);
@@ -88,6 +106,7 @@ export class RegistrationFormComponent extends BaseComponent {
 
   /**
    * Click continue button after account creation
+   * @returns Promise<void>
    */
   async clickContinue(): Promise<void> {
     await this.continueButton.click();

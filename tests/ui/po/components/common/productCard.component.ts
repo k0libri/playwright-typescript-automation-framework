@@ -25,20 +25,36 @@ export class ProductCardComponent extends BaseComponent {
     this.viewProductLink = container.getByRole('link', { name: 'View Product' });
   }
 
+  /**
+   * Add product to cart
+   * @returns Promise<void>
+   */
   async addToCart(): Promise<void> {
     Logger.info('Adding product to cart from product card');
     await this.addToCartButton.click({ force: true });
   }
 
+  /**
+   * View product details page
+   * @returns Promise<void>
+   */
   async viewProduct(): Promise<void> {
     Logger.info('Viewing product details');
     await this.viewProductLink.click();
   }
 
+  /**
+   * Get product name
+   * @returns Promise<string> - The product name text
+   */
   async getProductName(): Promise<string> {
     return (await this.productName.textContent()) ?? '';
   }
 
+  /**
+   * Get product price
+   * @returns Promise<string> - The product price text
+   */
   async getProductPrice(): Promise<string> {
     return (await this.productPrice.textContent()) ?? '';
   }
@@ -63,20 +79,38 @@ export class ProductCardsListComponent extends BaseComponent {
     this.productCards = page.locator('.product-image-wrapper');
   }
 
+  /**
+   * Get product card by index position
+   * @param index - Zero-based index of the product card
+   * @returns ProductCardComponent - Instance of ProductCardComponent for the specified index
+   */
   getProductCardByIndex(index: number): ProductCardComponent {
     const cardLocator = this.productCards.nth(index);
     return new ProductCardComponent(this.page, cardLocator);
   }
 
+  /**
+   * Get product card by product name
+   * @param productName - The name of the product to find
+   * @returns ProductCardComponent - Instance of ProductCardComponent for the specified product
+   */
   getProductCardByName(productName: string): ProductCardComponent {
     const cardLocator = this.productCards.filter({ hasText: productName });
     return new ProductCardComponent(this.page, cardLocator);
   }
 
+  /**
+   * Get total number of product cards
+   * @returns Promise<number> - Count of visible product cards
+   */
   async getProductCount(): Promise<number> {
     return await this.productCards.count();
   }
 
+  /**
+   * Get all product names from visible product cards
+   * @returns Promise<string[]> - Array of all product names
+   */
   async getAllProductNames(): Promise<string[]> {
     await this.productCards.first().waitFor({ state: 'visible' });
     const productElements = await this.productCards.locator('p').all();

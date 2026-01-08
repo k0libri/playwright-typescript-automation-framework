@@ -13,6 +13,8 @@ export abstract class BaseComponent {
 
   /**
    * Check if element is visible
+   * @param locator - The Playwright locator to check
+   * @returns Promise<boolean> - True if element is visible within 5s timeout, false otherwise
    */
   protected async isVisible(locator: Locator): Promise<boolean> {
     try {
@@ -25,6 +27,8 @@ export abstract class BaseComponent {
 
   /**
    * Check if element is hidden
+   * @param locator - The Playwright locator to check
+   * @returns Promise<boolean> - True if element is hidden within 5s timeout, false otherwise
    */
   protected async isHidden(locator: Locator): Promise<boolean> {
     try {
@@ -37,6 +41,9 @@ export abstract class BaseComponent {
 
   /**
    * Wait for element to be present
+   * @param locator - The Playwright locator to wait for
+   * @param timeout - Maximum wait time in milliseconds (default: 10000)
+   * @returns Promise<void>
    */
   protected async waitForElement(locator: Locator, timeout = 10000): Promise<void> {
     try {
@@ -54,6 +61,8 @@ export abstract class BaseComponent {
 
   /**
    * Get element text content
+   * @param locator - The Playwright locator to extract text from
+   * @returns Promise<string> - The element's text content
    */
   protected async getTextContent(locator: Locator): Promise<string> {
     await this.waitForElement(locator);
@@ -62,6 +71,8 @@ export abstract class BaseComponent {
 
   /**
    * Click element with wait
+   * @param locator - The Playwright locator to click
+   * @returns Promise<void>
    */
   protected async clickElement(locator: Locator): Promise<void> {
     await this.waitForElement(locator);
@@ -70,6 +81,9 @@ export abstract class BaseComponent {
 
   /**
    * Fill input field
+   * @param locator - The Playwright locator of the input field
+   * @param text - The text to fill into the input
+   * @returns Promise<void>
    */
   protected async fillInput(locator: Locator, text: string): Promise<void> {
     await this.waitForElement(locator);

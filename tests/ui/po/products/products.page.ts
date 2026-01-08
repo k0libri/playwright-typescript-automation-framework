@@ -35,6 +35,9 @@ export class ProductsPage extends BasePage {
 
   /**
    * Facade: Add product to cart with post-action (continue shopping or view cart)
+   * @param productName - The name of the product to add to cart
+   * @param action - Post-addition action: 'continue' for continue shopping or 'viewCart' to view cart (default: 'continue')
+   * @returns Promise<void>
    */
   async addProductToCart(
     productName: string,
@@ -53,10 +56,20 @@ export class ProductsPage extends BasePage {
     }
   }
 
+  /**
+   * Add product to cart and continue shopping
+   * @param productName - The name of the product to add
+   * @returns Promise<void>
+   */
   async addProductToCartAndContinue(productName: string): Promise<void> {
     await this.addProductToCart(productName, 'continue');
   }
 
+  /**
+   * Add product to cart and view cart page
+   * @param productName - The name of the product to add
+   * @returns Promise<void>
+   */
   async addProductToCartAndViewCart(productName: string): Promise<void> {
     await this.addProductToCart(productName, 'viewCart');
   }
