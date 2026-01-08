@@ -33,22 +33,32 @@ export class ProductsPage extends BasePage {
     await this.searchComponent.search(searchTerm);
   }
 
-  async addProductToCartAndContinue(productName: string): Promise<void> {
-    Logger.info(`Adding "${productName}" to cart and continuing`);
+  /**
+   * Facade: Add product to cart with post-action (continue shopping or view cart)
+   */
+  async addProductToCart(
+    productName: string,
+    action: 'continue' | 'viewCart' = 'continue',
+  ): Promise<void> {
+    Logger.info(`Adding "${productName}" to cart with action: ${action}`);
     const productCard = this.productCardsList.getProductCardByName(productName);
     await productCard.addToCart();
 
-    await this.continueShoppingButton.waitFor({ state: 'visible' });
-    await this.continueShoppingButton.click();
+    if (action === 'continue') {
+      await this.continueShoppingButton.waitFor({ state: 'visible' });
+      await this.continueShoppingButton.click();
+    } else {
+      await this.viewCartLink.waitFor({ state: 'visible' });
+      await this.viewCartLink.click();
+    }
+  }
+
+  async addProductToCartAndContinue(productName: string): Promise<void> {
+    await this.addProductToCart(productName, 'continue');
   }
 
   async addProductToCartAndViewCart(productName: string): Promise<void> {
-    Logger.info(`Adding "${productName}" to cart and viewing cart`);
-    const productCard = this.productCardsList.getProductCardByName(productName);
-    await productCard.addToCart();
-
-    await this.viewCartLink.waitFor({ state: 'visible' });
-    await this.viewCartLink.click();
+    await this.addProductToCart(productName, 'viewCart');
   }
 
   async getProductNames(): Promise<string[]> {

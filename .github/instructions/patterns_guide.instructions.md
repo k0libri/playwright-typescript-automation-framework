@@ -36,6 +36,17 @@ It is referenced by Copilot and reviewers to ensure code is modular, maintainabl
 
 ---
 
+## 2.1. Facade Pattern – UI
+
+- Merge similar page object methods with slight variations into a single parameterized method.
+- Combine multi-step workflows into high-level facade methods that represent complete user journeys.
+- Facade methods should provide sensible defaults while allowing customization.
+- Always document facade methods with a `Facade:` comment.
+- Keep atomic methods for flexibility while facades reduce test code duplication.
+- See **facade_pattern.instructions.md** for detailed implementation guidelines.
+
+---
+
 ## 3. Service Pattern – API
 
 - Encapsulate API endpoints and business logic in service classes.
@@ -103,6 +114,8 @@ It is referenced by Copilot and reviewers to ensure code is modular, maintainabl
 - [ ] Are all abstractions inheriting from their respective base classes?
 - [ ] Are URLs and endpoints configured, not hardcoded?
 - [ ] Are common components (e.g., Navbar, Footer) placed in `components/common/` and reused via singleton pattern?
+- [ ] Are similar methods merged using the Facade pattern with clear documentation?
+- [ ] Do facade methods provide sensible defaults and maintain atomic methods for flexibility?
 
 ---
 

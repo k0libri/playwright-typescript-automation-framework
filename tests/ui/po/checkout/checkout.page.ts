@@ -140,4 +140,27 @@ export class CheckoutPage extends BasePage {
   async continueAfterOrder(): Promise<void> {
     await this.continueButton.click();
   }
+
+  /**
+   * Facade: Complete entire checkout flow (place order + payment)
+   */
+  async completeCheckout(
+    paymentData: {
+      nameOnCard: string;
+      cardNumber: string;
+      cvc: string;
+      expiryMonth: string;
+      expiryYear: string;
+    },
+    comment?: string,
+  ): Promise<void> {
+    Logger.info('Completing entire checkout flow');
+
+    if (comment) {
+      await this.addOrderComment(comment);
+    }
+
+    await this.placeOrder();
+    await this.completePayment(paymentData);
+  }
 }

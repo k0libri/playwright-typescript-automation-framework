@@ -150,4 +150,42 @@ export class AuthenticationPage extends BasePage {
       Logger.info('Correctly stayed on login page for duplicate email');
     }
   }
+
+  /**
+   * Facade: Complete user registration (signup + registration form + verification)
+   */
+  async registerUser(
+    userData: {
+      name: string;
+      email: string;
+      title: string;
+      password: string;
+      birth_date: string;
+      birth_month: string;
+      birth_year: string;
+      firstname: string;
+      lastname: string;
+      company: string;
+      address1: string;
+      address2?: string;
+      country: string;
+      state: string;
+      city: string;
+      zipcode: string;
+      mobile_number: string;
+    },
+    shouldLogout: boolean = false,
+  ): Promise<void> {
+    Logger.info(`Registering user: ${userData.email}`);
+
+    await this.startSignup(userData.name, userData.email);
+    await this.completeRegistration(userData);
+    await this.registrationForm.continueButton.click();
+    await this.loggedInUserText.waitFor({ state: 'visible' });
+
+    if (shouldLogout) {
+      await this.page.getByRole('link', { name: ' Logout' }).click();
+      await this.page.waitForLoadState('domcontentloaded');
+    }
+  }
 }
